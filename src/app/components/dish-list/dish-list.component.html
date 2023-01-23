@@ -1,0 +1,308 @@
+<!-- /Navigation-->
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" style="margin-left: 25px;">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Platillos</li>
+        </ol>
+
+
+
+        <div class="box_general padding_bottom" >
+
+    
+
+
+            <!--categories pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getProducts_pagecount(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                            (click)="getProducts_pagecount(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--/ categories pagination-->
+
+
+
+          <!--GIF PARA LA CARGA DE DATOS, SE MUESTRA MIENTRAS SE CARGAN LOS DATOS EN EL CONSTRUCTOR-->
+          
+          <div  *ngIf="loading_gif == true" style="text-align: center;">
+            <img  src=  "assets/img/loading.gif" id="imagen_formulario2"
+                style="max-width: 100px; position:absolute; margin-left: -50px; " >                           
+        </div>
+          
+
+            <!-- _____________________________________________EDITAR PLATILLO________________________________________________________________________ 
+__________________________________________________________________________________________________________________________________________________________-->
+
+            <!-- Modal para editar platillo -->
+            <div class="modal fade" id="modal_edit_cat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+                aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style=" width: 100%;">
+
+                        <form action="" style="margin-left: 15px; margin-right: 15px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="edit_bookingLabel">Editar platillo</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+
+                            <br>
+
+                            <div class="col-md-8">
+                                <label>Nombre del platillo</label>
+                                <div class="form-group">
+        
+                                    <input type="text" class="form-control" placeholder="Descripcion del grupo"
+                                         id="description" onkeyup="valid_description()" [(ngModel)]="dish_ins.name" name="product_name">
+                                </div>
+                            </div>
+
+                            
+                           
+
+                            <div class="col-md-8">
+                                <label>Descripcion</label>
+                                <div class="form-group">
+        
+                                    <input type="text" [(ngModel)]="dish_ins.description" name="product_description" class="form-control" placeholder="Descripcion del grupo"
+                                         id="description" onkeyup="valid_description()" >
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-6">
+                                <label>Precio</label>
+                                <div class="form-group">
+        
+                                    <input type="number" class="form-control" placeholder="Precio del platillo (Q)"
+                                        onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                         id="max_sele" onkeyup="valid_maxselected()" [(ngModel)]="dish_ins.price" name="product_price">
+                                      
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-md-6">
+                                <label>Disponibilidad del platillo</label>
+
+                                <div class="form-group" *ngIf="(dish_ins.is_enable == 1)" >   
+                                                              
+                                <mat-slide-toggle  (change)="onNgModelChange()" [checked]="dish_ins.button_enable" > <i  class="approved">Disponible</i> </mat-slide-toggle>
+                              
+                                </div>
+
+
+                                <div class="form-group" *ngIf="(dish_ins.is_enable == 0)" >   
+                                                              
+                                    <mat-slide-toggle  (change)="onNgModelChange()" [checked]="dish_ins.button_enable" ><i  class="cancel">No disponible  </i>  </mat-slide-toggle>
+                                    
+                                </div>
+                               
+                            </div>
+                            
+                            <div class="row">
+
+                                
+                                <div class="col-md-3">
+
+                                    <div class="form-group">
+                                        <a  class="btn_1 gray approve" data-toggle="modal"
+                                            data-target="#gallery_modal"><i class="fa fa-fw fa-check-circle-o"></i>
+                                            Galería</a>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <figure><img src="{{(data$ | async)?.location}}"
+                                                id="imagen_formulario2" style="max-width: 150px;">
+                                            
+                                                &nbsp;  
+                                                <a class="btn_1 gray delete" (click)="assign_no_image();" style="font-size:x-small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
+                                                    class="fa fa-fw fa-remove"></i></a> 
+                                            </figure>
+
+                                                
+                                        <!-- <figure><img src ="assets/img/item_2.jpg" id="imagen_formulario"></figure> -->
+                                    </div>
+
+                                    
+                                </div>
+
+    
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <a class="btn btn-primary"  data-dismiss="modal"
+                                    (click)="editProduct_quickly()">Guardar cambios</a>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <!--CATEGORIAS------------------se muestra el listado de las categorias que existen-->
+            <div class="box_general">
+
+
+
+                <!--
+                        así es como se acomoda el contador  en caso de que querramos usarlo, con cont = index se inicializa
+                       <div class="list_general" *ngFor="let categ of category, let cont = index">
+                             aqui hay un ejemplo de su uso
+
+                           <figure><img [src]="API_URI+categ.image" id="imagen_formulario{{cont +1}}" ></figure>}
+                           <h4>{{categ.name}} {{cont +1}}</h4>
+                    -->
+
+                <!--LLENAMOS EL LISTADO DE CATEGORÍAS
+                        el contador no se esta utilizando, osea let cont= index -->
+                <div class="list_general" *ngFor="let dish of dish_info, let cont = index">
+                    <ul>
+                        <li>
+                            <figure><img [src]="API_URI+dish.image" id="imagen_formulario"></figure>
+                            
+                           <div *ngIf="(dish.is_enable == 1)">
+                         
+                            <i  class="approved">Disponible  </i> 
+
+                            
+
+                            </div>
+
+                            <div *ngIf="(dish.is_enable == 0)">
+                                
+                                <i  class="cancel">No disponible</i> 
+                            </div>
+                            <small>  Pizza - Italian</small> 
+                            <h4>{{dish.name}}  <small>Q.{{dish.price}}</small> </h4> 
+                            
+                            <ul class="booking_list">
+                                <ul class="booking_list">
+
+                                    <li style="min-height:21px;">{{dish.description}}  </li>
+                                     
+                                    <!--<li><a class="btn_1 gray" (click)="Product_to_edit(dish.id_product)"  routerLink="/dishes/edit_dish"
+                                        ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> Editar en detalle</a>
+                                    </li>-->
+
+                                        
+                                       
+
+                                </ul>
+                               
+                            </ul>
+
+                            <ul class="buttons">
+
+                                
+                                <li (click)="map_product(dish)" style="margin-bottom:0.6rem;"><a class="btn_1 gray" data-toggle="modal"
+                                    data-target="#modal_edit_cat"><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-eye"></i> Edicion rapida</a>
+                                </li>
+                                    
+
+                                
+                                    <li style="margin-bottom:0.6rem;"><a class="btn_1 gray" (click)="Product_to_edit(dish.id_product)"  routerLink="/dishes/edit_dish"
+                                        ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> Editar en detalle</a>
+                                </li>    
+                                
+
+                                                              
+                                <li style="margin-bottom:0.6rem;" ><a class="btn_1 gray delete" (click)="map_product(dish)" data-toggle="modal"
+                                        data-target="#modal_confi_delete"><i class="fa fa-fw fa-times-circle-o"></i>Eliminar</a></li>
+                                      
+                             </ul>
+
+                             
+                           
+                        </li>
+
+                    </ul>
+                     
+                    
+                </div>
+            </div>
+
+
+            <!-- pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30">
+                    <li class="page-item disabled">
+                        <a class="page-link"  tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getProducts_pagecount(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                            (click)="getProducts_pagecount(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" >Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /pagination-->
+        </div>
+
+    </div>
+    <!-- /.container-fluid-->
+</div>
+<!-- /.container-wrapper-->
+
+
+<!-- MODAL PARA CONFIRMAR QUE SE QUIERE ELIMINAR LA CATEGORÍA EN CUESTION-->
+<div name="name_category" class="modal fade" id="modal_confi_delete" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Producto?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Seguro quiere eliminar el producto?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <!--(onclick)="deleteCategory(name_category)"-->
+                <a class="btn btn-primary"  data-dismiss="modal" (click)="deleteDish()">Confirmar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

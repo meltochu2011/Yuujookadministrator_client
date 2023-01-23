@@ -1,0 +1,663 @@
+<div class="content-wrapper">
+
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" style="margin-left: 25px;">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Editar platillo</li>
+        </ol>
+
+
+        <div class="box_general padding_bottom">
+
+        <div class="box_general padding_bottom" *ngFor="let dish of dish_data">  
+
+               
+        <!--GIF PARA LA CARGA DE DATOS, SE MUESTRA MIENTRAS SE CARGAN LOS DATOS EN EL CONSTRUCTOR-->
+          
+        <div  *ngIf="loading_gif == true" style="text-align: center;">
+            <img  src=  "assets/img/loading.gif" id="imagen_formulario2"
+                style="max-width: 100px; position:absolute; margin-left: -50px; margin-top: -10px;" >                           
+        </div>
+
+            <div class="header_box version_2">
+                <h2><i class="fa fa-file"></i>Editar informacion de platillo</h2>
+            </div>
+            <div class="row" >
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nombre del platillo </label>
+                        <input type="text" class="form-control"  placeholder="Ingrese el nombre del platillo"
+                            [(ngModel)]="dish_register.name" name="name_product" >
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Precio Q</label>
+                        <input type="number" class="form-control" placeholder="(Q) Ingrese el precio del item"
+                            onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                            [(ngModel)]="dish_register.price" name="price">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Descripcion</label>
+                        <div class="card card-body text-center" style="min-height: 150px;">
+                            <textarea placeholder="Escriba una descripcion del platillo" style="min-height: 140px; border-color: lightgray; border-width:1px; "
+                                [(ngModel)]="dish_register.description" name="description"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+
+
+                    <div class="form-group">
+                        <label>Categoría / Categorías</label>
+                    </div>
+
+
+                    <div class="filter_type" style="min-height: 150px;">
+                        <div class="form-group">
+                            <a class="btn_1 gray approve" data-target="#modalcat" data-toggle="modal" (click)="Show_selected()"><i
+                                    class="fa fa-fw fa-check-circle-o"></i>Elegir o cambiar categorías</a>
+                                    
+                                    <div *ngIf="selected_list.length == 0">
+                                        <br>
+                                        <label  style="color: red ;">  No hay categoría seleccionada
+                                        </label>
+                                    </div>
+                                    
+                        </div>
+
+                        <div class="collapse show" id="filter_1">
+
+
+
+                            <ul >
+                                <li  class="fa fa-plus-circle" *ngFor="let list of selected_list" >
+
+                                    <label  *ngIf="selected_list.length > 0" class="container_check">&nbsp; {{list.name}}
+                                    </label>&nbsp;&nbsp;&nbsp;
+                                    
+                                    
+
+                                </li>
+                            </ul>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+            <div class="box_general padding_bottom">
+                <div class="header_box version_2">
+                    <h2><i class="fa fa-fw fa-list"></i> Características</h2>
+                </div>
+
+
+                <p></p>
+
+                <div class = "row">
+
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label>Disponibilidad del platillo</label>
+                        </div>
+
+                        <div class="form-group" *ngIf="(dish_register.is_enable == 1)" >  
+                                                      
+                        <mat-slide-toggle  (change)="onNgModelChange2()" [checked]="dish_register.button_enable" > <i  class="approved">Disponible</i> </mat-slide-toggle>
+                      
+                        </div>
+
+
+                        <div class="form-group" *ngIf="(dish_register.is_enable == 0)" >   
+                                                      
+                            <mat-slide-toggle  (change)="onNgModelChange2()" [checked]="dish_register.button_enable" ><i  class="cancel">No disponible  </i>  </mat-slide-toggle>
+                            
+                        </div>
+                       
+                    </div>
+                     <hr>
+
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Imagen del platillo</label>
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <p>
+                            <img name="category_image" style="max-width: 30px;">&nbsp;&nbsp;
+
+                        </p>
+
+                        <div class="form-group" style="text-align: center;">
+                            <a class="btn_1 gray approve" (click)="assign_image_category();"><i
+                                    class="fa fa-fw fa-check-circle-o"></i> Imagen de ultima categoría
+                                seleccionada</a>
+                        </div>
+
+                        <div class="form-group" style="text-align: center;">
+                            <a class="btn_1 gray approve" data-toggle="modal" data-target="#gallery_modal"><i
+                                    class="fa fa-fw fa-check-circle-o"></i> Galería</a>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-4">
+
+
+
+
+                        <div class="form-group" style="text-align: center;">
+
+
+
+                            <!--TOMA EL VALOR DE LA VARIABLE Photo_selected si existe algun valor en ella o 
+                     LE ASIGNA UNA IMAGEN QUE PARA INDICAR QUE NO HAY ALGUNA IMAGEN AHÚN-->
+
+                           
+
+                                <figure><img src="{{(data$ | async)?.location}}" id="imagen_formulario2"
+                                        style="max-width: 175px;">
+
+                                        &nbsp;
+                                        <a class="btn_1 gray delete" (click)="assign_no_image();" style="font-size:x-small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
+                                            class="fa fa-fw fa-remove"></i></a> 
+                                        </figure>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="header_box version_2">
+                    <h2><i class="fa fa-file"></i>Extras / guarniciones</h2>
+                </div>
+
+
+
+                <form [formGroup]="formParent" class="form-parent" novalidate  >
+
+
+                    <div class="form-grid" formArrayName="group_item_options" >
+
+
+                        <div class="form-field"
+                            *ngFor="let items of getCtrl('group_item_options',formParent) ?.controls; let formChild = index">
+
+
+                            <div class="form-block" [formGroupName]="formChild" class="needs-validation">
+
+                                
+                                
+
+                                <div class="row">
+                                   
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <a class="delete" (click)="remove_group(formChild)"
+                                                style="cursor: pointer "><i class="fa fa-fw fa-remove"></i></a>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-5">
+
+
+                                        <label>Titulo o descripcion</label>
+
+                                        <div class="form-group">
+
+                                            <input type="text" class="form-control" placeholder="Descripcion del grupo"
+                                                id="{{formChild}}" formControlName="name" onkeyup="Specific_group_validation(id)" (keyup)="verify_sons_items()">
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-5">
+
+                                        <label>Items seleccionables</label>
+
+                                        <div class="form-group">
+
+                                            <!--(keyup)="verify_index_items(formChild)"-->
+                                            <input type="number" class="form-control" id="max_selected{{formChild}}"
+                                            onkeyup="myFunction_maxselected(id)" (keyup)="verify_sons_items()" placeholder="Numero seleccionable"
+                                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                                formControlName="max_selected" >
+                                        </div>
+
+                                    </div>
+                                </div> 
+
+
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <!--<div class="form-group">
+                                            <a class="delete" (click)="remove_group(formChild)"
+                                                style="cursor: pointer "><i class="fa fa-fw fa-remove"></i></a>
+                                        </div>-->
+                                    </div>
+
+
+
+                                    <div class="col-md-5">
+
+                                        <!--<label>Items seleccionables</label>
+
+                                        <div class="form-group">
+
+                                            <!--(keyup)="verify_index_items(formChild)"-->
+                                            <!--<input type="number" class="form-control" id="max_selected{{formChild}}"
+                                                onkeyup="myFunction_maxselected(id)" (keyup)="verify_sons_items()" placeholder="Numero seleccionable"
+                                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                                formControlName="max_selected" >
+                                        </div>-->
+
+                                        <div class="form-group">
+                                            <a class="btn_1 gray add-pricing-list-item" data-toggle="modal"
+                                                id="{{formChild}}"  (click)="Present_Child(formChild)"
+                                                onclick="Global_group(id)" data-target="#modal_edit_cat"><i
+                                                    class="fa fa-fw fa-plus-circle" ></i>Items del grupo</a>
+                                        </div>
+
+                                        
+                                          
+                                    </div>
+
+
+                                    <div class="col-md-5">
+
+                                        <!--<label>Items seleccionables</label>
+
+                                        <div class="form-group">
+
+                                            <!--(keyup)="verify_index_items(formChild)"-->
+                                            <!--<input type="number" class="form-control" id="max_selected{{formChild}}"
+                                                onkeyup="myFunction_maxselected(id)" (keyup)="verify_sons_items()" placeholder="Numero seleccionable"
+                                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                                formControlName="max_selected" >
+                                        </div>-->
+
+                                        <div class="form-group">
+                                            <label>Detalle de items</label>
+
+
+                                            <div *ngFor="let list of formParent.value.dinamicos">
+
+                                                <div
+                                                    *ngIf='list.signal == formChild && list.tag !== "" && list.price !== "" && list.price !== null'>
+                                                    <li class="fa fa-plus-circle"> {{list.tag}} &nbsp;&nbsp;&nbsp;Q
+                                                        {{list.price}}</li>
+                                                </div>
+
+                                                <div
+                                                    *ngIf='list.signal == formChild  && (list.tag ==="" || list.price ==="") '>
+                                                    <li class="fa fa-plus-circle" style="color:red"> Incompleto </li>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div
+                                                *ngIf="( formParent.value.group_item_options[formChild].has_sons == 0)">
+
+                                                <li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                   
+
+                                    <hr style="width: 90%; margin-left: 20px; border-color: gray; width: 80%;">
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+
+
+
+                <a class="btn_1 green add-pricing-list-item" (click)="add_group_element();"><i
+                        class="fa fa-fw fa-plus-circle"></i>Agregar nuevo grupo</a>
+
+                    
+                        <!--<a class="btn_1 green add-pricing-list-item" (click)="agregar_grupo();"><i
+                            class="fa fa-fw fa-plus-circle"></i>Agregar nuevo grupo</a>-->        
+
+
+                <p></p>
+                <p></p>
+
+                       
+            </div>
+
+            <p>
+                <!--<a class="btn_1 medium" (click)="Edit_dish();">Guardar cambios</a>-->
+            <button  class="btn btn-primary btn-block" (click)="Edit_dish();" [disabled]="loading_button_edit" style="max-width: 200px ; align-content: center; margin-right: 10%; border-radius: 1.1em; font-style:initial;">
+                {{(loading_button_edit) ? 'Cargando ...' : 'Guardar cambios'}}
+            </button>
+            </p>
+
+            <br>
+
+           
+
+        </div>
+
+
+
+        <!-- Modal para editar el detalle del grupo seleccionado MODAL DE EDICION-->
+
+        <div class="modal fade" id="modal_edit_cat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+            aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style=" width: 100%;">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="edit_bookingLabel">Detalle de grupo</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"
+                            onclick="actualizar_grupo()">
+                            <span aria-hidden="true" onclick="actualizar_grupo()">×</span>
+                        </button>
+                    </div>
+
+
+                    <div class="col-md-8">
+                        <label>Titulo o descripcion</label>
+                        <div class="form-group">
+
+                            <input type="text" class="form-control" placeholder="Descripcion del grupo"
+                                [(ngModel)]="group.name" id="description" (keyup)="verify_sons_items()" onkeyup="valid_description()">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Items seleccionables</label>
+                        <div class="form-group">
+
+                            <input type="number" class="form-control" placeholder="Numero seleccionable"
+                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                [(ngModel)]="group.max_selected" id="max_sele" (keyup)="verify_sons_items()" onkeyup="valid_maxselected()" style="width: 80%;" >
+                                
+                        </div>
+                       
+                    </div>
+
+                              
+                        <hr style="border-color: gray;">         
+
+
+                    <div class="col-md-10" style="margin-left: 20px;">
+                        <div class="form-group">
+
+                            <h5 class="modal-title" id="edit_bookingLabel">ITEMS DEL GRUPO</h5>
+                        </div>
+
+
+                        <div class="form-group" *ngIf="(Items_indicator == 0)">
+
+                        <li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
+                        
+                        </div>
+
+                    </div>
+
+                     
+                    
+
+                    <form [formGroup]="formParent" class="form-parent" style="margin-left: 30px; margin-right: 15px;">
+
+
+                        <div class="form-grid" formArrayName="dinamicos">
+
+                            <div class="form-field"
+                                *ngFor="let items of getCtrl2('dinamicos',formParent) ?.controls; index as hijo">
+
+
+
+                                <div class="form-block" [formGroupName]="hijo">
+
+                                    <div class="row" *ngIf=" formParent.value.dinamicos[hijo].signal == Global_child">
+
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <!--LLAMAMOS A LA FUNCION PARA REMOVER UN ELEMENTO DE EL ARREGLO dinamicos, QUE ES EL QUE CONTIENE TODOS LOS ITEMS DE LOS GRUPOS Y LE 
+                                    PASAMOS EL INDEX PARA QUE ELIMINE ESPECÍFICAMENTE ESE ELEMENTO DEL ARREGLO-->
+                                                <a class="delete" style="cursor: pointer"
+                                                    (click)="remove_group_element(hijo)"> <i
+                                                        class="fa fa-fw fa-remove"></i></a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Nombre de la guarnicion" formControlName="tag" style="max-width: 90% ;">
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                <input type="number" class="form-control" placeholder="Precio"
+                                                    onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                                    formControlName="price" style="max-width: 80% ;">
+                                            </div>
+                                        </div>
+
+
+                                       <hr style="width: 90%; border-color: gray;">  
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                            
+                                
+                    
+
+
+                        </div>
+
+
+
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <a class="btn_1 gray add-pricing-list-item" (click)="add_item_element();"><i
+                                        class="fa fa-fw fa-plus-circle"></i>Nueva guarnicion/extra</a>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                    <div class="modal-footer">
+                        <!--LAS DOS FUNCIONES TIENEN UN OBJETIVO DIFERENTE AMBAS ACTUALIZAN EL VALOR DE LOS CAMPOS DEL ARRAY items_group EN BASE A LOS DATOS QUE ESTAN
+                    EN EL FORM PRESENTES EN EL FORM  pero uno actualiza los valores en back-end y el otro en front-end -->
+                        <a class="btn btn-primary" data-dismiss="modal" (click)="Present_Child_reverse()"
+                            onclick="actualizar_grupo()">Aceptar</a>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        <!-- _____________________________________________ELEGIR CATEGORIA________________________________________________________________________ 
+__________________________________________________________________________________________________________________________________________________________-->
+
+        <!-- Modal para editar categoria -->
+        <div class="modal fade" id="modalcat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style=" width: 100%;">
+
+                    <form action="" style="margin-left: 15px; margin-right: 15px;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit_bookingLabel">Elegir categoría</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+
+                                 <div id="div1">
+                                     <table border="1">
+
+                                        <mat-selection-list #categories [(ngModel)]="selectedOptions" name="selectedOptions"
+                                        (ngModelChange)="onNgModelChange($event)" >
+                                            
+                                            <div *ngFor="let categ of category ; let i = index" >
+                                                
+                                                <div *ngIf='(categ.selected === "1")' >  
+                                            <mat-list-option  [value]="categ" [selected]="true">
+                                            <p>
+                                                <img [src]="API_URI+categ.image" id="imagen_formulario"
+                                                    style="max-width: 30px;">&nbsp;&nbsp;
+                                                {{categ.name}} 
+                                            </p>
+                                             </mat-list-option>
+                                                 
+                                                  </div>
+                                               
+                                                
+                                                <mat-list-option *ngIf='( categ.selected === "0")' [value]="categ">
+                                                <p>
+                                                    <img [src]="API_URI+categ.image" id="imagen_formulario"
+                                                        style="max-width: 30px;">&nbsp;&nbsp;
+                                                    {{categ.name}}
+                                                </p>
+                                                 </mat-list-option>
+                                            
+                                                
+                                            </div>
+
+
+
+
+
+                                            <!--<div *ngFor="let sele of selected_list; let j = index" >
+                                                <mat-list-option  [value]="sele" >
+                                                    <p>
+                                                        <img [src]="API_URI+sele.image" id="imagen_formulario"
+                                                            style="max-width: 30px;">&nbsp;&nbsp;
+                                                        {{sele.name}}
+                                                    </p>
+                                                     </mat-list-option>
+                                            </div>-->
+
+
+                                        </mat-selection-list>
+
+                                    </table>
+                                </div>
+                                <!--</body>
+                        </html>-->  
+
+
+                         
+
+
+
+
+
+                        <div class="modal-footer">
+                            <a class="btn btn-primary" href="#0" data-dismiss="modal">Aceptar</a>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="#0">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>

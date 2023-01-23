@@ -1,0 +1,11 @@
+#div1 {
+    overflow:scroll;
+    max-height:450px;
+    width:100%;
+    
+}
+#div1 table {
+   width:100%;
+   /*background-color:lightgray;*/
+   border-color: transparent;
+}

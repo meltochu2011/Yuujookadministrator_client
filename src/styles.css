@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+/*@import 'assets/css/style.css';*/
+@import 'assets/vendor/font-awesome/css/font-awesome.min.css';
+@import 'assets/css/custom.css';
+@import 'assets/vendor/bootstrap/css/bootstrap.min.css';
+@import 'assets/css/admin.css';
+
+
+/*@import 'assets/css/listing.css';
+/*@import 'assets/css/leaflet.css';*/
+
+/*@import 'assets/vendor/bootstrap/css/bootstrap.min.css.map';*/
+
+
+/*html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/

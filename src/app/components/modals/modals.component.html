@@ -1,0 +1,172 @@
+
+        <!--Modal para mostrar galería, GALERÍA DE IMAGENES-->
+        <div class="modal inverse-wrapper modal-transparent move-from-top" id="gallery_modal" tabindex="-1" role="dialog"
+            data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <div style="margin-left: auto;">
+                            <h2>Galería </h2>
+                        </div>
+
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+
+                    <form (submit)="uploadPhotogallery()">
+
+                        <p></p>
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+
+
+                        
+                                 
+                                <div class="form-group">
+
+                                    <!--TOMA EL VALOR DE LA VARIABLE Photo_selected si existe algun valor en ella o 
+                                                 LE ASIGNA UNA IMAGEN QUE PARA INDICAR QUE NO HAY ALGUNA IMAGEN AHÚN-->
+  
+                                    <figure>
+                                 
+                                        <img [src]="Photo_selected || 'assets/img/no_image.png'" type="file"
+                                            id="imagen_formulario2" style="max-width: 115px; margin-left: 110px;">
+                                      
+                                                <!--Boton para remover la imagen seleccionada-->
+                                  <a class="btn_1 gray delete" (click)="clear_image_field()" style="font-size:x-small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
+                                    class="fa fa-fw fa-remove"></i></a>    
+                                    
+                                    </figure>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4" >
+
+
+                              <div class="form-group" style="align-content: center ;">
+                              
+                                    <input (change)="capturarFile($event)" type="file"  class="btn_1 gray approve"
+                                        [(ngModel)]="gallery_element.src_image" name="category_image" style=" margin-left: 10% ">
+                                </div>
+
+                                <!--Photo_selected es la variable que indica si se ha seleccionado una imagen
+                                para subir a la galería, -->
+                                <div class="modal-footer" *ngIf="( Photo_selected != null) ">
+                                    <button  class="btn btn-primary btn-block" [disabled]="loading" style="max-width: 80% ; align-content: center; margin-right: 10%;">
+                                        {{(loading) ? 'Cargando ...' : 'Subir imagen'}}
+                                    </button>
+                                </div>
+
+                                <div class="modal-footer" *ngIf="( Photo_selected == null) ">
+                                    <button  class="btn btn-primary btn-block" [disabled]="true" style="max-width: 80% ; align-content: center; margin-right: 10%;">
+                                        {{'Subir imagen'}}
+                                    </button>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </form>
+                    <p></p>
+
+
+                      <!-- Images pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of imagespaging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_image_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getGallery(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_image_index_page)" class="page-link"
+                            (click)="getGallery(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /Images pagination-->
+
+
+
+                    <ul id="lista_fotos1" class="basic-gallery text-center" style="padding-left: 0rem;">
+
+                        <div class="row">
+
+
+                            <div class="col-md-2" *ngFor="let galle of gallery"
+                                style="margin-right: 5px; margin-left: 10px;">
+                                <div class="form-group">
+
+                                    <!--MANDAMOS EL id de la imagen que se va a eliminar-->
+                                    <a class="btn_1 gray delete" (click)="map_gallery_element(galle)"
+                                        style="font-size:x-large; color:rgb(157, 187, 194); padding: 3px 2px"><i
+                                            class="fa fa-fw fa-times-circle-o"></i></a>
+
+
+
+                                    <!--manda la imagen de la galería y tambien el el parametro galle.src para que en la funcion get_src_image 
+                                            se sepa que se quiere mostrar la imagen en el formulario -->
+                                    <a class="btn_1 gray approve" (click)="get_src_image(galle.src_image)"><i
+                                            class="fa fa-fw fa-check-circle-o"></i>
+                                        <figure data-dismiss="modal"><img [src]="API_URI + galle.src_image"
+                                                style="max-width: 115px;"></figure>
+                                    </a>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </ul>
+
+
+                    <!-- Images pagination-->
+                    <nav aria-label="...">
+                        <ul class="pagination pagination-sm add_bottom_30">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                            </li>
+                            <li *ngFor="let paging of imagespaging_array, let cont = index " class="page-item">
+                                <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+                                Y SE PRESENTA-->
+                                <a *ngIf="( paging.init == global_image_index_page)"
+                                    style="background-color: rgb(196, 230, 228);" class="page-link"
+                                    (click)="getGallery(paging.init)">{{cont+1}}</a>
+                                <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+                                 DEFECTO Y SE PRESENTA-->
+                                <a *ngIf="( paging.init != global_image_index_page)" class="page-link"
+                                    (click)="getGallery(paging.init)">{{cont+1}}</a>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link" href="#">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- /Images pagination-->
+
+
+
+                </div>
+            </div>
+        </div>

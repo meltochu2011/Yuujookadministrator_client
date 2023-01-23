@@ -1,0 +1,129 @@
+<!-- /Navigation-->
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" style="margin-left: 25px;">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Ordenes Internas</li>
+        </ol>
+
+
+
+        <div class="box_general padding_bottom">
+
+          <!--GIF PARA LA CARGA DE DATOS, SE MUESTRA MIENTRAS SE CARGAN LOS DATOS EN EL CONSTRUCTOR-->
+          
+          <div  *ngIf="loading_gif == true" style="text-align: center;">
+            <img  src=  "assets/img/loading.gif" id="imagen_formulario2"
+                style="max-width: 100px; position:absolute; margin-left: -50px; " >                           
+        </div>
+          
+
+            <!--categories pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getOrders_count(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                            (click)="getOrders_count(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--/ categories pagination-->
+
+
+            <!--CATEGORIAS------------------se muestra el listado de las categorias que existen-->
+            <div class="box_general">
+
+                     
+                           
+                            <a class="btn_1 gray" (click)="conectarsocketintern()"  
+                            ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden interna</a>
+
+                            <a class="btn_1 gray" (click)="conectarsocket()"  
+                            ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden externa</a>
+                            
+
+
+                            <div class="list_general" *ngFor="let order of order_info, let cont = index">
+                                <ul>
+                                    <li *ngIf="(order.order_state == 'Completado')" style="background-color: rgb(241, 245, 249);">
+                                        
+                                        <span style="color: rgb(160, 74, 74);">  <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(118, 144, 163);  width: 50px ">  {{order.order_state}}</i>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> &nbsp;&nbsp;&nbsp;&nbsp; {{order.order_time}} </span>
+                                        <figure><img src="assets/statics_img/order_list_image.png" alt=""></figure>
+                                        <h4>{{order.person_name}} {{order.person_second_name}} 
+                                            <!--
+                                            <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(99, 140, 171); ">  {{order.order_state}}</i>
+                                            --> 
+                                        </h4>
+                                        <p> <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"># Mesa: {{order.table_number}} &nbsp;&nbsp;&nbsp;&nbsp; </label>  <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; "> # orden: {{order.code}} </label>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}} </p>
+                                    </li>
+
+                                     
+                                    <li *ngIf="(order.order_state == 'En espera' || order.order_state == 'Procesando')" >
+                                        <span style="color: rgb(160, 74, 74);">  <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> &nbsp;&nbsp;&nbsp;&nbsp;{{order.order_time}} </span>
+                                        <figure><img src="assets/statics_img/order_list_image.png" alt=""></figure>
+                                        <h4>{{order.person_name}} {{order.person_second_name}} 
+                                            <!--
+                                            <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{order.order_state}}</i>
+                                            <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{order.order_state}}</i>
+                                            --> 
+                                        </h4>
+                                            <p> <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"># Mesa: {{order.table_number}} &nbsp;&nbsp;&nbsp;&nbsp; </label> <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"># orden: {{order.code}} &nbsp;&nbsp;&nbsp;&nbsp; </label>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}}</p>
+                                    </li>
+
+            
+                                </ul>
+                                 
+                                
+                            </div>
+                        
+                        
+
+            </div>
+
+
+            <!-- pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30" >
+                    <li class="page-item disabled">
+                        <a class="page-link"  tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getOrders_count(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                            (click)="getOrders_count(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" >Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /pagination-->
+        </div>
+
+    </div>
+    <!-- /.container-fluid-->
+</div>
+<!-- /.container-wrapper-->
+

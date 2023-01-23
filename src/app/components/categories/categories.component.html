@@ -1,0 +1,308 @@
+<!-- /Navigation-->
+<div class="content-wrapper" >
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" style="margin-left: 25px;">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Categorías</li>
+        </ol>
+
+
+
+        <div class="box_general padding_bottom" >
+
+
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <a class="btn_1 gray approve" (click)="new_category_clean()" data-target="#modal_nueva_cat"
+                        data-toggle="modal"><i class="fa fa-fw fa-check-circle-o"></i> Nueva categoría</a>
+                </div>
+            </div>
+
+        
+                 <!--GIF PARA LA CARGA DE DATOS, SE MUESTRA MIENTRAS SE CARGAN LOS DATOS EN EL CONSTRUCTOR-->
+          
+                 <div  *ngIf="loading_gif == true" style="text-align: center; ">
+                    <img  src=  "assets/img/loading.gif" id="imagen_formulario2"
+                        style="max-width: 100px; position:absolute; margin-left: -50px; " >                           
+                </div>
+
+
+            <!--categories pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getCategories(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                            (click)="getCategories(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+                   
+             
+
+            </nav>
+            <!--/ categories pagination-->
+
+            
+            
+            
+           
+
+
+            <!-- _____________________________________________NUEVA CATEGORÍA________________________________________________________________________ 
+__________________________________________________________________________________________________________________________________________________________-->
+
+            <!-- Edit Booking Modal -->
+            <div class="modal fade" id="modal_nueva_cat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+                aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style=" width: 100%;">
+                        <form>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="edit_bookingLabel">Nueva categoría</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+
+                                <div class="form-group">
+                                    <label>Nombre de la categoría</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Ingrese el nombre de la categoría" [(ngModel)]="category_ins.name"
+                                        name="name" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label>Descripcion</label>
+                                    <input type="text" class="form-control" placeholder="Ingrese la descripción"
+                                        [(ngModel)]="category_ins.description" name="description">
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="form-group">
+                                        <label>Imagen de categoría</label>
+                                    </div>
+
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <a  class="btn_1 gray approve" data-toggle="modal"
+                                                data-target="#gallery_modal"><i class="fa fa-fw fa-check-circle-o"></i>
+                                                Galería</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <figure><img src=  "{{(data$ | async)?.location}}"
+                                                    id="imagen_formulario" style="max-width: 150px;">
+                                                    &nbsp;
+
+                                                    <a class="btn_1 gray delete" (click)="assign_no_image();" style="font-size:x-small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
+                                                        class="fa fa-fw fa-remove"></i></a> 
+                                                </figure>
+
+                                                     
+                                        </div>
+                                    </div>
+                                
+                                   
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <!--<a class="btn btn-primary" href="#0" (click)="saveCategory()" data-dismiss="modal" >Guardar Categoría</a>-->
+                                <button class="btn btn-primary" aria-hidden="true" (click)="saveCategory()"
+                                    data-dismiss="modal">Guardar Categoría</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- _____________________________________________EDITAR CATEGORIA________________________________________________________________________ 
+__________________________________________________________________________________________________________________________________________________________-->
+
+            <!-- Modal para editar categoria -->
+            <div class="modal fade" id="modal_edit_cat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+                aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style=" width: 100%;">
+
+                        <form action="" style="margin-left: 15px; margin-right: 15px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="edit_bookingLabel">Editar categoría</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre de la categoría</label>
+                                <input type="text" class="form-control" placeholder="Ingrese el nombre de la categoría"
+                                    [(ngModel)]="category_ins.name" name="name_category" autofocus style="color:black">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripcion</label>
+                                <input type="text" class="form-control" placeholder="Ingrese la descripción"
+                                    [(ngModel)]="category_ins.description" name="description_category"
+                                    style="color:black">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <a href="#0" class="btn_1 gray approve" data-toggle="modal"
+                                            data-target="#gallery_modal"><i class="fa fa-fw fa-check-circle-o"></i>
+                                            Galería</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <figure><img src=  "{{(data$ | async)?.location}}"
+                                                id="imagen_formulario2" style="max-width: 150px;">
+                                                &nbsp;  
+                                                <a class="btn_1 gray delete" (click)="assign_no_image();" style="font-size:x-small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
+                                                    class="fa fa-fw fa-remove"></i></a> 
+                                            
+                                            </figure>   
+                                        <!-- <figure><img src ="assets/img/item_2.jpg" id="imagen_formulario"></figure> -->
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-primary" href="#0" data-dismiss="modal"
+                                    (click)="editCategory()">Guardar cambios</a>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!--CATEGORIAS------------------se muestra el listado de las categorias que existen-->
+            <div class="box_general">
+
+
+
+                <!--
+                        así es como se acomoda el contador  en caso de que querramos usarlo, con cont = index se inicializa
+                       <div class="list_general" *ngFor="let categ of category, let cont = index">
+                             aqui hay un ejemplo de su uso
+
+                           <figure><img [src]="API_URI+categ.image" id="imagen_formulario{{cont +1}}" ></figure>}
+                           <h4>{{categ.name}} {{cont +1}}</h4>
+                    -->
+
+                <!--LLENAMOS EL LISTADO DE CATEGORÍAS
+                        el contador no se esta utilizando, osea let cont= index -->
+                <div class="list_general"  *ngFor="let categ of category, let cont = index">
+                    <ul>
+                        <li>
+                            <figure><img [src]="API_URI+categ.image" id="imagen_formulario"></figure>
+                            <h4>{{categ.name}} </h4>
+                            <ul class="booking_list">
+                                <ul class="booking_list">
+
+                                    <li style="min-height:21px;">{{categ.description}}</li>
+                                </ul>
+                            </ul>
+
+                            <ul class="buttons">
+
+                                <li (click)="map_category(categ)"><a class="btn_1 gray delete" data-toggle="modal"
+                                        data-target="#modal_edit_cat"><i class="fa fa-fw fa-pencil"></i> Editar</a></li>
+                                <li><a class="btn_1 gray delete" (click)="map_category(categ)" data-toggle="modal"
+                                        data-target="#modal_confi_delete"><i class="fa fa-fw fa-times-circle-o"></i>
+                                        Eliminar</a></li>
+                            </ul>
+
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- pagination-->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm add_bottom_30">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+            Y SE PRESENTA-->
+                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                            class="page-link" (click)="getCategories(paging.init)">{{cont+1}}</a>
+                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+            DEFECTO Y SE PRESENTA-->
+                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                            (click)="getCategories(paging.init)">{{cont+1}}</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /pagination-->
+        </div>
+
+    </div>
+    <!-- /.container-fluid-->
+</div>
+
+
+
+<!-- MODAL PARA CONFIRMAR QUE SE QUIERE ELIMINAR LA CATEGORÍA EN CUESTION-->
+<div name="name_category" class="modal fade" id="modal_confi_delete" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar categoría?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Seguro quiere eliminar la categoría?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <!--(onclick)="deleteCategory(name_category)"-->
+                <a class="btn btn-primary" href="#0" data-dismiss="modal" (click)="deleteCategory()">Confirmar</a>
+            </div>
+        </div>
+    </div>
+</div>
