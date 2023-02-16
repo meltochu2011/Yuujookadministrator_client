@@ -33,8 +33,7 @@
       var campo = document.getElementById(formChild);
 
       if (campo.value == '') {
-       
-       
+              
         campo.style.borderColor="red";        
 
       }
@@ -75,7 +74,13 @@ function Global_group(formChild) {
   
   global=formChild;
 
-  myFunction_modal(formChild);
+  var campo = document.getElementById(formChild);
+  var descri = document.getElementById('description');
+  
+  if(document.getElementById(formChild) != "")
+  {
+    myFunction_modal(formChild);
+  }
 
 }
 
@@ -105,6 +110,8 @@ function myFunction_modal(formChild) {
 
 
       /**VALIDAR PRIMER CAMPO */
+
+   
   var campo = document.getElementById(formChild);
   var descri = document.getElementById('description');
    

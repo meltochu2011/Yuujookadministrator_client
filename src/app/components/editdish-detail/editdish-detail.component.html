@@ -9,8 +9,16 @@
             <li class="breadcrumb-item active">Editar platillo</li>
         </ol>
 
+         <!--SI NO HAY RESULTADOS SE MUESTRA EL SIGUIENTE PARRAFO-->
+         <p *ngIf="( no_results == true)" style="color: rgb(88, 74, 126); font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: larger;">
+            NO FUE POSIBLE OBTENER RESULTADOS, INTENTE VOLVIENDO A "PLATILLOS"!
+        </p>
+             
 
-        <div class="box_general padding_bottom">
+            <!--SI EL no_results se mantiene en falso-->
+        <div class="box_general padding_bottom" *ngIf="( no_results == false)">
+
+                
 
         <div class="box_general padding_bottom" *ngFor="let dish of dish_data">  
 
@@ -110,7 +118,7 @@
 
 
 
-            <div class="box_general padding_bottom">
+            <div class="box_general padding_bottom"  >
                 <div class="header_box version_2">
                     <h2><i class="fa fa-fw fa-list"></i> Características</h2>
                 </div>
@@ -264,26 +272,12 @@
 
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <!--<div class="form-group">
-                                            <a class="delete" (click)="remove_group(formChild)"
-                                                style="cursor: pointer "><i class="fa fa-fw fa-remove"></i></a>
-                                        </div>-->
+                                     
                                     </div>
 
 
 
                                     <div class="col-md-5">
-
-                                        <!--<label>Items seleccionables</label>
-
-                                        <div class="form-group">
-
-                                            <!--(keyup)="verify_index_items(formChild)"-->
-                                            <!--<input type="number" class="form-control" id="max_selected{{formChild}}"
-                                                onkeyup="myFunction_maxselected(id)" (keyup)="verify_sons_items()" placeholder="Numero seleccionable"
-                                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                formControlName="max_selected" >
-                                        </div>-->
 
                                         <div class="form-group">
                                             <a class="btn_1 gray add-pricing-list-item" data-toggle="modal"
@@ -394,7 +388,7 @@
 
         <!-- Modal para editar el detalle del grupo seleccionado MODAL DE EDICION-->
 
-        <div class="modal fade" id="modal_edit_cat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+        <div class="modal fade" id="modal_edit_cat" *ngIf="(groupitems_indicator == 1)" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
             aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content" style=" width: 100%;">
@@ -413,7 +407,7 @@
                         <div class="form-group">
 
                             <input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                [(ngModel)]="group.name" id="description" (keyup)="verify_sons_items()" onkeyup="valid_description()">
+                                [(ngModel)]="group.name" id="description" (keyup)="verify_sons_items()" onkeyup="valid_description()" style="height: 27px;">
                         </div>
                     </div>
 
@@ -423,14 +417,15 @@
 
                             <input type="number" class="form-control" placeholder="Numero seleccionable"
                                 onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                [(ngModel)]="group.max_selected" id="max_sele" (keyup)="verify_sons_items()" onkeyup="valid_maxselected()" style="width: 80%;" >
-                                
-                        </div>
+                                [(ngModel)]="group.max_selected" id="max_sele" (keyup)="verify_sons_items()" onkeyup="valid_maxselected()" style="height: 27px;" >
                        
+                           
+                        </div>
                     </div>
-
+                    <hr style="width: 90%; border-color: gray;"> 
+                       
                               
-                        <hr style="border-color: gray;">         
+                                
 
 
                     <div class="col-md-10" style="margin-left: 20px;">
@@ -478,7 +473,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Nombre de la guarnicion" formControlName="tag" style="max-width: 90% ;">
+                                                    placeholder="Nombre de la guarnicion" formControlName="tag" style="height: 25px;">
 
                                             </div>
                                         </div>
@@ -489,7 +484,7 @@
 
                                                 <input type="number" class="form-control" placeholder="Precio"
                                                     onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                    formControlName="price" style="max-width: 80% ;">
+                                                    formControlName="price" style="height: 25px;">
                                             </div>
                                         </div>
 
@@ -548,7 +543,7 @@
 __________________________________________________________________________________________________________________________________________________________-->
 
         <!-- Modal para editar categoria -->
-        <div class="modal fade" id="modalcat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+        <div class="modal fade" id="modalcat"  tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content" style=" width: 100%;">
@@ -594,18 +589,6 @@ ________________________________________________________________________________
                                             </div>
 
 
-
-
-
-                                            <!--<div *ngFor="let sele of selected_list; let j = index" >
-                                                <mat-list-option  [value]="sele" >
-                                                    <p>
-                                                        <img [src]="API_URI+sele.image" id="imagen_formulario"
-                                                            style="max-width: 30px;">&nbsp;&nbsp;
-                                                        {{sele.name}}
-                                                    </p>
-                                                     </mat-list-option>
-                                            </div>-->
 
 
                                         </mat-selection-list>

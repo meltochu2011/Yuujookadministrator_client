@@ -214,7 +214,10 @@ ________________________________________________________________________________
             <!--CATEGORIAS------------------se muestra el listado de las categorias que existen-->
             <div class="box_general">
 
-
+                <!--SI NO HAY RESULTADOS SE MUESTRA EL SIGUIENTE PARRAFO-->
+                <p *ngIf="( no_results == true)" style="color: rgb(88, 74, 126); font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: larger;">
+                    NO FUE POSIBLE OBTENER RESULTADOS, INTENTE MAS TARDE!
+                </p>
 
                 <!--
                         así es como se acomoda el contador  en caso de que querramos usarlo, con cont = index se inicializa
@@ -227,7 +230,11 @@ ________________________________________________________________________________
 
                 <!--LLENAMOS EL LISTADO DE CATEGORÍAS
                         el contador no se esta utilizando, osea let cont= index -->
-                <div class="list_general"  *ngFor="let categ of category, let cont = index">
+                        
+                
+                        <div class="list_general"  *ngFor="let categ of category, let cont = index">
+                            
+                   
                     <ul>
                         <li>
                             <figure><img [src]="API_URI+categ.image" id="imagen_formulario"></figure>

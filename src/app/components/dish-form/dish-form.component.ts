@@ -333,8 +333,7 @@ normal_alert(elemento : String){
     initFormParent(): void {
         this.formParent= new FormGroup({
           group_item_options: new FormArray([]),
-          dinamicos: new FormArray([])
-          
+          dinamicos: new FormArray([])          
         })        
 
     }
@@ -379,7 +378,7 @@ normal_alert(elemento : String){
       return new FormGroup(
           {            
             name: new FormControl('',[Validators.required]),
-            max_selected: new FormControl('',[Validators.required]),
+            max_selected: new FormControl('1',[Validators.required]),
             /*VARIABLE PARA INDICAR SI HAY ELEMENTOS HIJOS PARE EL ELEMNTO PADRE, TANTO EL ELEMNTO PADRE COMO EL ELEMENTO HIJO SON SIMBOLICOS
              PUES LOS DOS FORMS SON HIJOS SOLO QUE POR LA ESTRUCTURA, UN ARRAY REPRESENTA A LOS GRUPOS Y EL OTRO A LOS ITEMS DE LOS GRUPOS 
             */
@@ -431,13 +430,10 @@ normal_alert(elemento : String){
        */
        this.cont_group_elements=0;
        
-       
-       
        /*
        CADA VEZ QUE SE ELIMINA UN ITEM O ELEMENTO DEL GRUPO SE REVISA SI TIENE O NO TIENE HIJOS EL PADRE, EN CASO DE QUE SEA CERO
        SE MARCA SIN HIJOS EL CAMPO has_sons DEL GRUPO Y POR LO TANTO VA A LANZAR EXCEPCION A AL HORA DE GUARDAR
        */
-
 
        for (let i = 0; i <this.formParent.value.dinamicos.length; i++)
        {
@@ -517,11 +513,11 @@ normal_alert(elemento : String){
   varia : BehaviorSubject<Component_dat> | any;
 
   Save_newdish(){    
+
+    console.log(this.formParent);
  
     /**ASIGNAMOS LA IMAGEN ACTUAL EN LA VARIABLE DE ENTORNO DE IMAGEN */
-    this.dish_register.image=environment.Dish_image;
-    
-    
+    this.dish_register.image = environment.Dish_image;
   
     //console.log(this.dish_register.image);
 
@@ -618,6 +614,16 @@ normal_alert(elemento : String){
 
   }
 
+  error_incomplete_groupitems()
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Por favor...',
+      text: 'Ingrese una descripcion y un numero maximo seleccionable!',
+      footer: '<a >Complete los campos que se le piden</a>'
+    })            
+
+  }
 
      remove_group(index : number){
       console.log(index);
@@ -708,21 +714,33 @@ normal_alert(elemento : String){
     group_value_maxselected : string='';
 
     Items_indicator : number = 0;
+     
+    groupitems_indicator : number = 0;
 
      Present_Child(formChild : number){
-      this.Global_child=formChild;
-      
-
-      /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
-      AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
-      ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
-
        
+        if(this.formParent.value.group_item_options[formChild].name == "" || this.formParent.value.group_item_options[formChild].max_selected == ""
+        || this.formParent.value.group_item_options[formChild].name == null || this.formParent.value.group_item_options[formChild].max_selected == null)
+        {
+          this.groupitems_indicator = 0;
+          this.error_incomplete_groupitems()
+        }
+     
+        if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
+        && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)
+        {
+          this.groupitems_indicator = 1;
+          this.Global_child=formChild;
+          /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
+          AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
+          ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
+    
+            this.group.name=this.formParent.value.group_item_options[formChild].name;
+            this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;   
+            this.verify_sons_of_group(formChild);
+        }
 
-      this.group.name=this.formParent.value.group_item_options[formChild].name;
-      this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;
-       
-      this.verify_sons_of_group(formChild);
+
      }
 
 
@@ -749,14 +767,11 @@ normal_alert(elemento : String){
       AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
       ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
       
-
-      this.formParent.value.group_item_options[this.Global_child].name=this.group.name;
+      this.formParent.value.group_item_options[this.Global_child].name=this.group.name
       this.formParent.value.group_item_options[this.Global_child].max_selected=this.group.max_selected;
       
      }
 
-     
-     
 
      saving_dish(dish : Dish_register)
     {

@@ -4,13 +4,16 @@
 
 export const environment = {
   production: false,
+  //API_URI: 'https://yuujookadministrator-production.up.railway.app/',
   API_URI: 'http://localhost:4000/',
+  
   id_product_toedit: 0,
 
   /**VARIABLES PARA LA GALERÍA */
   Dish_image : "",
   Socket_state : 0,
-  
+  User_state : 1,
+ 
 };
 
 /*

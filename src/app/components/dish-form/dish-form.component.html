@@ -219,12 +219,7 @@
                                                 (keyup)="verify_sons_items()" style="border-block-color: red; border-left-color: red; border-right-color: red; ">
                                         </div>
 
-                                        <div class="form-group">
-                                            <a class="btn_1 gray add-pricing-list-item" data-toggle="modal"
-                                                id="{{formChild}}"  (click)="Present_Child(formChild)"
-                                                onclick="Global_group(id)" data-target="#modal_edit_cat"><i
-                                                    class="fa fa-fw fa-plus-circle" ></i>Items del grupo</a>
-                                        </div>
+                                        
                                     </div>
 
 
@@ -241,10 +236,33 @@
                                             <input type="number" class="form-control" id="max_selected{{formChild}}"
                                             onkeyup="Specific_group_validation(id)" (keyup)="verify_sons_items()" placeholder="Numero seleccionable"
                                                 onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                formControlName="max_selected"
-                                                style="border-block-color: red; border-left-color: red; border-right-color: red; ">
+                                                formControlName="max_selected" >
 
                                         </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                      
+                                        </div>   
+                                    </div>
+
+                                    <div class="col-md-5">
+
+
+                                        <div class="form-group" >
+                                            <a class="btn_1 gray add-pricing-list-item" data-toggle="modal"
+                                                id="{{formChild}}"  (click)="Present_Child(formChild)"
+                                                onclick="Global_group(id)" data-target="#modal_edit_cat"><i
+                                                    class="fa fa-fw fa-plus-circle" ></i>Items del grupo</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+
 
                                        
                                         <div class="form-group">
@@ -277,10 +295,11 @@
 
                                     </div>
 
+                                </div>
 
 
                                     <hr style="width: 90%; margin-left: 20px; border-color: gray;">
-                                 </div>
+                                 
 
 
 
@@ -330,7 +349,7 @@
 
         <!-- Modal para editar el detalle del grupo seleccionado MODAL DE EDICION-->
 
-        <div class="modal fade" id="modal_edit_cat" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+        <div class="modal fade" id="modal_edit_cat" *ngIf="(groupitems_indicator == 1)" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
             aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content" style=" width: 100%;">
@@ -349,7 +368,7 @@
                         <div class="form-group">
 
                             <input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                [(ngModel)]="group.name" id="description" onkeyup="valid_description()" >
+                                [(ngModel)]="group.name" id="description" onkeyup="valid_description()" style="height: 27px;">
                         </div>
                     </div>
 
@@ -359,16 +378,14 @@
 
                             <input type="number" class="form-control" placeholder="Numero seleccionable"
                                 onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                [(ngModel)]="group.max_selected" id="max_sele" onkeyup="valid_maxselected()">
-                            <hr style="width: 90%; margin-left: 20px;">
+                                [(ngModel)]="group.max_selected" id="max_sele" onkeyup="valid_maxselected()" style="height: 27px;">
+                                
+                                
                         </div>
+                        
                     </div>
-
-
-
-
-
-
+                    <hr style="width: 90%; border-color: gray;"> 
+                       
 
                     <div class="col-md-10">
                         <div class="form-group">
@@ -419,7 +436,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Nombre de la guarnicion" formControlName="tag">
+                                                    placeholder="Nombre de la guarnicion" formControlName="tag"
+                                                    style="height: 25px;">
 
                                             </div>
                                         </div>
@@ -432,12 +450,13 @@
 
                                                 <input type="number" class="form-control" placeholder="Precio"
                                                     onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                    formControlName="price">
+                                                    formControlName="price" style="height: 25px;">
                                             </div>
-
+                                               
                                             
                                         </div>
-
+                                    
+                                        <hr style="width: 90%; border-color: gray;"> 
 
                                     </div>
 

@@ -1,0 +1,17 @@
+.fb_button{
+   
+    background-color: #3b5998;
+    color: aliceblue;
+    border-radius: 0.4em;
+    height: 35px;
+    
+    
+}
+
+.goo_button{
+    background-color: rgb(199,22,16); 
+    color: aliceblue;
+    border-radius: 0.4em; 
+    height: 35px;
+    
+}

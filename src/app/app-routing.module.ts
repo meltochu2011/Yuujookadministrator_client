@@ -7,6 +7,7 @@ import {OrdersListComponent} from './components/orders-list/orders-list.componen
 import {DishFormComponent} from './components/dish-form/dish-form.component';
 import {CategoriesComponent} from './components/categories/categories.component';
 import { EditdishDetailComponent } from './components/editdish-detail/editdish-detail.component';
+import { LoginuserComponent } from './components/loginuser/loginuser.component';
 
 
 
@@ -15,14 +16,19 @@ import { EditdishDetailComponent } from './components/editdish-detail/editdish-d
 const routes: Routes = [
    {
     path:'',
-    //redirectTo: '/categories',
-    redirectTo: '/categories',
-    
+    redirectTo: '/users/add',
+    //redirectTo: '/users/add', 
     pathMatch:'full'
     
    } ,
 
    /*Yuujook */
+
+   {
+    path: 'users/add',
+    component:LoginuserComponent
+
+   },
 
    {
     //LLAMAR A LAS CATEGORÍAS

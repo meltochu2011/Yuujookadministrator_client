@@ -1,16 +1,23 @@
 <!--MOSTRAR EL COMPONENTE DE NAVEGACION, LLAMA AL HTML DEL COMPONENTE DE NAVEGACION-->
-    <app-navigation></app-navigation>
+
+<div *ngIf="( logueado == 0)"> 
+
+    <app-loginuser style="background-color: rgb(173, 107, 26);"></app-loginuser>  
+</div>
+
+
+<div *ngIf="( logueado == 1)"> 
+<app-navigation></app-navigation>
 
 <div class="container p-4">
 
+    
     <router-outlet></router-outlet>
    
     <app-modals></app-modals>
     
-
-       
     <!--LLAMAMOS AL FOOTER, QUE ESTA EN EL COMPONENTE footer-comp-->
     <app-footer-comp></app-footer-comp>
 
 </div>
-
+</div>

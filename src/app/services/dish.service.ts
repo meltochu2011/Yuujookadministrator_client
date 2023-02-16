@@ -154,7 +154,6 @@ deleteGalleryElement( element: Gallery_element){
     return this.http.post(environment.API_URI+'dishes/add',dish);
      
   }
-
   
 
   /**SERVICIOS PARA ORDENES 

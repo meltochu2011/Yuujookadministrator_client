@@ -96,13 +96,14 @@ export class OrdersListComponent implements OnInit {
     //this.order_alert();
    }
 
-
+   no_results : boolean = false;
   getOrders_count(index_begining: number)
   {
     /**PONER EL CURSOR EN MODO ESPERA */
     document.body.style.cursor = 'wait';
     this.loading_gif=true;
     this.global_index_page=index_begining;
+    this.no_results = false;
     //cantidad = this.global_category_count[0].count;
     //cantidad = this.global_category_count[0].count;*/
     //console.log("dato "+this.cantidad);
@@ -115,7 +116,12 @@ export class OrdersListComponent implements OnInit {
         this.loading_gif=false;  
         document.body.style.cursor = 'default';      
       },
-      err=> console.error(err)
+      err=> {
+        
+        this.no_results=true,
+        this.loading_gif=false,
+        document.body.style.cursor = 'default'
+        } 
     );
   }
 

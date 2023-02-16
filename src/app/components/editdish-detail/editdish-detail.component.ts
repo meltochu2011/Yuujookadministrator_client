@@ -52,12 +52,26 @@ export class EditdishDetailComponent implements OnInit {
 
 
    /**INICIALIZAMOS LA IMAGEN EN EL MODELO PARA QUE NO TENGA NINGUNA AL INICIO */
+      if(environment.id_product_toedit > 0)
+      {
+        this.initial_loading();
+      }
+
+      if(environment.id_product_toedit == 0)
+      {
+        this.no_results= true;
+      }
+      
+  }
+
+
+   
+  initial_loading(){
     this.get_product_detail(environment.id_product_toedit);
     this.getGroup_items(environment.id_product_toedit);
 
     this.getCategories();
     this.getSelected_categories(environment.id_product_toedit);
-    
   }
 
   add_groups(par_name:string, par_max_selected : number): void{
@@ -198,7 +212,7 @@ export class EditdishDetailComponent implements OnInit {
     public file: any| File;
     
     
-    public loading : any|boolean;
+    //public loading : any|boolean;
     public loading_button_edit : any|boolean;
     
 
@@ -209,7 +223,7 @@ export class EditdishDetailComponent implements OnInit {
        /**FUNCION PARA CARGAR LOS GRUPOS E ITEMS A EDITAR DURANTE LA CARGA DE DATOS
         * SE RECORRE EL ARRAY EN FORMA ANIDADA PUES SON ARRAYS DENTRO DE OTRO ARRAY*/    
      
-         this.loading=true;
+         //this.loading=true;
        this.dishService.get_products_items(id_product).subscribe(
         res=> {
   
@@ -237,8 +251,7 @@ export class EditdishDetailComponent implements OnInit {
 
           this.dish_register_temporal.group_list=this.formParent.value.group_item_options;
           this.dish_register_temporal.sons_list=this.formParent.value.dinamicos;
-          console.log(this.dish_register_temporal.group_list);
-          console.log(this.dish_register_temporal.sons_list);    
+          
                   
         },
         err=> console.error(err)
@@ -308,13 +321,14 @@ export class EditdishDetailComponent implements OnInit {
     }
   
     loading_gif : boolean= false;
-
+    no_results : boolean = false;
   getCategories()
   {
       
 
     document.body.style.cursor = 'wait';
     this.loading_gif=true;
+    this.no_results= false;
     /**VACIAMOS EL ARRAY CATEGORY ANTES DE ASIGNARLE LOS VALORES, PORQUE GENERABA ERROR */
     //this.category=[];
     this.dishService.getCategories().subscribe(
@@ -326,7 +340,12 @@ export class EditdishDetailComponent implements OnInit {
         this.loading_gif=false;  
           
       },
-      err=> console.error(err)
+       err=> {
+        
+        this.no_results=true,
+        this.loading_gif=false,
+        document.body.style.cursor = 'default'
+        } 
     );
     
    
@@ -364,7 +383,7 @@ export class EditdishDetailComponent implements OnInit {
   
     /*ASIGNAMOS LA IMAGEN SELECIONADA DEL MODELO QUE ES LO QUE SE GUARDARÁ, el observable no se guarda
      unicamente sirve para mostrar*/
-    this.dish_register.image="/assets/img/no_image.png";
+     environment.Dish_image="uploads/no_image.png";
      
     /**CAMBIAMOS EL VALOR DEL OBSERVABLE PARA QUE TAMBIEN ACTUALICE SU VALOR DE IMAGEN
      */
@@ -456,7 +475,7 @@ limpiar_campos_imagen()
   {
 
     //dejamos la imagen por defecto par cuando no hay imagen seleccionada
-    this.Photo_selected=environment.API_URI+'uploads/no_image.png';
+    this.Photo_selected=environment.API_URI+"uploads/no_image.png";
    
   }
 
@@ -571,7 +590,7 @@ normal_alert(elemento : String){
       return new FormGroup(
           {            
             name: new FormControl('',[Validators.required]),
-            max_selected: new FormControl('',[Validators.required]),
+            max_selected: new FormControl('1',[Validators.required]),
             /*VARIABLE PARA INDICAR SI HAY ELEMENTOS HIJOS PARE EL ELEMNTO PADRE, TANTO EL ELEMNTO PADRE COMO EL ELEMENTO HIJO SON SIMBOLICOS
              PUES LOS DOS FORMS SON HIJOS SOLO QUE POR LA ESTRUCTURA, UN ARRAY REPRESENTA A LOS GRUPOS Y EL OTRO A LOS ITEMS DE LOS GRUPOS 
             */
@@ -833,6 +852,16 @@ normal_alert(elemento : String){
 
   }
 
+  error_incomplete_groupitems()
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Por favor...',
+      text: 'Ingrese una descripcion y un numero maximo seleccionable!',
+      footer: '<a >Complete los campos que se le piden</a>'
+    })            
+
+  } 
 
      remove_group(index : number){
   
@@ -931,18 +960,32 @@ normal_alert(elemento : String){
 
      Items_indicator : number = 0;
 
+     groupitems_indicator : number = 0;
      Present_Child(formChild : number){
-      this.Global_child=formChild;
+     
+      if(this.formParent.value.group_item_options[formChild].name == "" || this.formParent.value.group_item_options[formChild].max_selected == ""
+        || this.formParent.value.group_item_options[formChild].name == null || this.formParent.value.group_item_options[formChild].max_selected == null)
+        {
+          this.groupitems_indicator = 0;  
+          this.error_incomplete_groupitems()
+        }
+
+     
+        if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
+        && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)
+        {  
+          this.groupitems_indicator = 1;
+         this.Global_child=formChild;
   
-      /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
-      AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
-      ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
+         /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
+         AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
+         ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
 
-      this.group.name=this.formParent.value.group_item_options[formChild].name;
-      this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;
+         this.group.name=this.formParent.value.group_item_options[formChild].name;
+         this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;
       
-      this.verify_sons_of_group(formChild);
-
+         this.verify_sons_of_group(formChild);
+       }
      }
 
      verify_sons_of_group(formChild : number){

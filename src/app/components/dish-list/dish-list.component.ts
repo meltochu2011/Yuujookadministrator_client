@@ -126,8 +126,9 @@ IMAGE_DIRECTORY_EDIT: string = "";
    constante=0;
    LIST_DIREC: string ="";
 
-
-   
+    
+   /**variable para indicar si hay o no resultados de consulta */
+   no_results : boolean = false;
   getProducts_pagecount(index_begining: number)
   {
         /**PONER EL CURSOR EN MODO ESPERA */
@@ -135,6 +136,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
     
 
     this.loading_gif=true;
+    this.no_results = false;
     this.global_index_page=index_begining;
     
     this.dishService.getProducts(''+index_begining).subscribe(
@@ -149,7 +151,12 @@ IMAGE_DIRECTORY_EDIT: string = "";
             /**PONER EL CURSOR EN MODO ESPERA */
              document.body.style.cursor = 'default';     
       },
-      err=> console.error(err)
+      err=> {
+        //alert("hola"+err);
+        this.no_results=true,
+        this.loading_gif=false,
+        document.body.style.cursor = 'default'
+        } 
     );
   }
 

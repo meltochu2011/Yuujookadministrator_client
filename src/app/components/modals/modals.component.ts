@@ -37,16 +37,33 @@ export class ModalsComponent implements OnInit {
   global_images_quantity=0;
 
   global_image_index_page=0;
-  Gallery_limit : number = 60;
+  Gallery_limit : number = 80;
 
   uploadPhotogallery(){
-   
-    /*FUNCION PARA SUBIR UNA IMAGEN A LA GALERÍA*/         
-   
+    /*FUNCION PARA SUBIR UNA IMAGEN A LA GALERÍA*/            
+
+    if(this.Total_images >= this.Gallery_limit)
+      {
+    //this.Total_images = this.Total_images+1;  
+    Swal.fire({
+      icon: 'error',
+      title: 'Limite de galería',
+      text: 'Se ha llegado al limite en la galleria!',
+      footer: '<a >El limite son 80 imagenes</a>'
+    })            
+
+     }
+      /*if(this.Total_images > this.Gallery_limit)
+      {
+           alert("Se ha rebasado el limite");
+           this.Total_images= this.Total_images - 1;
+      }*/
+    
+
      /**PASAMOS el global_image_index_page en valor 0, DE ESE MODO MUESTRA LA PRIMERA
       * PAGINACION Y EL ULTIMO ELEMENTO 
        */
-     if(this.file!=null || this.file!='' && this.Total_images < this.Gallery_limit)
+     if((this.file!=null || this.file!='') && this.Total_images < this.Gallery_limit)
     {
     
        /**PONER EL CURSOR EN MODO ESPERA */
@@ -60,7 +77,7 @@ export class ModalsComponent implements OnInit {
        res =>{
         
          this.getimages_quantity();
-         this.getGallery(this.global_image_index_page);
+         this.getGallery(0);
          this.reset_fileinput(); 
          
          
@@ -74,7 +91,10 @@ export class ModalsComponent implements OnInit {
           document.body.style.cursor = 'default';
           
        },
-       err => console.log(err)
+
+         err => this.error_inserting(err)
+         
+       //err => console.log(err)
        )
          
       /* this.loading=false;  
@@ -165,7 +185,7 @@ this.dishService.getimagesquantity().subscribe(
 
      
     this.array_images_count=res;     
-    this.Total_images =this.array_images_count;
+    this.Total_images =this.array_images_count[0].count;
     //**--------__________________________ */
     let suma_constante=0;
     let residuo=this.array_images_count[0].count; 
@@ -249,6 +269,17 @@ this.gallery_element_mapeo.useful = element.useful;
 this.alerta_confirmacion();
 
 }
+
+error_inserting(res : String )
+{
+  Swal.fire({
+    icon: 'error',
+    title: 'Falla al guardar',
+    text: 'Verifique: '+res,
+    footer: '<a >Notifique la falla</a>'
+  })            
+}
+
 
 alerta_confirmacion()  {
   Swal.fire({

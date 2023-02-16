@@ -9,7 +9,7 @@ import { DishService } from './services/dish.service';
 import {HttpClientModule} from '@angular/common/http'
 import { DishFormComponent } from './components/dish-form/dish-form.component';
 import { DishListComponent } from './components/dish-list/dish-list.component';
-import { FormsModule, Validators } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 
 import { CategoriesComponent } from './components/categories/categories.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +24,7 @@ import { FooterCompComponent } from './components/footer-comp/footer-comp.compon
 import { ModalsComponent } from './components/modals/modals.component';
 import { CoreModule} from './core/core.module';
 import { EditdishDetailComponent } from './components/editdish-detail/editdish-detail.component';
+import { LoginuserComponent } from './components/loginuser/loginuser.component';
 
 
 
@@ -38,13 +39,15 @@ import { EditdishDetailComponent } from './components/editdish-detail/editdish-d
     CcompartidoComponent,
     FooterCompComponent,
     ModalsComponent,
-    EditdishDetailComponent
+    EditdishDetailComponent,
+    LoginuserComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+  
     BrowserAnimationsModule,
     MatListModule,
     ReactiveFormsModule,

@@ -49,6 +49,11 @@
             <!--CATEGORIAS------------------se muestra el listado de las categorias que existen-->
             <div class="box_general">
 
+
+                <!--SI NO HAY RESULTADOS SE MUESTRA EL SIGUIENTE PARRAFO-->
+                <p *ngIf="( no_results == true)" style="color: rgb(88, 74, 126); font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: larger;">
+                    NO FUE POSIBLE OBTENER RESULTADOS, INTENTE MAS TARDE!
+                </p>
                      
                            
                             <a class="btn_1 gray" (click)="conectarsocketintern()"  

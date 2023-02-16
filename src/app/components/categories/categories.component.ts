@@ -114,13 +114,13 @@ IMAGE_DIRECTORY_EDIT: string = "";
  
    constante=0;
    LIST_DIREC: string ="";
-
+   no_results : boolean = false;
   getCategories(index_begining: number)
   {
         /**PONER EL CURSOR EN MODO ESPERA */
     document.body.style.cursor = 'wait';
     this.loading_gif=true;
-
+    this.no_results = false;
     this.global_index_page=index_begining;
     
     this.dishService.getCategories_pagecount(''+index_begining).subscribe(
@@ -132,7 +132,14 @@ IMAGE_DIRECTORY_EDIT: string = "";
         this.loading_gif=false;    
         document.body.style.cursor = 'default';       
       },
-      err=> console.error(err)
+      //err=> console.error(err)
+       err=> {
+        //alert("hola"+err);
+        this.no_results=true,
+        this.loading_gif=false,
+        document.body.style.cursor = 'default'
+        /*,
+       document.body.style.cursor('default')*/} 
     );
   }
 
