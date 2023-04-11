@@ -68,27 +68,42 @@
                                 <ul>
                                     <li *ngIf="(order.order_state == 'Completado')" style="background-color: rgb(241, 245, 249);">
                                         
-                                        <span style="color: rgb(160, 74, 74);">  <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(118, 144, 163);  width: 50px ">  {{order.order_state}}</i>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> &nbsp;&nbsp;&nbsp;&nbsp; {{order.order_time}} </span>
-                                        <figure><img src="assets/statics_img/order_list_image.png" alt=""></figure>
+                                        <span>
+                                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;&nbsp;             
+                                             
+                                            &nbsp;&nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;&nbsp;&nbsp; {{order.order_time}} 
+                                            <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(118, 144, 163);  width: 50px ">  {{order.order_state}}</i> 
+                                        </span>
+                                        <figure><img src="assets/statics_img/orders_list_delivery.png" alt=""></figure>
                                         <h4>{{order.person_name}} {{order.person_second_name}} 
-                                            <!--
+
+                                             <!--
                                             <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(99, 140, 171); ">  {{order.order_state}}</i>
                                             --> 
                                         </h4>
-                                        <p> <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"># Mesa: {{order.table_number}} &nbsp;&nbsp;&nbsp;&nbsp; </label>  <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; "> # orden: {{order.code}} </label>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}} </p>
+                                        <p>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}} </p>
                                     </li>
 
                                      
                                     <li *ngIf="(order.order_state == 'En espera' || order.order_state == 'Procesando')" >
-                                        <span style="color: rgb(160, 74, 74);">  <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> &nbsp;&nbsp;&nbsp;&nbsp;{{order.order_time}} </span>
-                                        <figure><img src="assets/statics_img/order_list_image.png" alt=""></figure>
-                                        <h4>{{order.person_name}} {{order.person_second_name}} 
+                                        <span > 
+                                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                             
+                                             &nbsp;&nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;&nbsp;&nbsp;  {{order.order_time}} 
+                                             <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
+                                             <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
+                                            </span>
+                                        <figure><img src="assets/statics_img/orders_list_delivery.png" alt=""></figure>
+                                        <h4>
+                                            
+                                            {{order.person_name}} {{order.person_second_name}} 
+                                            
                                             <!--
                                             <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{order.order_state}}</i>
                                             <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{order.order_state}}</i>
                                             --> 
                                         </h4>
-                                            <p> <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"># Mesa: {{order.table_number}} &nbsp;&nbsp;&nbsp;&nbsp; </label> <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"># orden: {{order.code}} &nbsp;&nbsp;&nbsp;&nbsp; </label>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}}</p>
+                                            <p>  <a class='btn_1 gray' data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail">  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}}</p>
                                     </li>
 
             
@@ -132,3 +147,155 @@
 </div>
 <!-- /.container-wrapper-->
 
+
+
+ <!--Modal para mostrar galería, GALERÍA DE IMAGENES-->
+ <div class="modal inverse-wrapper modal-transparent move-from-top" id="order_modaldetail" tabindex="-1" role="dialog"
+ data-backdrop="static" style="margin-left: 5px;" >
+ <div class="modal-dialog modal-lg" role="document">
+     <div class="modal-content">
+
+         <div class="modal-header">
+             <div style="margin-left: auto;">
+                 <h2>Detalle de orden</h2>
+             </div>
+
+             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">×</span>
+             </button>
+         </div>
+
+
+        
+            <!--
+             <div class="row">
+
+
+                 <div class="col-md-2" 
+                     style="margin-right: 5px; margin-left: 10px;">
+                     <div class="form-group">
+
+                        
+
+
+
+                     </div>
+
+
+                 </div>
+
+             </div>-->
+
+             <div class="col-md-8">
+                <div class="form-group">
+
+             <div class="list_general" *ngFor="let order of order_info, let cont = index" >
+               
+                
+                    
+                    <h4>{{order.person_name}} {{order.person_second_name}} 
+
+                        <!--
+                       <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(99, 140, 171); ">  {{order.order_state}}</i>
+                       --> 
+                   </h4> 
+
+                    
+                        <span *ngIf="(order.order_state == 'En espera' || order.order_state == 'Procesando')"> 
+
+
+                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;
+                           
+                            
+                             &nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;  {{order.order_time}} 
+                             <label for="">Estado </label>
+                             <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
+                             <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
+                            </span>
+                        <figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style=" width:50px"></figure>
+                        
+                            <p>Nota: {{order.tag}}</p>
+                   
+
+            </div>
+       
+        </div>
+       </div>
+         
+
+
+     </div>
+ </div>
+</div>
+
+
+            <!-- _____________________________________________MODAL PARA DETALLE DE ORDEN________________________________________________________________________ 
+__________________________________________________________________________________________________________________________________________________________-->
+
+            <!-- Modal para editar platillo -->
+            <div class="modal fade" id="modal_order_detail" tabindex="-1" role="dialog" aria-labelledby="edit_bookingLabel"
+                aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style=" width: 100%;">
+
+                        
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit_bookingLabel">DETALLE DE ORDEN</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+                        <div  *ngIf="loading_modaldetail_gif == true" style="text-align: center;">
+                            <img  src=  "assets/img/loading.gif" id="imagen_formulario"
+                                style="max-width: 100px; position:absolute; margin-left: -50px; " >                           
+                        </div>
+                        
+            
+                         <div class="list_general" *ngFor="let order of order_detail_info, let cont = index" >
+                           
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                
+                                     <h4><label> Cliente:</label> {{order.person_name}} {{order.person_second_name}}  </h4> 
+            
+                                
+                                    <span *ngIf="(order.order_state == 'En espera' || order.order_state == 'Procesando')"> 
+            
+            
+                                        <label> # orden:</label> {{order.code}}  &nbsp;&nbsp;&nbsp;
+                                       
+                                        
+                                         <label>Fecha: </label> {{order.date_spanishformat}} &nbsp;&nbsp;&nbsp; <label>Hora:</label> {{order.order_time}} 
+                                    </span>
+                                 </div>                   
+                            </div>               
+                                     
+                           
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    
+                                         <label for="">Estado </label>
+                                         <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
+                                         <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
+                                    
+                                         <!--<figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style=" width:50px"></figure>-->
+                                    
+                                    &nbsp;&nbsp;&nbsp;&nbsp; <p>Nota: {{order.tag}}</p>
+                                    
+                                </div>                   
+                            </div>
+                        
+                   </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+   

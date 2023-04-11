@@ -17,7 +17,6 @@ export class WebSocketService extends Socket{
       url:'http://localhost:4000',
       options:{
         query:{
-
           nameRoom: '"campo ejemplo de socket"',
         }
 
@@ -31,15 +30,22 @@ export class WebSocketService extends Socket{
 
    listen =() => {
     /**ESCUCHAMOS LOS EVENTOS */
-    this.ioSocket.on('event', (res: any) => this.callback.emit(res));
+    this.ioSocket.on('event', (res: any) => this.callback.emit(res));          
+  }
+
+  emitEvent = (order_type ={}) =>{
+    /**EMITIMOS UN EVENTO */
+    this.ioSocket.emit('event',order_type);
     
   }
 
-  emitEvent = (payload ={}) =>{
-    /**EMITIMOS UN EVENTO */
-    this.ioSocket.emit('event',payload);
-  }
 
+  emitDataEvent = (data ={}) =>{
+    
+    /**EMITIMOS UN EVENTO */
+  this.ioSocket.emit('dataevent',data);
+   
+  }
 
   delivery_order_alert(){
     // assets/img/no_image.png

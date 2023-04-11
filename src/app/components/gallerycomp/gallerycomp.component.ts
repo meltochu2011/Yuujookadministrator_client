@@ -11,11 +11,12 @@ import { Observable } from 'rxjs';
 import { ReadVarExpr } from '@angular/compiler';
 
 @Component({
-  selector: 'app-modals',
-  templateUrl: './modals.component.html',
-  styleUrls: ['./modals.component.css']
+  selector: 'app-gallerycomp',
+  templateUrl: './gallerycomp.component.html',
+  styleUrls: ['./gallerycomp.component.css']
 })
-export class ModalsComponent implements OnInit {
+export class GallerycompComponent implements OnInit {
+
   data$: Observable <Component_dat>;
 
   constructor(private dishService: DishService, private sharingservice : SharingService) { 
@@ -346,7 +347,6 @@ document.body.style.cursor = 'wait';
   this.Photo_selected=environment.API_URI+'uploads/no_image.png';
  
 }*/
-
 
 
 }

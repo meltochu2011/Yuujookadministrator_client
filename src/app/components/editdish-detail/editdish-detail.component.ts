@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import {WebSocketService} from '../../services/web-socket.service';
 import {SharingService,Component_dat} from '../../services/sharing.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import {CookieService} from 'ngx-cookie-service';
 
 
 
@@ -29,7 +30,7 @@ export class EditdishDetailComponent implements OnInit {
   public formParent: FormGroup = new FormGroup({});
  
 
-  constructor(private dishService: DishService, private router: Router, private activedRoute: ActivatedRoute,private fb : FormBuilder, private sharingservice : SharingService , private websocketservice : WebSocketService) { 
+  constructor(private dishService: DishService, private router: Router, private activedRoute: ActivatedRoute,private fb : FormBuilder, private sharingservice : SharingService , private websocketservice : WebSocketService, private cookiesvc : CookieService) { 
    
      /**los datos del obserbable son para mostrar en la aplicacion y los datos de dish_register.image son 
      * los que se guardan
@@ -46,18 +47,24 @@ export class EditdishDetailComponent implements OnInit {
 
   }
 
+
+  id_prod : number = 0;
+
   ngOnInit () {
 
    this.initFormParent();
 
+       this.id_prod = parseInt(this.cookiesvc.get('productid'));
 
    /**INICIALIZAMOS LA IMAGEN EN EL MODELO PARA QUE NO TENGA NINGUNA AL INICIO */
-      if(environment.id_product_toedit > 0)
+      if( this.id_prod > 0)
       {
+       
         this.initial_loading();
+      
       }
 
-      if(environment.id_product_toedit == 0)
+      if(this.id_prod == 0)
       {
         this.no_results= true;
       }
@@ -67,11 +74,11 @@ export class EditdishDetailComponent implements OnInit {
 
    
   initial_loading(){
-    this.get_product_detail(environment.id_product_toedit);
-    this.getGroup_items(environment.id_product_toedit);
+    this.get_product_detail(this.id_prod);
+    this.getGroup_items(this.id_prod);
 
     this.getCategories();
-    this.getSelected_categories(environment.id_product_toedit);
+    this.getSelected_categories(this.id_prod);
   }
 
   add_groups(par_name:string, par_max_selected : number): void{
@@ -313,7 +320,7 @@ export class EditdishDetailComponent implements OnInit {
                } 
               
               this.onNgModelChange(event)
-              this.getSelected_categories(environment.id_product_toedit)
+              this.getSelected_categories(this.id_prod)
           
               
               this.cont++;

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CcompartidoComponent } from './ccompartido.component';
+import { OrderdetailModalComponent } from './orderdetail-modal.component';
 
-describe('CcompartidoComponent', () => {
-  let component: CcompartidoComponent;
-  let fixture: ComponentFixture<CcompartidoComponent>;
+describe('OrderdetailModalComponent', () => {
+  let component: OrderdetailModalComponent;
+  let fixture: ComponentFixture<OrderdetailModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CcompartidoComponent ]
+      declarations: [ OrderdetailModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CcompartidoComponent);
+    fixture = TestBed.createComponent(OrderdetailModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

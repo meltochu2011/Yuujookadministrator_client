@@ -18,13 +18,14 @@ import { ReactiveFormsModule} from '@angular/forms';
 
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { OrdersListComponent } from './components/orders-list/orders-list.component';
-import { CcompartidoComponent } from './components/ccompartido/ccompartido.component';
-
 import { FooterCompComponent } from './components/footer-comp/footer-comp.component';
-import { ModalsComponent } from './components/modals/modals.component';
+
 import { CoreModule} from './core/core.module';
 import { EditdishDetailComponent } from './components/editdish-detail/editdish-detail.component';
 import { LoginuserComponent } from './components/loginuser/loginuser.component';
+import { CookieService } from 'ngx-cookie-service';
+import { GallerycompComponent } from './components/gallerycomp/gallerycomp.component';
+import { OrderdetailModalComponent } from './components/orderdetail-modal/orderdetail-modal.component';
 
 
 
@@ -35,12 +36,13 @@ import { LoginuserComponent } from './components/loginuser/loginuser.component';
     DishFormComponent,  
     DishListComponent, 
     CategoriesComponent,
-    OrdersListComponent,
-    CcompartidoComponent,
+    OrdersListComponent,   
     FooterCompComponent,
-    ModalsComponent,
+    //GalleryModalComponent,
     EditdishDetailComponent,
-    LoginuserComponent
+    LoginuserComponent,
+    GallerycompComponent,
+    OrderdetailModalComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,7 @@ import { LoginuserComponent } from './components/loginuser/loginuser.component';
     MatSlideToggleModule,
     CoreModule
   ],
-  providers: [DishService],
+  providers: [DishService,CookieService],
   bootstrap: [AppComponent]
 })
 

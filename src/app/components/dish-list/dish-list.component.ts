@@ -23,7 +23,7 @@ import {WebSocketService} from '../../services/web-socket.service';
 
 import {SharingService,Component_dat} from '../../services/sharing.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-
+import {CookieService} from 'ngx-cookie-service';
 
 
 
@@ -61,7 +61,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
  selectedOptions =[];
 
  data$: Observable <Component_dat>;
-  constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private http: HttpClient, private websocketservice : WebSocketService , private sharingservice : SharingService) { 
+  constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private http: HttpClient, private websocketservice : WebSocketService , private sharingservice : SharingService, private cookiesvc : CookieService) { 
 
         /**los datos del obserbable son para mostrar en la aplicacion y los datos de dish_register.image son 
      * los que se guardan
@@ -76,17 +76,16 @@ IMAGE_DIRECTORY_EDIT: string = "";
 
    this.Socket_config();    
 
-  }
+     }
 
 
   ngOnInit(): void {
 
-
-    this.products_quantity_initial();
-   
-    this.getProducts_pagecount(0);  
+    this.getCategories();
+    this.clasify_filter();
+    this.verify_previusandnextpage(environment.filter_var);
+    this.Selected_option= environment.filter_var;
     
-    //console.log(this.dish_info);
     
   }
   
@@ -119,22 +118,78 @@ IMAGE_DIRECTORY_EDIT: string = "";
     has_image:0
   };
 
-  
-  
 
- 
-   constante=0;
-   LIST_DIREC: string ="";
-
+  nextpage_state : boolean = false;
+  previus_state = false;
+  
+  selectbypage( index_page : number, element_position : number){
+   
+     this.global_index_page= index_page;
     
+    if( environment.filter_var == -1 )
+    {
+     
+      environment.pagevalue = element_position;
+     
+      this.getProducts_pagecount(index_page);
+    }
+
+    if( environment.filter_var >= 1 )
+    {
+     
+      environment.pagevalue = element_position;
+      /**recibe el id de la categoría seleccionada */
+      
+      this.filterby_category(environment.filter_var);
+    }
+
+  }
+
+
+  verify_previusandnextpage(element_position : number){
+
+    if(this.paging_array.length == 1 ){
+      this.nextpage_state = false;
+      this.previus_state = false;
+  }
+
+  if(this.paging_array.length > element_position ){
+    
+    this.nextpage_state = true;
+   
+  }
+
+  if(this.paging_array.length == element_position ){
+    
+    this.nextpage_state = false;
+
+  }
+
+  if( element_position > 1){
+    
+    this.previus_state = true;            
+  }
+
+  if( element_position == 1){
+    
+    this.previus_state = false;  
+          
+  }
+  
+  }
+
+
+   constante=0;
+   LIST_DIREC: string ="";    
    /**variable para indicar si hay o no resultados de consulta */
    no_results : boolean = false;
   getProducts_pagecount(index_begining: number)
   {
+       
         /**PONER EL CURSOR EN MODO ESPERA */
         document.body.style.cursor = 'wait';
     
-
+    this.loading_categories_combo = true; 
     this.loading_gif=true;
     this.no_results = false;
     this.global_index_page=index_begining;
@@ -149,15 +204,20 @@ IMAGE_DIRECTORY_EDIT: string = "";
         this.loading_gif=false;   
 
             /**PONER EL CURSOR EN MODO ESPERA */
-             document.body.style.cursor = 'default';     
+             document.body.style.cursor = 'default';    
+             this.verify_previusandnextpage(environment.pagevalue);
+             this.loading_categories_combo = false; 
       },
       err=> {
         //alert("hola"+err);
         this.no_results=true,
         this.loading_gif=false,
+        this.loading_categories_combo = false; 
         document.body.style.cursor = 'default'
         } 
     );
+
+       
   }
 
   global_index_page=0;
@@ -221,6 +281,169 @@ IMAGE_DIRECTORY_EDIT: string = "";
   );
 
 }
+
+
+getproductsquantity_onfilter(id_category : number){
+    
+  /**LIMPIAMOS EL ARRAY QUE SE TIENE DESDE UN INICIO PARA PAGINACION*/
+  this.paging_array=[];
+
+  /**PAGINACION QUE SE LLEVA A CABO PARA VER CUANTOS PRODUCTOS EXISTEN,
+   * COMIENZA CON UN CONTEO, LUEGO SE EJECUTA EL ALGORITMO DE PAGINACION
+  */
+  
+  
+this.dishService.getproductsquantity_onfilter(id_category).subscribe(
+  res=> {
+
+    this.array_product_count=res;     
+  
+    let suma_constante=0;
+    let residuo=this.array_product_count[0].count; 
+    
+    /** SUMA CONSTANTE TENDRA EL VALOR DE 0*/
+    this.paging_array.push({"init" : suma_constante} );
+
+    while(residuo > 0)
+    {
+        /** RESIDUO INICIALMENTE TIENE LA MISMA MAGNITUD QUE LA CANTIDAD DE PRODUCTOS, LUEGO SE VA RESTANDO POCO A POCO
+         * HASTA LLEGAR A 0, ESO CON EL FIN DE DETERMINAR EL NUMERO DE PAGINAS (programacion recursiva)*/   
+        if(residuo > 10 )
+        {
+          /**SI residuo es mayor que 10 quiere decir que hay mas de 10 y por lo tanto se va llenando un array con la
+           * variable "suma_constante" que va aumentando de 10 en 10, la primera vez que lo hace tiene un valor de 10, luego,
+           * si residuo sigue siendo mayor que 10 "suma_constante" vale 20, a la siguiente 30 y así sucesivamente.
+          */
+           suma_constante=suma_constante+10;
+           this.global_sumatory=suma_constante;
+         
+           this.paging_array.push({"init" : suma_constante} );
+           residuo=residuo-10;              
+        }
+
+        else if(residuo-10 == 0 || residuo-10 < 10 )
+        {/**SI EL RESIDUO ES IGUAL A 10 O MENOR QUE 10 YA NO ES NECESARIO AGREGAR UNA NUEVA PAGINA, PUES CON 
+        EL VALOR INICIAL QUE SE AGREGA AL INICIO DE LA FUNCION ES SUFICIENTE PARA CUBRIR VALORES QUE VAN DE 1 A 10,
+         UNICAMENTE ES NECESARIO IGUALAR EL RESIDUO A CERO Y ASÍ SE DETENGA EL CICLO  */
+          residuo=0;             
+        }
+        
+    }
+
+  },
+  err=> console.error(err)
+);
+
+}
+
+
+  
+category: any =[];
+getCategories()
+  {
+        /**PONER EL CURSOR EN MODO ESPERA */
+    document.body.style.cursor = 'wait';
+    this.loading_gif=true;
+    this.no_results = false;
+     
+    this.dishService.getCategories().subscribe(
+    
+      res=> {
+
+        this.category=res;  
+      
+        this.loading_gif=false;    
+        document.body.style.cursor = 'default';       
+      },
+      //err=> console.error(err)
+       err=> {
+        //alert("hola"+err);
+        this.no_results=true,
+        this.loading_gif=false,
+        document.body.style.cursor = 'default'
+        /*,
+       document.body.style.cursor('default')*/} 
+    );
+  }
+
+  
+/**Selected_option es una variable de uso ngModel en el Front*/
+Selected_option: number  = 0; 
+//varselection: number     = -1;
+
+capture() {
+  // Pasamos el valor seleccionado a la variable verSeleccion
+  environment.filter_var = this.Selected_option;   
+  this.global_index_page=0;
+  this.clasify_filter();
+}
+
+loading_categories_combo : boolean = false;
+
+clasify_filter(){
+
+  /**Verifica el tipo de busqueda que se realiza.
+   *  1 o mayor a 1 busqueda específica
+   * -1, Todos los productos
+   *  0, productos sin categoría
+  */
+  if(environment.filter_var >= 1){
+
+      
+      environment.pagevalue = 1;
+      /**Recibe el id */
+      this.getproductsquantity_onfilter(environment.filter_var);
+      this.filterby_category(environment.filter_var);
+    
+   }
+
+   
+  if(environment.filter_var == -1){
+    this.products_quantity_initial();
+    this.getProducts_pagecount(this.global_index_page);   
+  }
+
+   
+}
+
+filterby_category(idto_filter: number)
+  {
+       
+       
+        /**PONER EL CURSOR EN MODO ESPERA */
+        document.body.style.cursor = 'wait';
+    
+    this.loading_categories_combo = true;
+    this.loading_gif=true;
+    this.no_results = false;
+    //this.global_index_page=index_begining;
+    
+    this.dishService.getProducts_byfilter(''+idto_filter,''+this.global_index_page).subscribe(
+    
+      res=> {
+
+       // console.log(res);
+        this.dish_info=res;     
+
+        this.loading_gif=false;   
+
+            /**PONER EL CURSOR EN MODO ESPERA */
+              document.body.style.cursor = 'default';    
+              this.verify_previusandnextpage(environment.pagevalue); 
+              this.loading_categories_combo = false;
+ 
+      },
+      err=> {
+        //alert("hola"+err);
+        this.loading_categories_combo = false;
+        this.no_results=true,
+        this.loading_gif=false,
+        document.body.style.cursor = 'default'
+        } 
+    );
+  }
+
+
   
 
   value_toggle : boolean  = true;
@@ -254,8 +477,8 @@ IMAGE_DIRECTORY_EDIT: string = "";
 
   Product_to_edit(id_product : number){
     
-      environment.id_product_toedit=id_product;
-
+      //environment.id_product_toedit=id_product;
+      this.cookiesvc.set('productid',''+id_product);
   }
 
 
@@ -328,14 +551,16 @@ IMAGE_DIRECTORY_EDIT: string = "";
        if(environment.Dish_image!="uploads/no_image.png")
        {
         
+        //alert(environment.Dish_image);
         this.dish_ins.image=environment.Dish_image;
         this.dish_ins.has_image=1;                 
        }
 
        if(environment.Dish_image=="uploads/no_image.png")
        {
-        
+       
         this.dish_ins.image="uploads/no_image.png";
+        //alert(this.dish_ins.image);
         this.dish_ins.has_image=0;                 
        }
        
@@ -344,7 +569,20 @@ IMAGE_DIRECTORY_EDIT: string = "";
          
 
           this.limpiar_campos();
-          this.getProducts_pagecount(this.global_index_page);
+          
+          if(environment.filter_var >= 1){
+            environment.pagevalue = 1;
+            /**Recibe el id */
+            this.filterby_category(environment.filter_var);
+         }
+      
+         
+        if(environment.filter_var == -1){         
+          this.getProducts_pagecount(this.global_index_page);   
+        }
+
+
+          //this.getProducts_pagecount(this.global_index_page);
           this.Save_product_changes_alert(res);
           this.loading_gif=false;
         },
@@ -399,10 +637,12 @@ IMAGE_DIRECTORY_EDIT: string = "";
     this.dish_ins.id_product=product.id_product;
     this.dish_ins.name=product.name;
     this.dish_ins.description=product.description;  
-    this.dish_ins.price=product.price; 
-    this.dish_ins.image=product.image;  
+    this.dish_ins.price=product.price;
+     
+    this.dish_ins.image=product.image; 
+    environment.Dish_image = ""+this.dish_ins.image; 
     this.sharingservice.SharingObservableData =  {location : environment.API_URI+product.image}
-    //alert(product.image);
+    //alert(this.dish_ins.image);
     //this.sharingservice.SharingObservableData =  {location : "/assets/img/no_image.png"}  
     this.dish_ins.is_enable=product.is_enable;
     
@@ -422,12 +662,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
     this.estado_imagen='edit';
   }
 
-
-
 dish_image: string = "";
-
-
-
 
 alerta_elemento_eliminado(elemento : String){
   

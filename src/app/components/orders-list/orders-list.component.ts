@@ -21,14 +21,14 @@ import { Dish_ins } from 'src/app/models/Dish_ins';
 
 import { Dish_edit_register } from 'src/app/models/Dish_edit_register';
 import { Dish_edit } from 'src/app/models/Dish_edit';
+import {EditdishDetailComponent} from 'src/app/components/editdish-detail/editdish-detail.component';
+import { OrderdetailModalComponent } from '../orderdetail-modal/orderdetail-modal.component';
 
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.css']
 })
-
-
 
 
 export class OrdersListComponent implements OnInit {
@@ -49,6 +49,7 @@ export class OrdersListComponent implements OnInit {
   constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private http: HttpClient,private websocketservice : WebSocketService) { 
     
     this.Socket_config();
+    //this.getOrders_count(0); 
 
   }
 
@@ -59,6 +60,7 @@ export class OrdersListComponent implements OnInit {
     
   }
 
+  
 
   /*ESTRUCTURA PARA REALIZAR TAREAS TEMPORALES QUE REQUIEREN ALGUNOS CAMBIOS SOBRE LA ESTRUCTURA DE categori_ins*/ 
   category_temporal: Category =
@@ -85,10 +87,65 @@ export class OrdersListComponent implements OnInit {
 
     
 
+   example : any =
+   {
+      "customer_name": "David",
+      "customer_last_name": "Web",
+      "phone": "52969999",
+      "address": "Zona 24",
+      "has_whatsapp": true,
+      "total": 75,
+      "products": [
+          {
+              "id_product": 10,
+              "amount": 4,
+              "sub_total": 80,
+              "add_ons": [
+                  {
+                      "tag": "Ensalada de lechuga",
+                      "price":0.0
+                  }
+              ]
+          },
+          {
+              "id_product": 5,
+              "amount": 5,
+              "sub_total": 50,
+              "add_ons": [
+        
+              ]
+          },
+          {
+              "id_product": 7,
+              "amount": 5,
+              "sub_total": 100,
+              "add_ons": [
+                  {
+                      "tag": "Salsa dulce",
+                      "price": 0.0
+                  },
+                  {
+                      "tag": "Salsa picamas",
+                      "price": 0.0
+                  }
+              ]
+          }
+      ]
+  }
+; 
+
+
  
+  orderdetail_id : number = 0; 
+  asign_orderid(orderdetail_id : number){    
+    environment.orderdetail_id = orderdetail_id;  
+    this.orderdetail_id = orderdetail_id;
+    //this.orderdetailcomponent.getOrder_detail(orderdetail_id);
+  }
+
   conectarsocket(){
-    this.websocketservice.emitEvent("delivery");
-   
+    //this.websocketservice.emitEvent("delivery");
+      this.websocketservice.emitDataEvent(this.example);
    }
 
    conectarsocketintern(){
@@ -99,6 +156,7 @@ export class OrdersListComponent implements OnInit {
    no_results : boolean = false;
   getOrders_count(index_begining: number)
   {
+       
     /**PONER EL CURSOR EN MODO ESPERA */
     document.body.style.cursor = 'wait';
     this.loading_gif=true;
@@ -111,7 +169,7 @@ export class OrdersListComponent implements OnInit {
     
       res=> {
 
-       // console.log(res);
+       
         this.order_info=res;     
         this.loading_gif=false;  
         document.body.style.cursor = 'default';      
@@ -124,6 +182,7 @@ export class OrdersListComponent implements OnInit {
         } 
     );
   }
+
 
   global_index_page=0;
   global_quantity=0;
@@ -294,7 +353,11 @@ export class OrdersListComponent implements OnInit {
            if(res=="delivery")
           {
            //this.delivery_order_alert(); 
+           this.getOrders_count(0);
            this.websocketservice.delivery_order_alert();
+          
+           
+           
           }
   
           if(res=="intern")
@@ -309,6 +372,41 @@ export class OrdersListComponent implements OnInit {
       }
 
     }
+
+
+    order_detail_info: any =[];
+  /**Para cambiar la forma del cursor mientras se carga algo*/
+ public loading_modaldetail_gif : any|boolean;
+  getOrder_detail_modal(orderdetail_id: number)
+  {
+     
+  
+    /**PONER EL CURSOR EN MODO ESPERA */
+    document.body.style.cursor = 'wait';
+    this.loading_modaldetail_gif=true;
+    //this.global_index_page=index_begining;
+    this.no_results = false;
+    //cantidad = this.global_category_count[0].count;
+    //cantidad = this.global_category_count[0].count;*/
+    //console.log("dato "+this.cantidad);
+    this.dishService.get_order_detail(orderdetail_id).subscribe(
+     
+      res=> { 
+        this.order_detail_info=res;     
+        this.loading_modaldetail_gif=false;  
+        document.body.style.cursor = 'default';      
+      },
+      err=> {
+        
+        this.no_results=true,
+        this.loading_modaldetail_gif=false,
+        document.body.style.cursor = 'default'
+        } 
+    );
+  }
+
+
+
 
 
   /*extraerBase64 = async ($event : any) => new Promise((resolve, reject) =>{

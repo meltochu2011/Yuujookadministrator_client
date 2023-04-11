@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Category} from '../models/Category'
-
 import { Dish_register } from '../models/Dish_register';
-
 import { Gallery_element } from '../models/Gallery_element';
 import {environment} from 'src/environments/environment';
+
 
 
 
@@ -23,6 +22,7 @@ getCategories(){
   
   return this.http.get(environment.API_URI+'categories');
 }  
+
 
  
 getSelected_categories(id_product: number){
@@ -49,6 +49,12 @@ getProducts(prod_count :string){
   return this.http.get(environment.API_URI+'getproducts/'+prod_count);
 }
 
+/**OBTENER PRODUCTOS, CON EL PARAMETRO prod_count SE LE INDICA DONDE EMPIEZA LA PAGINACION */
+getProducts_byfilter( category_id :string, counter : string){
+
+  
+  return this.http.get(environment.API_URI+'getproductsbyfilter/'+category_id+'/'+counter);
+}
 
 /**OBTENER PRODUCTO, CON EL ID ESPECÍFICO */
 getProduct_detail(id_product : number){
@@ -72,7 +78,12 @@ getcategoriesquantity(){
 getimagesquantity(){
   /**VERIFICA LA CANTIDAD DE IMAGENES QUE HAY EN LA TABLA */
   return this.http.get(environment.API_URI+'getimagesquantity');
-} 
+}
+
+getproductsquantity_onfilter(id_category : number){
+ 
+  return this.http.get(environment.API_URI+'getproductsquantity_byfilter/'+id_category);
+}
 
 /**Selecciona el array que contiene los grupos y los items de un platillo específico */
 get_products_items(id_product : number){
@@ -119,13 +130,13 @@ editProduct_quickly(product : Dish_register)
    
 }
 
-editProduct_quickly2(product : Dish_register)
+/*editProduct_quickly2(product : Dish_register)
 {
   
   //alert("esto "+category.id_category+" "+category.name+" "+category.description+" "+category.image+" "+category.has_image); 
   return this.http.put(environment.API_URI+'product_quickly/'+product.id_product,product);  
    
-}
+}*/
 edit_dish(product: Dish_register){
   /*console.log("esta llegando a dish.service "+product.id_product);
   console.log(environment.API_URI);*/
@@ -160,11 +171,16 @@ deleteGalleryElement( element: Gallery_element){
    * ____________________________________________________________________
    * __________________________________________________________________________
   */
-
+ 
   /**OBTENER PRODUCTOS, CON EL PARAMETRO prod_count SE LE INDICA DONDE EMPIEZA LA PAGINACION */
 getOrders_count(order_count :string){
   
   return this.http.get(environment.API_URI+'getcounted_orders/'+order_count);
+}
+ 
+get_order_detail(orderdetail_id : number){
+
+  return this.http.get(environment.API_URI+'getorder_detail/'+orderdetail_id);
 }
  
 

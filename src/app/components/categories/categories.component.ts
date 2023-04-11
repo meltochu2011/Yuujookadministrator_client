@@ -16,7 +16,6 @@ import {environment} from 'src/environments/environment';
 import { delay } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ThisReceiver } from '@angular/compiler';
-import {CcompartidoComponent as compartido } from 'src/app/components/ccompartido/ccompartido.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 
