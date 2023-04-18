@@ -11,10 +11,12 @@ export class WebSocketService extends Socket{
   
   outEven : EventEmitter <any> = new EventEmitter();
   callback : EventEmitter <any> = new EventEmitter();
+  orderresponse : EventEmitter <any> = new EventEmitter();
 
   constructor() {
     super({
-      url:'http://localhost:4000',
+      //url:'http://localhost:4000',
+      url:'nuevo-production.up.railway.app',
       options:{
         query:{
           nameRoom: '"campo ejemplo de socket"',
@@ -30,22 +32,29 @@ export class WebSocketService extends Socket{
 
    listen =() => {
     /**ESCUCHAMOS LOS EVENTOS */
-    this.ioSocket.on('event', (res: any) => this.callback.emit(res));          
+    this.ioSocket.on('event', (res: any) => this.callback.emit(res)); 
+    this.ioSocket.on('unicast', (res: any) => this.orderresponse.emit(res));        
   }
+
+  /*isten_unicast =() => {
+    /**ESCUCHAMOS LOS EVENTOS */
+    /*this.ioSocket.on('event', (res: any) => this.callback.emit(res));          
+  }*/
 
   emitEvent = (order_type ={}) =>{
     /**EMITIMOS UN EVENTO */
     this.ioSocket.emit('event',order_type);
     
-  }
-
-
-  emitDataEvent = (data ={}) =>{
     
-    /**EMITIMOS UN EVENTO */
-  this.ioSocket.emit('dataevent',data);
-   
   }
+
+
+  emitDataEvent = (data ={}) =>{    
+    /**EMITIMOS UN EVENTO */
+  this.ioSocket.emit('dataevent',data);   
+  }
+
+ 
 
   delivery_order_alert(){
     // assets/img/no_image.png

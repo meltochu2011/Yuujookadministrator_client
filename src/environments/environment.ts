@@ -6,10 +6,10 @@ export const environment = {
   production: false,
   //My RAILWAY 
    
-  //API_URI: 'https://nuevo-production.up.railway.app/',
-    API_URI: 'http://localhost:4000/',
-  /**COLOCHITO ADRESS */
+  API_URI: 'https://nuevo-production.up.railway.app/',
+    //API_URI: 'http://localhost:4000/',
   
+    
   /**VARIABLES PARA LA GALERÍA */
   Dish_image : "",
   Socket_state : 0,

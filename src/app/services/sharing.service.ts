@@ -32,8 +32,7 @@ export class SharingService {
     }
 
     SharingObservableData_empty(data: Component_dat){
-       
-       
+     
       
      }
 }

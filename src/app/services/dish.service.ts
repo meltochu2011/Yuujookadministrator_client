@@ -183,5 +183,19 @@ get_order_detail(orderdetail_id : number){
   return this.http.get(environment.API_URI+'getorder_detail/'+orderdetail_id);
 }
  
+get_products_order_detail(orderdetail_id : number){
+
+  return this.http.get(environment.API_URI+'getproducts_order_detail/'+orderdetail_id);
+}
+
+get_orderitems_detail(orderdetail_id : number){
+
+  return this.http.get(environment.API_URI+'get_orderitems_detail/'+orderdetail_id);
+}
+
+get_orders_quantity(){
+
+  return this.http.get(environment.API_URI+'get_ordersquantity');
+}
 
 }

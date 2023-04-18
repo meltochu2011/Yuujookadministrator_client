@@ -57,6 +57,7 @@ export class OrdersListComponent implements OnInit {
   ngOnInit(): void {
     
     this.getOrders_count(0);  
+    this.orders_quantity();
     
   }
 
@@ -97,7 +98,7 @@ export class OrdersListComponent implements OnInit {
       "total": 75,
       "products": [
           {
-              "id_product": 10,
+              "id_product": 1,
               "amount": 4,
               "sub_total": 80,
               "add_ons": [
@@ -108,7 +109,7 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 5,
+              "id_product": 1,
               "amount": 5,
               "sub_total": 50,
               "add_ons": [
@@ -116,7 +117,7 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 7,
+              "id_product": 1,
               "amount": 5,
               "sub_total": 100,
               "add_ons": [
@@ -146,6 +147,7 @@ export class OrdersListComponent implements OnInit {
   conectarsocket(){
     //this.websocketservice.emitEvent("delivery");
       this.websocketservice.emitDataEvent(this.example);
+      
    }
 
    conectarsocketintern(){
@@ -188,159 +190,67 @@ export class OrdersListComponent implements OnInit {
   global_quantity=0;
   global_sumatory=0;
   paging_array: any =[];
-  array_product_count: any =[];
+  array_orders_count: any =[];
   initial_index=0;
   final_index=0;
 
-  products_quantity_initial(){
+  orders_quantity(){
 
-      /**PAGINACION QUE SE LLEVA A CABO CUANDO SE ARRANCA EL PROGRAMA POR ESO TIENE QUE REALIZAR UNA CONSULTA 
-       * PARA VER CUANTAS CAGEGORÍAS EXISTEN
-      */
+       /**LIMPIAMOS EL ARRAY QUE SE TIENE DESDE UN INICIO PARA PAGINACION*/
+    this.paging_array=[];
 
-     /**LA PAGINACION LLEVO MUCHO TIEMPO DE PENSAR POR FAVOR NO CAMBIAR EL ALGORITMO JAJAJA */
-        
-    this.dishService.getproductsquantity().subscribe(
-      res=> {
-
-        this.array_product_count=res;     
-      
-
-      
-        let suma_constante=0;
-        let residuo=this.array_product_count[0].count; 
-        /**LA VARIABLE global_quantity ES PARA RECORDAR EL CONTEO INICIAL QUE SE HIZO AL INICIO EN EL CONSTRUCTOR 
-         * YA QUE DESPUES SIRVE EN OTRAS FUNCIONES
-        */
-        this.global_quantity=this.array_product_count[0].count;
+    /**PAGINACION QUE SE LLEVA A CABO PARA VER CUANTOS PRODUCTOS EXISTEN,
+     * COMIENZA CON UN CONTEO, LUEGO SE EJECUTA EL ALGORITMO DE PAGINACION
+    */
     
-        
-        /** SUMA CONSTANTE TENDRA EL VALOR DE 0*/
-        this.paging_array.push({"init" : suma_constante} );
+    
+  this.dishService.get_orders_quantity().subscribe(
+    res=> {
 
-        while(residuo > 0)
-        {
-            /** RESIDUO INICIALMENTE TIENE LA MISMA MAGNITUD QUE LA CANTIDAD DE CATEGORÍAS, LUEGO SE VA RESTANDO POCO A POCO
-             * HASTA LLEGAR A 0, ESO CON EL FIN DE DETERMINAR EL NUMERO DE PAGINAS (programacion recursiva)*/   
-            if(residuo-10 > 10 )
-            {
-           
-              /**SI residuo -10 es mayor que 10 quiere decir que hay mas de 10 y por lo tanto se va llenando un array con la
-               * variable "suma_constante" que va aumentando de 10 en 10, la primera vez que lo hace tiene un valor de 10, luego,
-               * si residuo sigue siendo mayor que 10 "suma_constante" vale 20, a la siguiente 30 y así sucesivamente.
-              */
-               suma_constante=suma_constante+10;
-               this.global_sumatory=suma_constante;
-             
-               this.paging_array.push({"init" : suma_constante} );
-               residuo=residuo-10;              
-            }
-
-            else if( residuo-10 < 10 && residuo-10 > 0 )
-            {
-            
-             
-              /**si residuo-10 es menor que 10 significa que todavía quedan de 1 a 9 y por lo tanto hay que agregar otra paginacion,
-               * por lo tanto se agrega un valor mas de "suma_constante" al array, otro valor multiplo de 10 que es la suma que se
-               * viene ejecutando */               
-              suma_constante=suma_constante+10;
-              this.global_sumatory=suma_constante;
-              this.paging_array.push({"init" : suma_constante} );
-              
-               residuo= residuo-residuo;             
-            }
-            
-             else if(residuo-10 == 10 )
-            {
+      this.array_orders_count=res;     
+    
+      let suma_constante=0;
+      let residuo=this.array_orders_count[0].count; 
       
-              /**SI EL RESIDUO MENOS 10 ES IGUAL A 10 YA NO ES NECESARIO AGREGAR UNA NUEVA PAGINA, PUES CON LAS COMPARACIONES
-            ANTERIORES SE DEJA PREPARADA LA PAGINACION , UNICAMENTE ES NECESARIO RESTARLE LOS 10 PARA QUE PASE A CERO Y SE DETENGA
-            EL CICLO  */
-              residuo=residuo-10;             
-            }
+      /** SUMA CONSTANTE TENDRA EL VALOR DE 0*/
+      this.paging_array.push({"init" : suma_constante} );
+
+      while(residuo > 0)
+      {
+          /** RESIDUO INICIALMENTE TIENE LA MISMA MAGNITUD QUE LA CANTIDAD DE PRODUCTOS, LUEGO SE VA RESTANDO POCO A POCO
+           * HASTA LLEGAR A 0, ESO CON EL FIN DE DETERMINAR EL NUMERO DE PAGINAS (programacion recursiva)*/   
+          if(residuo > 10 )
+          {
+            /**SI residuo es mayor que 10 quiere decir que hay mas de 10 y por lo tanto se va llenando un array con la
+             * variable "suma_constante" que va aumentando de 10 en 10, la primera vez que lo hace tiene un valor de 10, luego,
+             * si residuo sigue siendo mayor que 10 "suma_constante" vale 20, a la siguiente 30 y así sucesivamente.
+            */
+             suma_constante=suma_constante+10;
+             this.global_sumatory=suma_constante;
            
-            else if(residuo-10 == 0 )
-            {
-              
-              /**SI EL RESIDUO MENOS 10 ES IGUAL A 10 YA NO ES NECESARIO AGREGAR UNA NUEVA PAGINA, PUES CON LAS COMPARACIONES
-            ANTERIORES SE DEJA PREPARADA LA PAGINACION , UNICAMENTE ES NECESARIO RESTARLE LOS 10 PARA QUE PASE A CERO Y SE DETENGA
-            EL CICLO  */
-              residuo=residuo-10;             
-            }
-            
-        }
+             this.paging_array.push({"init" : suma_constante} );
+             residuo=residuo-10;              
+          }
 
+          else if(residuo-10 == 0 || residuo-10 < 10 )
+          {/**SI EL RESIDUO ES IGUAL A 10 O MENOR QUE 10 YA NO ES NECESARIO AGREGAR UNA NUEVA PAGINA, PUES CON 
+          EL VALOR INICIAL QUE SE AGREGA AL INICIO DE LA FUNCION ES SUFICIENTE PARA CUBRIR VALORES QUE VAN DE 1 A 10,
+           UNICAMENTE ES NECESARIO IGUALAR EL RESIDUO A CERO Y ASÍ SE DETENGA EL CICLO  */
+            residuo=0;             
+          }
           
+      }
 
-        
-      },
-      err=> console.error(err)
-    );
+    },
+    err=> console.error(err)
+  );
+
 
   }
 
 
-  value_toggle : boolean  = true;
-  value_toggle2 = false;
-  opcion1= true;
-  
-   
-  
-  getproducts_quantity(){
-
-    /**PAGINACION QUE SE LLEVA A CABO CUANDO YA SE TIENE EL CONTEO INICIAL Y SE TIENE UN NUEVO ELEMENTO
-     * ES POR ESO QUE SE LLAMA UNICAMENTE CUANDO SE AGREGA UNA NUEVA CATEGORÍA
-    */
-       
-
-      let residuo=0; 
-      let nueva_suma;
-    
-      /**global_sumatory contiene la cantidad de 10 en 10 que se mantiene en la paginación y global_quantity
-       * tiene la canntidad de elementos disponibles en las categorías
-      */
-      
-      residuo=this.global_quantity-this.global_sumatory
-      
  
-
-     
-          if(residuo > 10 )
-          {
-    
-             this.global_sumatory=this.global_sumatory+10;
  
-             this.paging_array.push({"init" : this.global_sumatory} );
-             //residuo=residuo-10;
-   
-             this.getOrders_count(this.global_index_page);
-            
-          }
-
-          else if(residuo < 10 )
-          {
-      
-             this.getOrders_count(this.global_index_page);            
-          }
-
-          else if(residuo == 10 )
-          {
-   
-             this.getOrders_count(this.global_index_page);
-            
-          }
-          
-     
-}
-
-
-    order_sound(){
-
-      const music = new Audio('assets/sounds/SD_ALERT_29.mp3');
-      music.play();
-   
-    }
-    
 
     Socket_config(){
       
@@ -364,9 +274,18 @@ export class OrdersListComponent implements OnInit {
            {
            this.websocketservice.intern_order_alert(); 
            }
+
            });
 
-          
+           this.websocketservice.orderresponse.subscribe(res =>{
+    
+           
+            if(res==true)
+            {
+               alert("hola");
+            }
+ 
+            });          
            environment.Socket_state = 1;
 
       }
@@ -379,7 +298,7 @@ export class OrdersListComponent implements OnInit {
  public loading_modaldetail_gif : any|boolean;
   getOrder_detail_modal(orderdetail_id: number)
   {
-     
+     this.order_detail_info=[];
   
     /**PONER EL CURSOR EN MODO ESPERA */
     document.body.style.cursor = 'wait';
@@ -403,11 +322,74 @@ export class OrdersListComponent implements OnInit {
         document.body.style.cursor = 'default'
         } 
     );
+
+    this.getOrder_detail(orderdetail_id);
+    this.get_orderitems_detail(orderdetail_id);
   }
 
 
+  order_detail: any =[];
+  //public loading_modaldetail_gif : any|boolean;
+  getOrder_detail(orderdetail_id: number)
+  {
+     
+    this.order_detail=[];
+    /**PONER EL CURSOR EN MODO ESPERA */
+    document.body.style.cursor = 'wait';
+    this.loading_modaldetail_gif=true;
+    //this.global_index_page=index_begining;
+    this.no_results = false;
+    
+    this.dishService.get_products_order_detail(orderdetail_id).subscribe(
+     
+      res=> { 
+        this.order_detail=res;     
+        this.loading_modaldetail_gif=false;  
+        document.body.style.cursor = 'default';      
+      },
+      err=> {
+        
+        this.no_results=true,
+        this.loading_modaldetail_gif=false,
+        document.body.style.cursor = 'default'
+        } 
+    );
+  }
+
+  
+  orderitems_detail: any =[];
+  //public loading_modaldetail_gif : any|boolean;
+  get_orderitems_detail(orderdetail_id: number)
+  {
+     
+    this.orderitems_detail = [];
+    /**PONER EL CURSOR EN MODO ESPERA */
+    document.body.style.cursor = 'wait';
+    this.loading_modaldetail_gif=true;
+    //this.global_index_page=index_begining;
+    this.no_results = false;
+    //cantidad = this.global_category_count[0].count;
+    //cantidad = this.global_category_count[0].count;*/
+    //console.log("dato "+this.cantidad);
+    this.dishService.get_orderitems_detail(orderdetail_id).subscribe(
+     
+      res=> { 
+        this.orderitems_detail=res;     
+        this.loading_modaldetail_gif=false;  
+        document.body.style.cursor = 'default';
+        console.log(this.orderitems_detail);      
+      },
+      err=> {
+        
+        this.no_results=true,
+        this.loading_modaldetail_gif=false,
+        document.body.style.cursor = 'default'
+        } 
+    );
+  }
 
 
+ 
 
   /*extraerBase64 = async ($event : any) => new Promise((resolve, reject) =>{
        
@@ -439,5 +421,5 @@ export class OrdersListComponent implements OnInit {
 
    } );*/
 
-  
+      
 }

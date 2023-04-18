@@ -54,15 +54,14 @@
                 <p *ngIf="( no_results == true)" style="color: rgb(88, 74, 126); font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: larger;">
                     NO FUE POSIBLE OBTENER RESULTADOS, INTENTE MAS TARDE!
                 </p>
-                     
-                           
+                                
                             <a class="btn_1 gray" (click)="conectarsocketintern()"  
                             ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden interna</a>
 
                             <a class="btn_1 gray" (click)="conectarsocket()"  
                             ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden externa</a>
                             
-
+                           
 
                             <div class="list_general" *ngFor="let order of order_info, let cont = index">
                                 <ul>
@@ -252,7 +251,7 @@ ________________________________________________________________________________
                                 style="max-width: 100px; position:absolute; margin-left: -50px; " >                           
                         </div>
                         
-            
+                        <!--INICIO DE FOR PARA RECORRER order_detail_info-->
                          <div class="list_general" *ngFor="let order of order_detail_info, let cont = index" >
                            
                             <div class="col-md-10">
@@ -271,7 +270,7 @@ ________________________________________________________________________________
                                     </span>
                                  </div>                   
                             </div>               
-                                     
+                            
                            
                             <div class="col-md-7">
                                 <div class="form-group">
@@ -286,8 +285,91 @@ ________________________________________________________________________________
                                     
                                 </div>                   
                             </div>
+                                                             
+                         <!--INICIO DE FOR PARA RECORRER order_detail_info-->
+                         <!--<label> Nombre del producto :</label>-->
+                         <div class="list_general" *ngFor="let order of order_detail, let cont = index" >
+                           
+                            <div class="col-md-10">
+                                <div >
+                                
+                                    <div class="row" style="text-indent: 0;">
+                                    <div class="col-md-8" style="text-indent: 0;">
+                                        <div  style="text-indent: 0;">
+                                          
+                                         <label> {{order.name}}</label>   
+                                        </div> 
+                                    </div>
+
+                                    <div class="col-md-2" style="text-align: right; text-indent: 0;" >
+                                        <div  style="text-indent: 0;">
+                                          
+                                         <label>{{order.price}} </label>   
+                                        </div> 
+                                    </div>
+                                    </div>
+
+                                 </div>   
+
+                                                        <!--INICIO DE FOR PARA RECORRER order_detail_info-->
+                                                      
+                                                      <div class="list_general" *ngFor="let items of orderitems_detail, let cont = index" >
+                           
+                                                                      <div *ngIf="(order.id_order_detail == items.id_order_detail)">
+                                                                        <div  >
+                                                                            
+                                                                            <div class="row">
+                                                                                <div class="col-md-8" style="font-family:cursive; color: rgb(107, 120, 133); ">
+                                                                                    <div >
+                                                                            <label > {{items.extra_name}} </label>
+                                                                                    </div> 
+                                                                                </div>
+
+                                                                                <div class="col-md-2" style="text-align: right;">
+                                                                                    <div >
+                                                                                     <label >  {{items.extra_price}} </label>
+                                                                                    </div> 
+                                                                                </div>
+
+                                                                            </div>
+            
+                                                                        </div>                   
+                                                                      </div>               
+                                     
                         
-                   </div>
+                        
+                                                        </div>
+                                                              <!--FIN DE RECORRIDO FOR DE order_detail_info-->   
+
+                            </div>               
+                                     
+                        
+                        
+                        </div>
+                        <!--FIN DE RECORRIDO FOR DE order_detail_info-->
+
+
+                        
+                        <div class="col-md-10">
+                            <div class="row">
+                            <div class="col-md-8">
+                            <div class="form-group">
+                                
+                                <label> Total:</label>
+                                
+                            </div>                
+                            </div>  
+                            
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>  {{order.total}}</label>
+                                    
+                                </div>                
+                            </div>  
+                            </div>
+                            
+                        </div>
+                        <!--FIN DE RECORRIDO FOR DE order_detail_info-->
 
 
 
