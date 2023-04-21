@@ -19,7 +19,7 @@ export class WebSocketService extends Socket{
       url:'nuevo-production.up.railway.app',
       options:{
         query:{
-          nameRoom: '"campo ejemplo de socket"',
+          groupname: 'yuujook',
         }
 
       }
