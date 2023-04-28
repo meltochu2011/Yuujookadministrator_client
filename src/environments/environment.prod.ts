@@ -2,7 +2,7 @@ export const environment = {
    production: true,
   //My RAILWAY 
    
-  API_URI: 'https://nuevo-production.up.railway.app/',
+  API_URI: 'https://nuevo-production-983c.up.railway.app/',
     //API_URI: 'http://localhost:4000/',
   
     
