@@ -99,7 +99,7 @@ export class OrdersListComponent implements OnInit {
       "note": "Hola mundo, este es el comentario",
       "products": [
           {
-              "id_product": 24,
+              "id_product": 1,
               "amount": 4,
               "sub_total": 80,
               "add_ons": [
@@ -110,7 +110,7 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 2,
+              "id_product": 1,
               "amount": 5,
               "sub_total": 50,
               "add_ons": [
@@ -118,7 +118,7 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 7,
+              "id_product": 1,
               "amount": 5,
               "sub_total": 100,
               "add_ons": [
