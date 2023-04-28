@@ -6,7 +6,7 @@
             <li class="breadcrumb-item" style="margin-left: 25px;">
                 <a href="#">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Ordenes Internas</li>
+            <li class="breadcrumb-item active">Ordenes Externas</li>
         </ol>
 
 
@@ -213,7 +213,7 @@
                             </span>
                         <figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style=" width:50px"></figure>
                         
-                            <p>Nota: {{order.tag}}</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nota: {{order.tag}}</p>
                    
 
             </div>
@@ -254,7 +254,7 @@ ________________________________________________________________________________
                         <!--INICIO DE FOR PARA RECORRER order_detail_info-->
                          <div class="list_general" *ngFor="let order of order_detail_info, let cont = index" >
                            
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                 
                                      <h4><label> Cliente:</label> {{order.person_name}} {{order.person_second_name}}  </h4> 
@@ -290,21 +290,28 @@ ________________________________________________________________________________
                          <!--<label> Nombre del producto :</label>-->
                          <div class="list_general" *ngFor="let order of order_detail, let cont = index" >
                            
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <div >
                                 
                                     <div class="row" style="text-indent: 0;">
-                                    <div class="col-md-8" style="text-indent: 0;">
-                                        <div  style="text-indent: 0;">
+                                    <div class="col-md-6" style="text-indent: 0;">
+                                        <div  style="text-indent: 0; font-weight:300; color: black;">
                                           
-                                         <label> {{order.name}}</label>   
+                                         <label>{{order.dishes_number}} * {{order.dish_name}}</label>   
                                         </div> 
                                     </div>
 
-                                    <div class="col-md-2" style="text-align: right; text-indent: 0;" >
+                                    <div class="col-md-3" style="text-align: right; text-indent: 0;" >
                                         <div  style="text-indent: 0;">
                                           
-                                         <label>{{order.price}} </label>   
+                                         <label>  {{order.dish_price}}  </label>   
+                                        </div> 
+                                    </div>
+
+                                    <div class="col-md-3" style="text-align: right; text-indent: 0;" >
+                                        <div  style="text-indent: 0;">
+                                          
+                                         <label>  {{(order.dish_price)*(order.dishes_number)}}  </label>   
                                         </div> 
                                     </div>
                                     </div>
@@ -319,15 +326,22 @@ ________________________________________________________________________________
                                                                         <div  >
                                                                             
                                                                             <div class="row">
-                                                                                <div class="col-md-8" style="font-family:cursive; color: rgb(107, 120, 133); ">
+                                                                                <div class="col-md-6" style="font-family:cursive; color: rgb(107, 120, 133); ">
                                                                                     <div >
-                                                                            <label > {{items.extra_name}} </label>
+                                                                            <label > {{order.dishes_number}} *{{items.extra_name}} </label>
                                                                                     </div> 
                                                                                 </div>
 
-                                                                                <div class="col-md-2" style="text-align: right;">
+                                                                                <div class="col-md-3" style="text-align: right;">
                                                                                     <div >
-                                                                                     <label >  {{items.extra_price}} </label>
+                                                                                     <label >  {{items.extra_price}}  </label>
+                                                                                    </div> 
+                                                                                </div>
+
+                                                                                <div class="col-md-3" style="text-align: right; text-indent: 0;" >
+                                                                                    <div  style="text-indent: 0;">
+                                                                                      
+                                                                                     <label>  {{(items.extra_price)*(order.dishes_number)}}  </label>   
                                                                                     </div> 
                                                                                 </div>
 
@@ -350,9 +364,9 @@ ________________________________________________________________________________
 
 
                         
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                             <div class="form-group">
                                 
                                 <label> Total:</label>
@@ -360,8 +374,8 @@ ________________________________________________________________________________
                             </div>                
                             </div>  
                             
-                            <div class="col-md-2">
-                                <div class="form-group">
+                            <div class="col-md-6">
+                                <div class="form-group" style="text-align: right;">
                                     <label>  {{order.total}}</label>
                                     
                                 </div>                

@@ -26,6 +26,7 @@ import { LoginuserComponent } from './components/loginuser/loginuser.component';
 import { CookieService } from 'ngx-cookie-service';
 import { GallerycompComponent } from './components/gallerycomp/gallerycomp.component';
 import { OrderdetailModalComponent } from './components/orderdetail-modal/orderdetail-modal.component';
+import { WebSocketService } from './services/web-socket.service';
 
 
 
@@ -56,7 +57,7 @@ import { OrderdetailModalComponent } from './components/orderdetail-modal/orderd
     MatSlideToggleModule,
     CoreModule
   ],
-  providers: [DishService,CookieService],
+  providers: [DishService,CookieService,WebSocketService],
   bootstrap: [AppComponent]
 })
 

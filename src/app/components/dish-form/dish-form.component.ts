@@ -529,10 +529,9 @@ normal_alert(elemento : String){
     }
 
 
-    if(this.dish_register.name === '' || this.dish_register.price === '' || this.dish_register.price === null )
+    if(this.dish_register.name === '' || this.dish_register.price === '' || this.dish_register.price === null || this.selected_list.length == 0)
     {
-      console.log("datos estan incompletos");
-  
+      
       this.error_validation_message_information();      
          
     }
@@ -563,26 +562,28 @@ normal_alert(elemento : String){
                }   
 
     /**EN ESTE CASO EL PLATILLO TIENE EXTRAS Y POR ESO SE DEBE VALIDAR, PUES SI TIENE EXTRAS DEBE ESTAR COMPLETA LA VALIDACION CON EXTRAS */
-    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null && this.formParent.valid == true && this.cont_group_elements == 0 && this.formParent.value.group_item_options.length > 0 && this.formParent.value.dinamicos.length > 0)  {
+    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null 
+    && this.formParent.valid == true && this.cont_group_elements == 0 && this.formParent.value.group_item_options.length > 0 && this.formParent.value.dinamicos.length > 0 && this.selected_list.length > 0 )  {
        
       /*IGUALAMOS EL CAMPO selected_list DEL MODELO dish_register AL CAMPO selected_list */ 
       this.dish_register.selected_list=this.selected_list;
       this.dish_register.group_list=this.formParent.value.group_item_options;
       this.dish_register.sons_list = this.formParent.value.dinamicos;
       
-      console.log(this.dish_register.sons_list.signal);
+      //console.log(this.dish_register.sons_list.signal);
       this.saving_dish(this.dish_register);
 
     }
     
     /**SI EL PLATILLO NO TIENE EXTRAS ENTONCES NO SE VALIDAN LOS CAMPOS DE LOS EXTRAS, EN ESTE CASO LOS HIJOS group_item_options y dinamicos NO TIENEN NINGUN VALOR POR LO TANTO NO HAY EXTRAS*/
-    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null && this.formParent.value.group_item_options.length == 0 && this.formParent.value.dinamicos.length == 0 ) {
+    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null 
+    && this.formParent.value.group_item_options.length == 0 && this.formParent.value.dinamicos.length == 0 && this.selected_list.length > 0) {
        
       /*IGUALAMOS EL CAMPO selected_list DEL MODELO dish_register AL CAMPO selectedOptions */ 
       this.dish_register.selected_list=this.selectedOptions;
       this.dish_register.group_list=this.formParent.value.group_item_options;
       this.dish_register.sons_list = this.formParent.value.dinamicos;
-      console.log(this.dish_register.sons_list.signal);
+      //console.log(this.dish_register.sons_list.signal);
       this.saving_dish(this.dish_register);
     }
 
@@ -597,7 +598,7 @@ normal_alert(elemento : String){
     Swal.fire({
       icon: 'error',
       title: 'Complete la informacion del platillo',
-      text: 'El nombre y precio del platillo son requeridos!',
+      text: 'El nombre, categoría y precio del platillo son requeridos!',
       footer: '<a >Verifique los campos de informacion </a>'
     })            
 

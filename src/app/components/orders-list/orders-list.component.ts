@@ -96,20 +96,21 @@ export class OrdersListComponent implements OnInit {
       "address": "Zona 24",
       "has_whatsapp": true,
       "total": 75,
+      "note": "Hola mundo, este es el comentario",
       "products": [
           {
-              "id_product": 1,
+              "id_product": 24,
               "amount": 4,
               "sub_total": 80,
               "add_ons": [
                   {
                       "tag": "Ensalada de lechuga",
-                      "price":0.0
+                      "price":0.25
                   }
               ]
           },
           {
-              "id_product": 1,
+              "id_product": 2,
               "amount": 5,
               "sub_total": 50,
               "add_ons": [
@@ -117,17 +118,17 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 1,
+              "id_product": 7,
               "amount": 5,
               "sub_total": 100,
               "add_ons": [
                   {
                       "tag": "Salsa dulce",
-                      "price": 0.0
+                      "price": 0.50
                   },
                   {
                       "tag": "Salsa picamas",
-                      "price": 0.0
+                      "price": 0.50
                   }
               ]
           }
@@ -207,11 +208,20 @@ export class OrdersListComponent implements OnInit {
   this.dishService.get_orders_quantity().subscribe(
     res=> {
 
-      this.array_orders_count=res;     
+      this.array_orders_count=res;   
+
+     
+      if(this.array_orders_count[0].count > 105)
+      {
+        this.array_orders_count[0].count = 105;
+        
+      }
     
       let suma_constante=0;
+
+            
       let residuo=this.array_orders_count[0].count; 
-      
+
       /** SUMA CONSTANTE TENDRA EL VALOR DE 0*/
       this.paging_array.push({"init" : suma_constante} );
 
@@ -219,20 +229,20 @@ export class OrdersListComponent implements OnInit {
       {
           /** RESIDUO INICIALMENTE TIENE LA MISMA MAGNITUD QUE LA CANTIDAD DE PRODUCTOS, LUEGO SE VA RESTANDO POCO A POCO
            * HASTA LLEGAR A 0, ESO CON EL FIN DE DETERMINAR EL NUMERO DE PAGINAS (programacion recursiva)*/   
-          if(residuo > 10 )
+          if(residuo > 15 )
           {
             /**SI residuo es mayor que 10 quiere decir que hay mas de 10 y por lo tanto se va llenando un array con la
              * variable "suma_constante" que va aumentando de 10 en 10, la primera vez que lo hace tiene un valor de 10, luego,
              * si residuo sigue siendo mayor que 10 "suma_constante" vale 20, a la siguiente 30 y así sucesivamente.
             */
-             suma_constante=suma_constante+10;
+             suma_constante=suma_constante+15;
              this.global_sumatory=suma_constante;
            
              this.paging_array.push({"init" : suma_constante} );
-             residuo=residuo-10;              
+             residuo=residuo-15;              
           }
 
-          else if(residuo-10 == 0 || residuo-10 < 10 )
+          else if(residuo-15 == 0 || residuo-15 < 15 )
           {/**SI EL RESIDUO ES IGUAL A 10 O MENOR QUE 10 YA NO ES NECESARIO AGREGAR UNA NUEVA PAGINA, PUES CON 
           EL VALOR INICIAL QUE SE AGREGA AL INICIO DE LA FUNCION ES SUFICIENTE PARA CUBRIR VALORES QUE VAN DE 1 A 10,
            UNICAMENTE ES NECESARIO IGUALAR EL RESIDUO A CERO Y ASÍ SE DETENGA EL CICLO  */
@@ -267,7 +277,6 @@ export class OrdersListComponent implements OnInit {
            this.websocketservice.delivery_order_alert();
           
            
-           
           }
   
           if(res=="intern")
@@ -296,7 +305,7 @@ export class OrdersListComponent implements OnInit {
     order_detail_info: any =[];
   /**Para cambiar la forma del cursor mientras se carga algo*/
  public loading_modaldetail_gif : any|boolean;
-  getOrder_detail_modal(orderdetail_id: number)
+  getOrder_detail_modal(order_id: number)
   {
      this.order_detail_info=[];
   
@@ -308,12 +317,13 @@ export class OrdersListComponent implements OnInit {
     //cantidad = this.global_category_count[0].count;
     //cantidad = this.global_category_count[0].count;*/
     //console.log("dato "+this.cantidad);
-    this.dishService.get_order_detail(orderdetail_id).subscribe(
+    this.dishService.get_order_detail(order_id).subscribe(
      
       res=> { 
         this.order_detail_info=res;     
         this.loading_modaldetail_gif=false;  
-        document.body.style.cursor = 'default';      
+        document.body.style.cursor = 'default';    
+        //console.log(res);  
       },
       err=> {
         
@@ -323,8 +333,10 @@ export class OrdersListComponent implements OnInit {
         } 
     );
 
-    this.getOrder_detail(orderdetail_id);
-    this.get_orderitems_detail(orderdetail_id);
+
+  
+    this.getOrder_detail(order_id);
+    this.get_orderitems_detail(order_id);
   }
 
 
@@ -343,7 +355,8 @@ export class OrdersListComponent implements OnInit {
     this.dishService.get_products_order_detail(orderdetail_id).subscribe(
      
       res=> { 
-        this.order_detail=res;     
+        this.order_detail=res; 
+        //console.log(this.order_detail);    
         this.loading_modaldetail_gif=false;  
         document.body.style.cursor = 'default';      
       },
@@ -377,7 +390,7 @@ export class OrdersListComponent implements OnInit {
         this.orderitems_detail=res;     
         this.loading_modaldetail_gif=false;  
         document.body.style.cursor = 'default';
-        console.log(this.orderitems_detail);      
+        //console.log(this.orderitems_detail);      
       },
       err=> {
         

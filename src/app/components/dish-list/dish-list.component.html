@@ -64,7 +64,7 @@
                 <div class="select" >
                     <select [(ngModel)]="Selected_option" (change)="capture()" [disabled]="loading_categories_combo" class="intern_select" >
                         <option value="-1">Todas las categorías</option>
-                        <option value="0">Sin categoría</option>
+                        <!--<option value="0">Sin categoría</option>-->
                       <option *ngFor="let categ of category, let cont = index"  value="{{categ.id_category}}">{{categ.name}}</option>
                       
                     </select>
