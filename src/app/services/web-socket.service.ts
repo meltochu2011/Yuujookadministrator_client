@@ -16,7 +16,7 @@ export class WebSocketService extends Socket{
   constructor() {
     super({
       //url:'http://localhost:4000',
-      url:'nuevo-production-983c.up.railway.app',
+      url:'https://nuevo-production-983c.up.railway.app',
       options:{
         query:{
           groupname: 'yuujook',
