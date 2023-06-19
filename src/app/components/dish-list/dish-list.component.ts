@@ -81,6 +81,8 @@ IMAGE_DIRECTORY_EDIT: string = "";
 
   ngOnInit(): void {
 
+    environment.pagevalue = 1;
+    this.global_index_page = 0;
     this.getCategories();
     this.clasify_filter();
     this.verify_previusandnextpage(environment.filter_var);
@@ -118,9 +120,12 @@ IMAGE_DIRECTORY_EDIT: string = "";
     has_image:0
   };
 
-
-  nextpage_state : boolean = false;
-  previus_state = false;
+   /**INICIALIZAMOS nextpage_state y previus_state con true porque si
+   * lo inicializamos con false se genera un bug en el lado del front
+   * en los botones siguiente y anterior
+   */
+  nextpage_state : boolean = true;
+  previus_state : boolean = true;
   
   selectbypage( index_page : number, element_position : number){
    
@@ -145,6 +150,33 @@ IMAGE_DIRECTORY_EDIT: string = "";
 
   }
 
+
+  nextpage()
+  {
+
+     /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+    //alert(this.global_index_page); 
+      environment.pagevalue = environment.pagevalue+1; 
+      this.global_index_page = this.global_index_page+10;      
+      this.getProducts_pagecount(this.global_index_page); 
+      this.verify_previusandnextpage(environment.pagevalue);  
+    
+  }
+
+  previuspage()
+  {
+
+     /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+    //alert(this.global_index_page); 
+
+      environment.pagevalue = environment.pagevalue-1; 
+      this.global_index_page = this.global_index_page-10;      
+      this.getProducts_pagecount(this.global_index_page);
+       
+      this.verify_previusandnextpage(environment.pagevalue);
+     
+  }
+ 
 
   verify_previusandnextpage(element_position : number){
 

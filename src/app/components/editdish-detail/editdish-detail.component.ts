@@ -79,34 +79,46 @@ export class EditdishDetailComponent implements OnInit {
 
     this.getCategories();
     this.getSelected_categories(this.id_prod);
+
+    
   }
+
+  
+   Global_indexid : number = 0;
 
   add_groups(par_name:string, par_max_selected : number): void{
     /**FUNCION QUE AGREGA LOS GRUPOS AL ARRANQUE DEL PROGRAMA */
     const refitems= this.formParent.get('group_item_options') as FormArray;
-  
-    refitems.push(this.return_parents_values(par_name,par_max_selected)) 
-   
+    
+    refitems.push(this.return_parents_values(par_name,par_max_selected,this.Global_indexid)) 
+    this.Global_indexid++;
   }
 
-  add_items(par_signal:number, par_tag : string, par_price: string): void{
+  add_items(i: number, par_tag : string, par_price: string): void{
     /**FUNCION QUE AGREGA LOS ITEMS QUE PERTENCEN A LOS GRUPOS AL ARRANQUE DEL PROGRAMA */
     const refitems= this.formParent.get('dinamicos') as FormArray;
-  
-    refitems.push(this.return_sons_values(par_signal,par_tag, par_price)) 
+    
+    /**TOMA EL VALOR DEL ULTIMO INDEX INGRESADO PARA QUE DE ALLI EN ADELANTE
+     * VAYA INCREMENTANDO YA QUE Global_indexid INCREMENTA CADA VEZ QUE SE INTRODUCE UN NUEVO GRUPO
+     */
+    
+    refitems.push(this.return_sons_values(i,par_tag, par_price)) 
    
   }
 
-  return_parents_values(par_name : string, par_max_selected : number): FormGroup{    
+  return_parents_values(par_name : string, par_max_selected : number, Global_indexid : number): FormGroup{    
       /*FUNCION QUE RETORNA LOS VALORES DE LOS PADRES QUE SE INGRESAN AL INICIO DEL PROGRAMA*/
    return new FormGroup(
        {            
-         name: new FormControl(par_name,[Validators.required]),
-         max_selected: new FormControl(par_max_selected,[Validators.required]),
+         /*name: new FormControl(par_name,[Validators.required]),
+         max_selected: new FormControl(par_max_selected,[Validators.required]),*/
+         name: new FormControl(par_name),
+         max_selected: new FormControl(par_max_selected),
          /*VARIABLE PARA INDICAR SI HAY ELEMENTOS HIJOS PARE EL ELEMNTO PADRE, TANTO EL ELEMNTO PADRE COMO EL ELEMENTO HIJO SON SIMBOLICOS
           PUES LOS DOS FORMS SON HIJOS SOLO QUE POR LA ESTRUCTURA, UN ARRAY REPRESENTA A LOS GRUPOS Y EL OTRO A LOS ITEMS DE LOS GRUPOS 
          */
-         has_sons: new FormControl(1)        
+         has_sons: new FormControl(1),
+         indexid: new FormControl(Global_indexid)         
              
        }
        
@@ -114,7 +126,7 @@ export class EditdishDetailComponent implements OnInit {
            
  }
 
- return_sons_values(par_signal : number,par_tag : string, par_price : string): FormGroup{
+ return_sons_values(i: number,par_tag : string, par_price : string): FormGroup{
   return new FormGroup(        
     {            
       /**el campo signal unicamente es el encargado de obtener el valor del hijo seleccionado en el momento en que se elije ver el detalle de grupo
@@ -122,7 +134,7 @@ export class EditdishDetailComponent implements OnInit {
        * del grupo seleccionado, Global_child representa el valor del index del grupo seleccionado en el momento presionar el boton para ver el detalle
        * del grupo
        */
-      signal: new FormControl(par_signal),
+      signal: new FormControl(i),
       tag: new FormControl(par_tag,[Validators.required]),
       price: new FormControl(par_price,[Validators.required]),
 
@@ -259,12 +271,15 @@ export class EditdishDetailComponent implements OnInit {
           this.dish_register_temporal.group_list=this.formParent.value.group_item_options;
           this.dish_register_temporal.sons_list=this.formParent.value.dinamicos;
           
+          console.log(this.formParent.value.group_item_options);
+          console.log(this.formParent.value.dinamicos);
+
                   
         },
         err=> console.error(err)
       );
   
-
+       
 
     }
 
@@ -579,8 +594,10 @@ normal_alert(elemento : String){
            * del grupo
            */
           signal: new FormControl(this.Global_child),
-          tag: new FormControl('',[Validators.required]),
-          price: new FormControl('',[Validators.required]),
+          tag: new FormControl(''),
+          price: new FormControl(''),
+          /*tag: new FormControl('',[Validators.required]),
+          price: new FormControl('',[Validators.required]),*/
 
         }        
       )
@@ -596,14 +613,12 @@ normal_alert(elemento : String){
 
       return new FormGroup(
           {            
-            name: new FormControl('',[Validators.required]),
-            max_selected: new FormControl('1',[Validators.required]),
-            /*VARIABLE PARA INDICAR SI HAY ELEMENTOS HIJOS PARE EL ELEMNTO PADRE, TANTO EL ELEMNTO PADRE COMO EL ELEMENTO HIJO SON SIMBOLICOS
-             PUES LOS DOS FORMS SON HIJOS SOLO QUE POR LA ESTRUCTURA, UN ARRAY REPRESENTA A LOS GRUPOS Y EL OTRO A LOS ITEMS DE LOS GRUPOS 
-            */
+            /*name: new FormControl('',[Validators.required]),
+            max_selected: new FormControl('1',[Validators.required]),*/
+            name: new FormControl(''),
+            max_selected: new FormControl('1'),
             has_sons: new FormControl(0),
-            //order_value:new FormControl(this.Global_child)      
-                
+            indexid: new FormControl(this.Global_indexid)            
           }
           
         )
@@ -613,12 +628,12 @@ normal_alert(elemento : String){
     group_counter : number= 0;
     add_group_element(): void{
   
-      this.group_counter=this.formParent.value.group_item_options.length;
+      //this.group_counter=this.formParent.value.group_item_options.length;
       
       const refitems= this.formParent.get('group_item_options') as FormArray;
     
       refitems.push(this.init_form_dish_return()) 
- 
+      this.Global_indexid++;
     }
 
     add_item_element(): void{
@@ -636,9 +651,20 @@ normal_alert(elemento : String){
        * la etiqueta "No hay ningun item en el grupo" OJO Global_child indica el index del grupo presente en el
        * modal por eso se envía como referencia
       */
-      this.verify_sons_of_group(this.Global_child);
+      this.verify_sons_of_group(this.Global_position);
 
     }
+
+
+    keyup_Global_child(formChild : number){
+      
+      this.Global_position=formChild;
+      this.Global_child = this.formParent.value.group_item_options[formChild].indexid;
+      this.verify_sons_items();
+      /*this.verify_sons_of_group(this.Global_position);*/
+
+    }
+
 
     verify_sons_items(){
 
@@ -670,55 +696,19 @@ normal_alert(elemento : String){
        if(this.cont_group_elements == 0)
        {        
        
-         this.formParent.value.group_item_options[this.Global_child].has_sons = 0;
+         this.formParent.value.group_item_options[this.Global_position].has_sons = 0;
        }
  
        if(this.cont_group_elements > 0)
        {        
        
-         this.formParent.value.group_item_options[this.Global_child].has_sons = 1;
+         this.formParent.value.group_item_options[this.Global_position].has_sons = 1;
        }
  
      // alert( this.formParent.value.group_item_options[this.Global_child].has_sons );
     }
 
-    verify_index_items( index : number){
-
-                /**
-       * FUNCION QUE VERIFICA SI UN PADRE TIENE O NO TIENE HIJOS, SI NO TIENE MARCA EL CAMPO has_sons CON UN UNO PARA INDICAR QUE YA TIENE HIJOS.
-       * ESTO LO HACE A LA HORA DE INSERTAR UN ITEM EN EL ARREGLO  dinamicos
-       */
-       this.cont_group_elements=0;
-       /*
-       CADA VEZ QUE SE ELIMINA UN ITEM O ELEMENTO DEL GRUPO SE REVISA SI TIENE O NO TIENE HIJOS EL PADRE, EN CASO DE QUE SEA CERO
-       SE MARCA SIN HIJOS EL CAMPO has_sons DEL GRUPO Y POR LO TANTO VA A LANZAR EXCEPCION A AL HORA DE GUARDAR
-       */
-       for (let i = 0; i <this.formParent.value.dinamicos.length; i++)
-       {
-                if(this.formParent.value.dinamicos[i].signal == this.Global_child)
-                {       
-                 this.cont_group_elements++;
-                 
-                }
-                
-       }
-      
-       if(this.cont_group_elements == 0)
-       {        
-       
-         this.formParent.value.group_item_options[this.Global_child].has_sons = 0;
-       }
- 
-       if(this.cont_group_elements > 0)
-       {        
-       
-         this.formParent.value.group_item_options[this.Global_child].has_sons = 1;
-       }
-
-
-
-    }
-
+   
     
   getCtrl(key: string, form: FormGroup) : any
   {
@@ -750,8 +740,7 @@ normal_alert(elemento : String){
 
     if(this.formParent.valid == false)
     {
-      alert("algo falla");
-      console.log(this.formParent.value);
+      alert("formparent es falso");
       this.error_validation_message_items();
       
     }
@@ -774,14 +763,14 @@ normal_alert(elemento : String){
                */
                for (let i = 0; i <this.formParent.value.group_item_options.length; i++)
                {
-                        if(this.formParent.value.group_item_options[i].has_sons == 0)
+                        if(this.formParent.value.group_item_options[i].has_sons == 0 )
                         {       
-                         this.cont_group_elements++;
-                         
+                         this.cont_group_elements++; 
                         }
                         
                }
 
+                
                if(this.cont_group_elements >  0)
                {
                  this.error_validation_message_items();
@@ -871,15 +860,37 @@ normal_alert(elemento : String){
 
   } 
 
+      sons_copy: any =[];
+
      remove_group(index : number){
   
       
-      /**PARA ELIMINAR UN GRUPO, RECIBIMOS EL INDEX DEL GRUPO Y ESE ES EL QUE SE ELIMINA MEDIANTE LA FUNCION removeAt */
+      //console.log(this.formParent.value.group_item_options);
+    
+        /**LO DEJAMOS CON VALOR 1 A PESAR DE QUE SE ELIMINÓ PERO SOLO ES PARA QUE
+         * NO DE PROBLEMAS EN LA VALIDACION DEL FORMULARIO
+         */
+        //this.formParent.value.group_item_options[index].has_sons = 1;
       
+
+      /**PARA ELIMINAR UN GRUPO, RECIBIMOS EL INDEX DEL GRUPO Y ESE ES EL QUE SE ELIMINA MEDIANTE LA FUNCION removeAt */
+        
+
          const control = <FormArray>this.formParent.controls['group_item_options'];
          control.removeAt(index);
 
          
+
+         /*for (let i = 0; i < this.formParent.value.group_item_options.length; i++)
+         {
+
+             
+                if(this.formParent.value.dinamicos[i].signal == index)
+                {                
+                  this.formParent.value.dinamicos[i].signal = -1;                                         
+                }     
+     
+         }*/
 
         
         /**LUEGO DE ELIMINAR EL ITEM DEL GRUPO QUE COINCIDE CON EL INDEX, PROCEDEMOS MARCAR CON -1 LOS ITEMS DEL ARRAY DINAMICOS QUE PERTENCEN 
@@ -889,7 +900,7 @@ normal_alert(elemento : String){
          * 
           */
          
-         for (let i = 0; i < this.formParent.value.dinamicos.length; i++)
+        /* for (let i = 0; i < this.formParent.value.dinamicos.length; i++)
          {
 
              
@@ -900,27 +911,33 @@ normal_alert(elemento : String){
                                          
                 }     
      
-         } 
+         }*/ 
 
-         const control2 = <FormArray>this.formParent.controls['dinamicos'];
-        
+       
 
-         for (let i = 0; i < this.formParent.value.dinamicos.length; i++)
+ 
+
+         /*for (let i = 0; i < this.formParent.value.dinamicos.length; i++)
          {
-   
-                if(this.formParent.value.dinamicos[i].signal == -1)
+          const control2 = <FormArray>this.formParent.controls['dinamicos'];
+                if(this.formParent.value.dinamicos[i].signal == index)
                 {
-               
+
+                
+         
+                //console.log('pintando '+i);
+                //control2.removeAt(i);
+                
                   control2.removeAt(i);
                                          
                 }     
      
-         } 
+         }*/
           
 
          
             
-       for (let i = 1; i < this.formParent.value.dinamicos.length; i++)
+       /*for (let i = 1; i < this.formParent.value.dinamicos.length; i++)
         {
 
      
@@ -930,8 +947,11 @@ normal_alert(elemento : String){
                this.formParent.value.dinamicos[i].signal = this.formParent.value.dinamicos[i].signal-1;                              
                }     
     
-        } 
+        }*/ 
      
+
+         console.log(this.formParent.value.dinamicos);
+      
      }
 
 
@@ -950,17 +970,22 @@ normal_alert(elemento : String){
       const control = <FormArray>this.formParent.controls['dinamicos'];
       control.removeAt(index);
       this.verify_sons_items();
+      this.verify_sons_of_group(this.Global_position);
 
       /**se llama al verificador de hijos del grupo para ver si hay hijos y mostrar o no 
        * la etiqueta "No hay ningun item en el grupo" OJO Global_child indica el index del grupo presente en el
        * modal por eso se envía como referencia
       */
-       this.verify_sons_of_group(this.Global_child);
+      //this.verify_sons_of_group(index);
+       
+      
   }
 
 
   
     Global_child : number = 0;
+    Global_position : number = 0;
+
     //Global_order_value: number=0;
 
     group_value_name : string='';
@@ -970,47 +995,87 @@ normal_alert(elemento : String){
 
      groupitems_indicator : number = 0;
      Present_Child(formChild : number){
-     
+
+      /**Global_position retiene la posicion global del array que contiene */
+      this.Global_position=formChild;
+       
+      /*console.log(this.formParent.value.group_item_options);
+      console.log(this.formParent.value.dinamicos);*/
+
       if(this.formParent.value.group_item_options[formChild].name == "" || this.formParent.value.group_item_options[formChild].max_selected == ""
-        || this.formParent.value.group_item_options[formChild].name == null || this.formParent.value.group_item_options[formChild].max_selected == null)
-        {
-          this.groupitems_indicator = 0;  
-          this.error_incomplete_groupitems()
-        }
-
-     
-        if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
-        && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)
-        {  
-          this.groupitems_indicator = 1;
-         this.Global_child=formChild;
+      || this.formParent.value.group_item_options[formChild].name == null || this.formParent.value.group_item_options[formChild].max_selected == null)
+      {
+        alert("hay algun campo inconsistente");
+        this.groupitems_indicator = 0;
+        
+        this.error_incomplete_groupitems()
+      }
+   
+      if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
+      && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)
+      {
+         this.groupitems_indicator = 1;
+        
+        
+        this.Global_child = this.formParent.value.group_item_options[formChild].indexid;
+        
+        //alert("global "+formChild);
+        /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
+        AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
+        ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
   
-         /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
-         AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
-         ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
+          this.group.name=this.formParent.value.group_item_options[formChild].name;
+          this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;   
+          
+          this.verify_sons_items();
+          this.verify_sons_of_group(this.Global_position);
+         
+          
+       /*   for (let i = 0; i < this.formParent.value.dinamicos.length; i++)
+      {
 
-         this.group.name=this.formParent.value.group_item_options[formChild].name;
-         this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;
+          
+             if(this.formParent.value.dinamicos[i].signal > -1)
+             {
+             
+               this.formParent.value.dinamicos[i].signal = formChild;
+                                      
+             }     
+  
+      }*/
+      /*this.formParent.value.dinamicos= this.sons_copy;
+         console.log("copia");
+          console.log(this.formParent.value.dinamicos) */
+          //this.verify_sons_items();
+
+           /* this.verify_index_items();*/
+      }
+
       
-         this.verify_sons_of_group(formChild);
-       }
+      /*this.groupitems_indicator = 1;
+      this.Global_child=formChild;
+      this.group.name=this.formParent.value.group_item_options[formChild].name;
+          this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;*/   
+         
+  
+
      }
 
      verify_sons_of_group(formChild : number){
         /**FUNCION QUE VERIFICA SI UN GRUPO TIENE ELEMENTOS O ITEMS, SIRVE EN EL MODAL PARA EDITAR 
-         * UNICAMENTE PARA INDICAR SI UN GRUO TIENE ITEMS O NO POR ESO SE TIENE QUE VERIFICAR AL ABRIRSE
-         * EL MODAL DE EDICION Y AL CREAR UN NUEVO ELEMENTO
-         */
-         if(this.formParent.value.group_item_options[formChild].has_sons == 1)
-         {
-             this.Items_indicator = 1;    
-         }
- 
-         else if(this.formParent.value.group_item_options[formChild].has_sons == 0)
-         {
-             this.Items_indicator = 0;    
-         }
-       
+       * UNICAMENTE PARA INDICAR SI UN GRUO TIENE ITEMS O NO POR ESO SE TIENE QUE VERIFICAR AL ABRIRSE
+       * EL MODAL DE EDICION Y AL CREAR UN NUEVO ELEMENTO
+       */
+       if(this.formParent.value.group_item_options[formChild].has_sons == 1)
+       {
+           this.Items_indicator = 1;    
+       }
+
+       else if(this.formParent.value.group_item_options[formChild].has_sons == 0)
+       {
+           this.Items_indicator = 0;    
+       }
+      
      }
 
 
@@ -1020,10 +1085,10 @@ normal_alert(elemento : String){
       /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
       AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
       ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
-      
+  
 
-      this.formParent.value.group_item_options[this.Global_child].name=this.group.name;
-      this.formParent.value.group_item_options[this.Global_child].max_selected=this.group.max_selected;
+      this.formParent.value.group_item_options[this.Global_position].name=this.group.name;
+      this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
 
 
      }

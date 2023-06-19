@@ -6,7 +6,7 @@
             <li class="breadcrumb-item" style="margin-left: 25px;">
                 <a href="#">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Ordenes Externas</li>
+            <li class="breadcrumb-item active">Ordenes Externas Completadas</li>
         </ol>
 
 
@@ -66,49 +66,32 @@
                 <p *ngIf="( no_results == true)" style="color: rgb(88, 74, 126); font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: larger;">
                     NO FUE POSIBLE OBTENER RESULTADOS, INTENTE MAS TARDE!
                 </p>
-                                
-                            <div class="form-group">
+                            <div  class="form-group">    
                             <a class="btn_1 gray" (click)="conectarsocketintern()"  
                             ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden interna</a>
-                            &nbsp;&nbsp;
 
+                            &nbsp;&nbsp;
                             <a class="btn_1 gray" (click)="conectarsocket()"  
                             ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden externa</a>
+
                             &nbsp;&nbsp;
-                            
                             <a class="btn_1 gray"  routerLink ="/dishes/orders_list"
                             ><i class="fa fa-fw fa-pencil"  ></i> <i class="fa fa-fw fa-list"></i> En proceso</a>
-                            &nbsp;&nbsp;
-
+                            
+                            &nbsp;&nbsp;                            
                             <a class="btn_1 gray"  routerLink ="/dishes/orders_list_completed"
                             ><i class="fa fa-fw fa-pencil"  ></i> <i class="fa fa-fw fa-list"></i> Completados</a>
-                            </div>
                            
-                  
+                            
+
+                           </div>
+                           
+
                             <div class="list_general" *ngFor="let order of order_info, let cont = index">
                                 <ul>
 
 
-                                    <!--<li *ngIf="(order.order_state == 'Completado')" style="background-color: rgb(241, 245, 249);">
-                                        
-                                        <span>
-                                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;&nbsp;             
-                                             
-                                            &nbsp;&nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;&nbsp;&nbsp; {{order.order_time}} 
-                                            <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(118, 144, 163);  width: 50px ">  {{order.order_state}}</i> 
-                                        </span>
-                                        <figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style="cursor: pointer" data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail"></figure>
-                                        <h4>{{order.person_name}} {{order.person_second_name}} 
-
-                                             <!--
-                                            <i class="read"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: rgb(99, 140, 171); ">  {{order.order_state}}</i>
-                                            --> 
-                                        <!--</h4>
-                                        <p>  <a class='btn_1 gray' routerLink ='/dishes/edit_dish'>  <i  class='fa fa-fw fa-list'></i> Detalle</a> Nota: {{order.tag}} </p>
-                                    </li>-->
-
-                                     
-                                    <li *ngIf="(order.order_state == 'En espera' || order.order_state == 'Procesando')" >
+                                    <li *ngIf="(order.order_state == 'Completado')" style="background-color: rgb(241, 245, 249);">
                                         <span>
                                             
                                             &nbsp;&nbsp;&nbsp;&nbsp; 
@@ -123,8 +106,7 @@
                                             &nbsp;&nbsp;<label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                              
                                              &nbsp;&nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;&nbsp;&nbsp;  {{order.order_time}} 
-                                             <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
-                                             <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
+                                             <i class="pending"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
                                             </span>
                                         <figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style="cursor: pointer" data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail"></figure>
                                         <h4>
@@ -136,14 +118,11 @@
                                             <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{order.order_state}}</i>
                                             --> 
                                         </h4>
-                                              
-                                                <p>                                                       
-                                                 <a class='btn_1 gray' data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail">  <i  class='fa fa-fw fa-list'></i> Detalle</a>&nbsp;&nbsp;  Nota: {{order.tag}}
-                                                </p>
+                                            <p>  <a class='btn_1 gray' data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail">  <i  class='fa fa-fw fa-list'></i> Detalle</a>&nbsp;&nbsp; Nota: {{order.tag}}</p>
+                                            <p>
+                                                <a class="btn_1 gray" (click)="update_ordersatate(order.id_order)" style="background-color: rgb(65, 190, 169); color: black;">  <i class="fa fa-fw fa-check-circle-o"></i>Restablecer</a>  
+                                            </p> 
 
-                                                <p>
-                                                    <a class="btn_1 gray" (click)="update_ordersatate(order.id_order)" style="background-color: rgb(253, 194, 104); color: black;">  <i class="fa fa-fw fa-check-circle-o"></i>Orden completa</a>  
-                                                </p> 
                                             
                                     </li>
 

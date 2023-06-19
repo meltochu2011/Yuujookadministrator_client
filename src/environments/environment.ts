@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   //My RAILWAY 
    
-  API_URI: 'https://nuevo-production-983c.up.railway.app/',
-    //API_URI: 'http://localhost:4000/',
+  //API_URI: 'https://nuevo-production-983c.up.railway.app/',
+    API_URI: 'http://localhost:4000/',
   
     
   /**VARIABLES PARA LA GALERÍA */
@@ -25,6 +25,7 @@ export const environment = {
   
   /** INDICA EL NUMERO DE LA PAGINA EN LA QUE NOS ENCONTRAMOS ACTUALMENTE */
   pagevalue : 1,
+  number_beginer : 0,
 
   /**VARIABLES PARA ORDENES */
    orderdetail_id : 0

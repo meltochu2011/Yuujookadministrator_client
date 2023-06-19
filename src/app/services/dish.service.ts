@@ -173,9 +173,9 @@ deleteGalleryElement( element: Gallery_element){
   */
  
   /**OBTENER PRODUCTOS, CON EL PARAMETRO prod_count SE LE INDICA DONDE EMPIEZA LA PAGINACION */
-getOrders_count(order_count :string){
+getOrders_count(order_count :string, orderstate :string){
   
-  return this.http.get(environment.API_URI+'getcounted_orders/'+order_count);
+  return this.http.get(environment.API_URI+'getcounted_orders/'+order_count+'/'+orderstate);
 }
  
 get_order_detail(orderdetail_id : number){
@@ -193,9 +193,14 @@ get_orderitems_detail(orderdetail_id : number){
   return this.http.get(environment.API_URI+'get_orderitems_detail/'+orderdetail_id);
 }
 
-get_orders_quantity(){
+get_orders_quantity(orderstate :string){
 
-  return this.http.get(environment.API_URI+'get_ordersquantity');
+  return this.http.get(environment.API_URI+'get_ordersquantity/'+orderstate);
+}
+
+update_orderstate(order_id: number, order_state :string){
+
+  return this.http.get(environment.API_URI+'update_orderstate/'+order_id+'/'+order_state);
 }
 
 }

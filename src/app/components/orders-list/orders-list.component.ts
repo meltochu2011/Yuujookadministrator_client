@@ -10,7 +10,6 @@ import {DishService} from '../../services/dish.service';
 import {WebSocketService} from '../../services/web-socket.service';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 
-
 import { ActivatedRoute, Router} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Gallery_element } from 'src/app/models/Gallery_element';
@@ -45,7 +44,7 @@ export class OrdersListComponent implements OnInit {
  public archivos : any= [];
  selectedOptions =[];
 
-
+  
   constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private http: HttpClient,private websocketservice : WebSocketService) { 
     
     this.Socket_config();
@@ -56,11 +55,21 @@ export class OrdersListComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.getOrders_count(0);  
-    this.orders_quantity();
+   
+      this.initial_function();
     
   }
 
+   initial_function(){
+   
+    environment.pagevalue = 1;
+    this.global_index_page = 0;
+    this.orders_quantity();
+    /**RECIBE INICIO DE FILTRO Y NUMERO DE PAGINA */    
+    this.getOrders_count(this.global_index_page,environment.pagevalue);
+      
+    
+   }
   
 
   /*ESTRUCTURA PARA REALIZAR TAREAS TEMPORALES QUE REQUIEREN ALGUNOS CAMBIOS SOBRE LA ESTRUCTURA DE categori_ins*/ 
@@ -86,7 +95,7 @@ export class OrdersListComponent implements OnInit {
    constante=0;
    LIST_DIREC: string ="";
 
-    
+   Selected_state: boolean = true;  
 
    example : any =
    {
@@ -99,7 +108,7 @@ export class OrdersListComponent implements OnInit {
       "note": "Hola mundo, este es el comentario",
       "products": [
           {
-              "id_product": 1,
+              "id_product": 10,
               "amount": 4,
               "sub_total": 80,
               "add_ons": [
@@ -110,7 +119,7 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 1,
+              "id_product": 10,
               "amount": 5,
               "sub_total": 50,
               "add_ons": [
@@ -118,7 +127,7 @@ export class OrdersListComponent implements OnInit {
               ]
           },
           {
-              "id_product": 1,
+              "id_product": 10,
               "amount": 5,
               "sub_total": 100,
               "add_ons": [
@@ -157,25 +166,35 @@ export class OrdersListComponent implements OnInit {
    }
 
    no_results : boolean = false;
-  getOrders_count(index_begining: number)
+  getOrders_count(index_begining: number,element_position : number)
   {
-       
-    /**PONER EL CURSOR EN MODO ESPERA */
+    
+
+    /**
+     * PARA VERIFICAR LA POSICION DE PAGINA
+     */
+     
+     environment.pagevalue=element_position;
+     
+     this.verify_previusandnextpage(environment.pagevalue); 
+    
+
+    /**INICIAMOS A OBTENER LAS ORDENES
+     * PONER EL CURSOR EN MODO ESPERA */
     document.body.style.cursor = 'wait';
     this.loading_gif=true;
     this.global_index_page=index_begining;
     this.no_results = false;
-    //cantidad = this.global_category_count[0].count;
-    //cantidad = this.global_category_count[0].count;*/
-    //console.log("dato "+this.cantidad);
-    this.dishService.getOrders_count(''+index_begining).subscribe(
+  
+    this.dishService.getOrders_count(''+index_begining,'Procesando').subscribe(
     
       res=> {
 
        
         this.order_info=res;     
         this.loading_gif=false;  
-        document.body.style.cursor = 'default';      
+        document.body.style.cursor = 'default';   
+        //this.verify_previusandnextpage(element_position);   
       },
       err=> {
         
@@ -205,7 +224,7 @@ export class OrdersListComponent implements OnInit {
     */
     
     
-  this.dishService.get_orders_quantity().subscribe(
+  this.dishService.get_orders_quantity('Procesando').subscribe(
     res=> {
 
       this.array_orders_count=res;   
@@ -270,16 +289,15 @@ export class OrdersListComponent implements OnInit {
         
           this.websocketservice.callback.subscribe(res =>{
     
-           if(res=="delivery")
+           if(res == 'delivery')
           {
            //this.delivery_order_alert(); 
-           this.getOrders_count(0);
+           this.getOrders_count(0,environment.pagevalue);
            this.websocketservice.delivery_order_alert();
-          
            
           }
   
-          if(res=="intern")
+          if(res == "intern")
            {
            this.websocketservice.intern_order_alert(); 
            }
@@ -289,11 +307,15 @@ export class OrdersListComponent implements OnInit {
            this.websocketservice.orderresponse.subscribe(res =>{
     
            
-            if(res==true)
+            if(res == true)
             {
                alert("hola");
             }
  
+            if(res == false)
+            {
+               alert("error");
+            }
             });          
            environment.Socket_state = 1;
 
@@ -402,7 +424,120 @@ export class OrdersListComponent implements OnInit {
   }
 
 
+  update_ordersatate(order_id: number)
+ {
+       
+       
+     this.dishService.update_orderstate(order_id,'Completado').subscribe(
+        res =>{
+         
+          this.Update_orderstate_alert(res);  
+          this.orders_quantity();             
+           this.getOrders_count(this.global_index_page,environment.pagevalue);
+        }
+        ,
+        err => console.log(err)
+       
+     )
+
+ }
+
+ Update_orderstate_alert(res : JSON | any)
+ {
  
+   const Toast = Swal.mixin({
+     toast: true,
+     position: 'top-end',
+     showConfirmButton: false,
+     timer: 3000,
+     timerProgressBar: true,
+     didOpen: (toast) => {
+       toast.addEventListener('mouseenter', Swal.stopTimer)
+       toast.addEventListener('mouseleave', Swal.resumeTimer)
+     }
+   })
+   
+   Toast.fire({
+     icon: 'success',
+     title: res
+   })
+  } 
+
+
+  previuspage()
+  {
+
+     /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+    //alert(this.global_index_page); 
+
+     environment.pagevalue = environment.pagevalue-1; 
+      this.global_index_page = this.global_index_page-15;      
+      this.getOrders_count(this.global_index_page,environment.pagevalue); 
+      this.verify_previusandnextpage(environment.pagevalue);
+      
+  }
+ 
+  
+   nextpage()
+  {
+
+     /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+    //alert(this.global_index_page); 
+
+    //if(environment.pagevalue < this.paging_array.length)
+    {
+      environment.pagevalue = environment.pagevalue+1; 
+      this.global_index_page = this.global_index_page+15;      
+      this.getOrders_count(this.global_index_page,environment.pagevalue); 
+      //if(environment.pagevalue  > 0) 
+      {
+          //alert(environment.pagevalue);
+          //this.previus_state = true;
+          this.verify_previusandnextpage(environment.pagevalue);  
+      }
+    }
+    
+  }
+
+
+  /**INICIALIZAMOS nextpage_state y previus_state con true porque si
+   * lo inicializamos con false se genera un bug en el lado del front
+   * en los botones siguiente y anterior
+   */
+  nextpage_state : boolean = true;
+  previus_state : boolean = true;
+
+  verify_previusandnextpage(element_position : number){
+
+    if(this.paging_array.length == 1 ){
+      this.nextpage_state = false;
+      this.previus_state = false;
+  }
+
+  if(this.paging_array.length > element_position ){
+    
+    this.nextpage_state = true;
+   
+  }
+
+  if(this.paging_array.length == element_position ){
+    
+    this.nextpage_state = false;
+
+  }
+
+  if( element_position > 1){
+    
+    this.previus_state = true;            
+  }
+
+  if( element_position == 1){
+    
+    this.previus_state = false;  
+          
+  }
+  
+  }
 
   /*extraerBase64 = async ($event : any) => new Promise((resolve, reject) =>{
        

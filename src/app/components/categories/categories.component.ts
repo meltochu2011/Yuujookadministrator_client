@@ -72,10 +72,10 @@ IMAGE_DIRECTORY_EDIT: string = "";
 
   ngOnInit(): void {
    
-    
-    this.getcategories_quantity();
-    
-    this.getCategories(0);  
+    environment.pagevalue = 1;
+    this.global_index_page = 0;
+    this.getcategories_quantity();    
+    this.getCategories(this.global_index_page,environment.pagevalue);  
     
   }
 
@@ -114,8 +114,10 @@ IMAGE_DIRECTORY_EDIT: string = "";
    constante=0;
    LIST_DIREC: string ="";
    no_results : boolean = false;
-  getCategories(index_begining: number)
+  getCategories(index_begining: number, page_position: number)
   {
+
+     environment.pagevalue= page_position;
         /**PONER EL CURSOR EN MODO ESPERA */
     document.body.style.cursor = 'wait';
     this.loading_gif=true;
@@ -129,7 +131,11 @@ IMAGE_DIRECTORY_EDIT: string = "";
         this.category=res;  
       
         this.loading_gif=false;    
-        document.body.style.cursor = 'default';       
+        document.body.style.cursor = 'default';     
+     
+        environment.pagevalue=page_position;
+        this.verify_previusandnextpage(environment.pagevalue); 
+      
       },
       //err=> console.error(err)
        err=> {
@@ -258,7 +264,9 @@ IMAGE_DIRECTORY_EDIT: string = "";
 
           this.limpiar_campos();         
           this.getcategories_quantity();
-          this.getCategories(0);
+          this.global_index_page = 0;
+          environment.pagevalue = 1;          
+          this.getCategories(this.global_index_page,environment.pagevalue);
           document.body.style.cursor = 'default';
           this.alerta_categoria("a")
         },
@@ -301,7 +309,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
         res =>{
          
           this.limpiar_campos();
-          this.getCategories(this.global_index_page);
+          this.getCategories(this.global_index_page,environment.pagevalue);
            
           this.Save_category_changes_alert(res);
            //alert(res);
@@ -324,7 +332,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
        /**Mandamos cat para indicar que es una categoría la que se elimina y así darle su respectiva alerta */
        this.alerta_elemento_eliminado("cat");
        this.getcategories_quantity(); 
-       this.getCategories(this.global_index_page);
+       this.getCategories(this.global_index_page,environment.pagevalue);
        
      },
      err=> console.error(err)
@@ -386,6 +394,74 @@ IMAGE_DIRECTORY_EDIT: string = "";
   }
  
 
+
+  nextpage()
+  {
+
+     /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+    //alert(this.global_index_page); 
+      environment.pagevalue = environment.pagevalue+1; 
+      this.global_index_page = this.global_index_page+10;      
+      this.getCategories(this.global_index_page,environment.pagevalue); 
+      this.verify_previusandnextpage(environment.pagevalue);  
+    
+  }
+
+  previuspage()
+  {
+
+     /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+    //alert(this.global_index_page); 
+
+      environment.pagevalue = environment.pagevalue-1; 
+      this.global_index_page = this.global_index_page-10;      
+      this.getCategories(this.global_index_page,environment.pagevalue);
+       
+      this.verify_previusandnextpage(environment.pagevalue);
+     
+  }
+ 
+
+
+
+   /**INICIALIZAMOS nextpage_state y previus_state con true porque si
+   * lo inicializamos con false se genera un bug en el lado del front
+   * en los botones siguiente y anterior
+   */
+   nextpage_state : boolean = true;
+   previus_state : boolean = true;
+
+  verify_previusandnextpage(element_position : number){
+
+    if(this.paging_array.length == 1 ){
+      this.nextpage_state = false;
+      this.previus_state = false;
+  }
+
+  if(this.paging_array.length > element_position ){
+    
+    this.nextpage_state = true;
+   
+  }
+
+  if(this.paging_array.length == element_position ){
+    
+    this.nextpage_state = false;
+
+  }
+
+  if( element_position > 1){
+    
+    this.previus_state = true;            
+  }
+
+  if( element_position == 1){
+    
+    this.previus_state = false;  
+          
+  }
+  
+  }
 
 
 alerta_categoria(tipo: string)

@@ -68,20 +68,24 @@
 }
 
 
-var global = 0;
+let global = 0;
 
-function Global_group(formChild) {
+function Global_group(position) {
   
-  global=formChild;
+  global=position;
+  //alert("el global "+global);
 
-  var campo = document.getElementById(formChild);
-  var descri = document.getElementById('description');
+  /*var descri = document.getElementById(formChild);
+  var campo = document.getElementById('description');
+
   
   if(document.getElementById(formChild) != "")
   {
+    
     myFunction_modal(formChild);
   }
-
+*/
+  
 }
 
 
@@ -89,7 +93,7 @@ function Global_group(formChild) {
 function actualizar_grupo() {
  
 
-  document.getElementById(global).value=document.getElementById("description").value;
+document.getElementById(global).value=document.getElementById("description").value;
 document.getElementById("max_selected"+global).value=document.getElementById("max_sele").value;
 
 
@@ -166,6 +170,8 @@ if(descri.value != '')
 
  var campo2 = document.getElementById('max_selected'+formChild);
  var max_selected = document.getElementById('max_sele');
+
+ 
 
  if (max_selected.value == '' ) {
   

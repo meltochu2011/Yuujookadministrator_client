@@ -15,8 +15,8 @@ export class WebSocketService extends Socket{
 
   constructor() {
     super({
-      //url:'http://localhost:4000',
-      url:'https://nuevo-production-983c.up.railway.app',
+      url:'http://localhost:4000',
+      //url:'https://nuevo-production-983c.up.railway.app',
       options:{
         query:{
           groupname: 'yuujook',
@@ -56,6 +56,7 @@ export class WebSocketService extends Socket{
 
  
 
+  
   delivery_order_alert(){
     // assets/img/no_image.png
 
@@ -80,34 +81,43 @@ export class WebSocketService extends Socket{
      //height: '30px',
    })
 
+
+   /*const audio = document.createElement('assets/sounds/SD_ALERT_25.mp3');
+audio.preload = "auto";
+audio.src = "https://manzdev.github.io/codevember2017/assets/eye-tiger.mp3";
+audio.play();
+document.body.appendChild(audio);*/
+
+
+
+
+
    const music = new Audio('assets/sounds/SD_ALERT_25.mp3');
    
-   setTimeout(function(){      
-   music.load();
-   music.play();
-  
-   },1000);
+   
 
-   setTimeout(function(){      
-     music.load();
-     music.play();
+      let i = 0;
+//let max = 4;
+(function repeat(){
+  if (++i > 4) return;
+  setTimeout(function(){
     
-     },4000);
-
-     setTimeout(function(){      
-       music.load();
-       music.play();
       
-       },8000);
- 
-       setTimeout(function(){      
-         music.load();
-         music.play();
-        
-         },12000);
+      music.load();
+      music.play();
+
+
+    repeat();
+  }, 3000);
+})();
+
+
    
    }
 
+
+    
+   
    
    intern_order_alert(){
     // assets/img/no_image.png
@@ -143,38 +153,6 @@ export class WebSocketService extends Socket{
    music.play();
   
    },1000);
-
-   setTimeout(function(){      
-     music.load();
-     music.play();
-    
-     },3000);
-
-     setTimeout(function(){      
-       music.load();
-       music.play();
-      
-       },5000);
- 
-       setTimeout(function(){      
-         music.load();
-         music.play();
-        
-         },7000);
-   
-         setTimeout(function(){      
-           music.load();
-           music.play();
-          
-           },9000);
-     
-           setTimeout(function(){      
-             music.load();
-             music.play();
-            
-             },11000);
-       
-     
 
    }
 

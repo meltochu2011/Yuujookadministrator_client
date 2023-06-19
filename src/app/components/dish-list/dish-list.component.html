@@ -24,7 +24,7 @@
                 <nav aria-label="...">
                 <ul class="pagination pagination-sm add_bottom_30">
                     
-                    <li class="page-item" *ngIf="( previus_state == true)">
+                    <li class="page-item" (click)="previuspage()" *ngIf="( previus_state == true)">
                         <a class="page-link" >Anterior</a>
                     </li>
 
@@ -43,7 +43,7 @@
                             (click)="selectbypage(paging.init , cont+1 )">{{cont+1}}</a>
                     </li>
 
-                    <li class="page-item" *ngIf="( nextpage_state == true)">
+                    <li class="page-item" (click)="nextpage()" *ngIf="( nextpage_state == true)">
                         <a class="page-link" >Siguiente</a>
                     </li>
 
@@ -305,7 +305,7 @@ ________________________________________________________________________________
                 <ul class="pagination pagination-sm add_bottom_30">
 
 
-                    <li class="page-item" *ngIf="( previus_state == true)">
+                    <li class="page-item" (click)="previuspage()" *ngIf="( previus_state == true)">
                         <a class="page-link" >Anterior</a>
                     </li>
 
@@ -325,7 +325,7 @@ ________________________________________________________________________________
                             (click)="selectbypage(paging.init , cont+1 )">{{cont+1}}</a>
                     </li>
 
-                    <li class="page-item" *ngIf="( nextpage_state == true)">
+                    <li class="page-item" (click)="nextpage()" *ngIf="( nextpage_state == true)">
                         <a class="page-link" >Siguiente</a>
                     </li>
 

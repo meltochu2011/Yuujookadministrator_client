@@ -27,6 +27,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { GallerycompComponent } from './components/gallerycomp/gallerycomp.component';
 import { OrderdetailModalComponent } from './components/orderdetail-modal/orderdetail-modal.component';
 import { WebSocketService } from './services/web-socket.service';
+import { OrdersListCompletedComponent } from './components/orders-list-completed/orders-list-completed.component';
 
 
 
@@ -43,7 +44,8 @@ import { WebSocketService } from './services/web-socket.service';
     EditdishDetailComponent,
     LoginuserComponent,
     GallerycompComponent,
-    OrderdetailModalComponent
+    OrderdetailModalComponent,
+    OrdersListCompletedComponent
   ],
   imports: [
     BrowserModule,
