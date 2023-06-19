@@ -3,11 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   //My RAILWAY 
    
-  //API_URI: 'https://nuevo-production-983c.up.railway.app/',
-    API_URI: 'http://localhost:4000/',
+  API_URI: 'https://nuevo-production-983c.up.railway.app/',
+    //API_URI: 'http://localhost:4000/',
   
     
   /**VARIABLES PARA LA GALERÍA */
