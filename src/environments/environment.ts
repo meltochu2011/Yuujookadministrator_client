@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   //My RAILWAY 
    
   API_URI: 'https://nuevo-production-983c.up.railway.app/',
