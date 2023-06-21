@@ -1,4 +1,4 @@
-import { Byte } from "@angular/compiler/src/util";
+//import { Byte } from "@angular/compiler/src/util";
 
 export interface Dish_register{
  id_product?: number;
