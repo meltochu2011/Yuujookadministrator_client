@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 import { Category } from 'src/app/models/Category';
 import { Category_ins } from 'src/app/models/Category_ins';
@@ -8,14 +8,14 @@ import { Paging } from 'src/app/models/Paging';
 
 import {DishService} from '../../services/dish.service';
 import {WebSocketService} from '../../services/web-socket.service';
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+//import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 
 import { ActivatedRoute, Router} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Gallery_element } from 'src/app/models/Gallery_element';
 import {environment} from 'src/environments/environment';
 import Swal from 'sweetalert2';
-import { ThisReceiver } from '@angular/compiler';
+//import { ThisReceiver } from '@angular/compiler';
 import { Dish_ins } from 'src/app/models/Dish_ins';
 
 import { Dish_edit_register } from 'src/app/models/Dish_edit_register';
@@ -30,7 +30,7 @@ import { OrderdetailModalComponent } from '../orderdetail-modal/orderdetail-moda
 })
 
 
-export class OrdersListComponent implements OnInit {
+export class OrdersListComponent {
 
  /**Para cambiar la forma del cursor mientras se carga algo*/
  public loading_gif : any|boolean;
