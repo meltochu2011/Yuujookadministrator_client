@@ -66,25 +66,26 @@
                 <p *ngIf="( no_results == true)" style="color: rgb(88, 74, 126); font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: larger;">
                     NO FUE POSIBLE OBTENER RESULTADOS, INTENTE MAS TARDE!
                 </p>
-                <div  class="form-group">    
-                           <!-- <a class="btn_1 gray" (click)="conectarsocketintern()"  
-                            ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden interna</a>
+               
 
-                            &nbsp;&nbsp;
-                            <a class="btn_1 gray" (click)="conectarsocket()"  
-                            ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden externa</a>
-
-                            &nbsp;&nbsp;-->
+                            <div class="row">                            
+                            
+                                <div class="col-md-3">
+                                    <div class="form-group">
                             <a class="btn_1 gray"  routerLink ="/dishes/orders_list"
-                            ><i class="fa fa-fw fa-pencil"  ></i> <i class="fa fa-fw fa-list"></i> En proceso</a>
-                            
-                            &nbsp;&nbsp;                            
-                            <a class="btn_1 gray"  routerLink ="/dishes/orders_list_completed"
-                            ><i class="fa fa-fw fa-pencil"  ></i> <i class="fa fa-fw fa-list"></i> Completados</a>
-                           
+                            ><i class="fa fa-fw fa-eye"></i> <i class="fa fa-fw fa-list"></i> En proceso</a>
+                                    </div>
+                               </div>
                             
 
-                           </div>
+                               <div class="col-md-3">
+                                  <div class="form-group">
+                            <a class="btn_1 gray"  routerLink ="/dishes/orders_list_completed"
+                            ><i class="fa fa-fw fa-eye"></i> <i class="fa fa-fw fa-list"></i> Completados</a>
+                                 </div>
+                               </div>
+
+                            </div>
                            
 
                             <div class="list_general" *ngFor="let order of order_info, let cont = index">
@@ -105,7 +106,8 @@
                                             &nbsp;&nbsp;<label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                              
                                              &nbsp;&nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;&nbsp;&nbsp;  {{order.order_time}} 
-                                             <i class="pending"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
+                                             <i class="pending"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}} </i> 
+                                             
                                             </span>
                                         <figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style="cursor: pointer" data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail"></figure>
                                         <h4>
@@ -118,9 +120,7 @@
                                             --> 
                                         </h4>
                                             <p>  <a class='btn_1 gray' data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail">  <i  class='fa fa-fw fa-list'></i> Detalle</a>&nbsp;&nbsp; Nota: {{order.tag}}</p>
-                                            <p>
-                                                <a class="btn_1 gray" (click)="update_ordersatate(order.id_order)" style="background-color: rgb(65, 190, 169); color: black;">  <i class="fa fa-fw fa-check-circle-o"></i>Restablecer</a>  
-                                            </p> 
+                                            
 
                                             
                                     </li>
@@ -210,6 +210,9 @@ ________________________________________________________________________________
                             <div class="col-md-12">
                                 <div class="form-group">
                                 
+                                    <div class="form-group" style="text-align: right; margin-top: 10px; margin-right: 30px;">
+                                    <a class="btn_1 gray" data-dismiss="modal" (click)="update_ordersatate(order.id_order)" style="background-color: rgb(65, 190, 169); color: black;">  <i class="fa fa-fw fa-check-circle-o"></i>Restablecer</a>
+                                    </div>
                                      <h4><label> Cliente:</label> {{order.person_name}} {{order.person_second_name}}  </h4> 
             
                                 
@@ -228,10 +231,11 @@ ________________________________________________________________________________
                             <div class="col-md-12">
                                 <div class="form-group">
                                     
-                                         <label for="">Estado </label>
-                                         <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
-                                         <i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i> 
-                                    
+                                         <label for="">Estado</label>
+                                         
+                                         <i class="pending" *ngIf="(order.order_state == 'Completado')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
+                                         <!--<i class="pending" *ngIf="(order.order_state == 'En espera')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px ">{{order.order_state}}</i>--> 
+                                         
                                          &nbsp;&nbsp;<label>telefono:</label> 
                                          <i class="read" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px; cursor: pointer ">
                                             {{order.user_phone}} 
@@ -420,3 +424,6 @@ ________________________________________________________________________________
 
             </div>
    
+
+
+            

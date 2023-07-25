@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 
@@ -12,11 +13,16 @@ export class WebSocketService extends Socket{
   outEven : EventEmitter <any> = new EventEmitter();
   callback : EventEmitter <any> = new EventEmitter();
   orderresponse : EventEmitter <any> = new EventEmitter();
+  
 
   constructor() {
+
+    
     super({
-      //url:'http://localhost:4000',
-      url:'https://nuevo-production-983c.up.railway.app',
+
+      
+      
+      url:environment.SOCKET_API_URI,
       options:{
         query:{
           groupname: 'yuujook',
@@ -29,6 +35,12 @@ export class WebSocketService extends Socket{
 
    }
 
+    URL_WITHOUT_DIAGONAL : string = '';
+   
+   cut_url_diagonal(){
+   
+    
+   }
 
    listen =() => {
     /**ESCUCHAMOS LOS EVENTOS */
@@ -97,7 +109,6 @@ document.body.appendChild(audio);*/
    
 
       let i = 0;
-//let max = 4;
 (function repeat(){
   if (++i > 4) return;
   setTimeout(function(){

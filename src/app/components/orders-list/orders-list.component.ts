@@ -1,10 +1,6 @@
 import { Component} from '@angular/core';
 
 import { Category } from 'src/app/models/Category';
-import { Category_ins } from 'src/app/models/Category_ins';
-import { Ruta } from 'src/app/models/Ruta';
-import { Paging } from 'src/app/models/Paging';
-
 
 import {DishService} from '../../services/dish.service';
 import {WebSocketService} from '../../services/web-socket.service';
@@ -15,13 +11,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Gallery_element } from 'src/app/models/Gallery_element';
 import {environment} from 'src/environments/environment';
 import Swal from 'sweetalert2';
-//import { ThisReceiver } from '@angular/compiler';
-import { Dish_ins } from 'src/app/models/Dish_ins';
 
-import { Dish_edit_register } from 'src/app/models/Dish_edit_register';
-import { Dish_edit } from 'src/app/models/Dish_edit';
-import {EditdishDetailComponent} from 'src/app/components/editdish-detail/editdish-detail.component';
-import { OrderdetailModalComponent } from '../orderdetail-modal/orderdetail-modal.component';
+
+
 
 @Component({
   selector: 'app-orders-list',
@@ -45,7 +37,7 @@ export class OrdersListComponent {
  selectedOptions =[];
 
   
-  constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private http: HttpClient,private websocketservice : WebSocketService) { 
+  constructor(/*private readonly sppinerSvc : SppinerService,*/private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private http: HttpClient,private websocketservice : WebSocketService) { 
     
     this.Socket_config();
     //this.getOrders_count(0); 
@@ -424,19 +416,28 @@ export class OrdersListComponent {
   }
 
 
+  public loading_statebuton :boolean = false;
+  
   update_ordersatate(order_id: number)
  {
-       
-       
+      this.loading_statebuton=true; 
+      document.body.style.cursor = 'wait';
      this.dishService.update_orderstate(order_id,'Completado').subscribe(
         res =>{
          
           this.Update_orderstate_alert(res);  
           this.orders_quantity();             
            this.getOrders_count(this.global_index_page,environment.pagevalue);
+           
+           this.loading_statebuton=false;
+           document.body.style.cursor = 'default';
         }
         ,
-        err => console.log(err)
+        err => {
+          this.loading_statebuton=false;
+          this.error_updating_state()
+        
+        } 
        
      )
 
@@ -539,6 +540,59 @@ export class OrdersListComponent {
   
   }
 
+  error_updating_state()
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lo sentimos...',
+      text: 'No se completo la actualizacion!',
+      footer: '<a >Notifique error</a>'
+    })            
+
+  }
+
+   userphone : string | any = '58014730';
+
+  async choose_option_call(){
+    
+    Swal.fire({
+      title: '<strong>Elija el tipo de mensaje a enviar</strong>',
+      //icon: 'info',
+      html:
+       
+        '<a href="https:////wa.me/+502'+this.userphone+'/?text=hola, hemos recibido su pedido, le mantendremos al pendiente por su orden" target="_blank">' +
+        '<button name="button" class="btn btn-primary btn-block" style="background: #25d366; border-color: transparent" ><i class="fa fa-whatsapp"></i> Notificar orden recibida</button>'+
+        '</a> ' +
+        '<br> ' +
+        
+        '<a href="https:////wa.me/+502'+this.userphone+'/?text=hola, su pedido llegará en 15 minutos" target="_blank">' +
+        '<button name="button" class="btn btn-primary btn-block" style="background: #25d366; border-color: transparent" ><i class="fa fa-whatsapp"></i> Notificar llegada en 15 min</button>'+
+        '</a> ' +
+        '<br> ' +
+
+        '<a href="https:////wa.me/+502'+this.userphone+'/?text=hola, su pedido llegará en 20 minutos" target="_blank">' +
+        '<button name="button" class="btn btn-primary btn-block" style="background: #25d366; border-color: transparent" ><i class="fa fa-whatsapp"></i> Notificar llegada en 20 min</button>'+
+        '</a> '+
+        '<br> '+
+        
+        '<a href="https:////wa.me/+502'+this.userphone+'/?text=hola, su pedido llegará en 30 minutos" target="_blank">' +
+        '<button name="button" class="btn btn-primary btn-block" style="background: #25d366; border-color: transparent" ><i class="fa fa-whatsapp"></i> Notificar llegada en 30 min</button>'+
+        '</a> '+
+        '<br> ',
+        
+      showCloseButton: true,
+      showCancelButton: true,
+      /*focusConfirm: false,
+      confirmButtonText:
+        'Aceptar',
+      confirmButtonColor: '#3085d6',
+      confirmButtonAriaLabel: 'recibida',*/
+      cancelButtonText:
+        'Cancelar',
+      cancelButtonAriaLabel: 'Thumbs down'
+    })
+    
+}
   /*extraerBase64 = async ($event : any) => new Promise((resolve, reject) =>{
        
          try {

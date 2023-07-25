@@ -2,7 +2,8 @@ export const environment = {
    production: true,
   //My RAILWAY 
    
-  API_URI: 'https://nuevo-production-983c.up.railway.app/',
+  API_URI: 'https://back-v9n1.onrender.com/',
+  SOCKET_API_URI:'https://back-v9n1.onrender.com',
     //API_URI: 'http://localhost:4000/',
   
     

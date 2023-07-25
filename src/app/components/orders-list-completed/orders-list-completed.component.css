@@ -1,0 +1,13 @@
+table.responsivegene {border: 1px solid #cfd3e9;width: 100%;margin:0;padding:0;border-collapse: collapse;border-spacing: 0; }
+/*table.responsivegene tr {border: 1px solid #ddd;padding: 5px; }*/
+/*table.responsivegene th, table td { }*/
+table.responsivegene th {font-size: 12px;}
+
+@media screen and (max-width: 1200px) {
+    table.responsivegene {border: 0;}
+    table.responsivegene thead {display: none;}
+    table.responsivegene tr {margin-bottom: 10px;display: block;border-bottom: 2px solid #ddd;}
+    table.responsivegene td {display: block; text-align: left; font-size: 12px;}
+    table.responsivegene td:last-child { border-bottom: 0;}
+    table.responsivegene td:before {content: attr(data-label);float: left;text-transform: uppercase;}
+  }

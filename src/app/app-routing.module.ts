@@ -9,15 +9,15 @@ import {CategoriesComponent} from './components/categories/categories.component'
 import { EditdishDetailComponent } from './components/editdish-detail/editdish-detail.component';
 import { LoginuserComponent } from './components/loginuser/loginuser.component';
 import { OrdersListCompletedComponent } from './components/orders-list-completed/orders-list-completed.component';
-
-
+import { JsonwtService, Component_token} from './services/jsonwt.service';
 
 
 
 const routes: Routes = [
    {
-    path:'',
-    redirectTo: '/users/add',
+    path:'',    
+    redirectTo: 'users/login',
+    
     //redirectTo: '/users/add', 
     pathMatch:'full'
     
@@ -26,7 +26,7 @@ const routes: Routes = [
    /*Yuujook */
 
    {
-    path: 'users/add',
+    path: 'users/login',
     component:LoginuserComponent
 
    },
@@ -79,8 +79,13 @@ const routes: Routes = [
     /**LISTAR ORDENES COMPLETADAS */
    path: 'dishes/orders_list_completed',
    component:OrdersListCompletedComponent
-  }
-   
+   },
+
+   {
+    /**VERIFICAR USUARIO */
+   path: 'admin/user',
+   component:LoginuserComponent
+   }
   
 
 ];

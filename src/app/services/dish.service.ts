@@ -4,6 +4,7 @@ import {Category} from '../models/Category'
 import { Dish_register } from '../models/Dish_register';
 import { Gallery_element } from '../models/Gallery_element';
 import {environment} from 'src/environments/environment';
+import { Userload } from '../models/Userload';
 
 
 
@@ -202,5 +203,10 @@ update_orderstate(order_id: number, order_state :string){
 
   return this.http.get(environment.API_URI+'update_orderstate/'+order_id+'/'+order_state);
 }
+
+/**AUTENTICAR ADMIN */
+ autentication(user_data: Userload){
+   return this.http.post(environment.API_URI+'admin/user',user_data);
+  }
 
 }

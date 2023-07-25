@@ -15,9 +15,6 @@ export interface Component_dat{
 })
 export class SharingService {
 
-   
-
-
   private sharingObservablePrivate : BehaviorSubject<Component_dat> = 
   new BehaviorSubject <Component_dat>({ location : 'Hola mundo '});
 

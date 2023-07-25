@@ -13,7 +13,7 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router} from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {environment} from 'src/environments/environment';
-import { delay } from 'rxjs';
+import { Subscription, delay } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ThisReceiver } from '@angular/compiler';
 import { Dish_ins } from 'src/app/models/Dish_ins';
@@ -24,6 +24,7 @@ import {WebSocketService} from '../../services/web-socket.service';
 import {SharingService,Component_dat} from '../../services/sharing.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
+import {JsonwtService,Component_token} from 'src/app/services/jsonwt.service'
 
 
 
@@ -61,7 +62,12 @@ IMAGE_DIRECTORY_EDIT: string = "";
  selectedOptions =[];
 
  data$: Observable <Component_dat>;
-  constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private http: HttpClient, private websocketservice : WebSocketService , private sharingservice : SharingService, private cookiesvc : CookieService) { 
+ Token$: Observable<Component_token> | undefined;
+ /*datos : string | any;]*/
+  //value: Subscription;
+ constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private http: HttpClient, 
+    private websocketservice : WebSocketService , private sharingservice : SharingService, private cookiesvc : CookieService, private tokenSvc : JsonwtService)
+     { 
 
         /**los datos del obserbable son para mostrar en la aplicacion y los datos de dish_register.image son 
      * los que se guardan
@@ -72,7 +78,16 @@ IMAGE_DIRECTORY_EDIT: string = "";
         /**datos a guardar, se tiene que enviar la direccion completa de donde estan guardadas las 
          * imagenes porque la locacion de las imagenes puede cambiar
         */
-        environment.Dish_image="uploads/no_image.png"
+        environment.Dish_image="uploads/no_image.png";
+        this.Token$= tokenSvc.TokenObservable;
+        //this.Token$= tokenSvc.TokenObservable;
+        /*this.value = this.tokenSvc.TokenObservable.subscribe(value => {
+          this.datos = value.Token;
+        });
+        
+        console.log(''+this.datos)*/
+        
+      
 
    this.Socket_config();    
 

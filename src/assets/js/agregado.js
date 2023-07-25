@@ -89,7 +89,6 @@ function Global_group(position) {
 }
 
 
-
 function actualizar_grupo() {
  
 

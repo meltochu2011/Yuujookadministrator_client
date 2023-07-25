@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Dish_register } from 'src/app/models/Dish_register';
+//import { Dish_register } from 'src/app/models/Dish_register';
 import { Gallery_element } from 'src/app/models/Gallery_element';
 import { DishService } from 'src/app/services/dish.service';
 import { environment } from 'src/environments/environment';
 //import { DishFormComponent } from '../dish-form/dish-form.component';
 import Swal from 'sweetalert2';
 import {SharingService,Component_dat} from '../../services/sharing.service';
-import { DishFormComponent } from '../dish-form/dish-form.component';
+//import { DishFormComponent } from '../dish-form/dish-form.component';
 import { Observable } from 'rxjs';
-import { ReadVarExpr } from '@angular/compiler';
+//import { ReadVarExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-gallerycomp',

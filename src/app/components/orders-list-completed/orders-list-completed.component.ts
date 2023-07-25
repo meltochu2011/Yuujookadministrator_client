@@ -414,9 +414,11 @@ public loading_modaldetail_gif : any|boolean;
  }
 
 
+ public loading_statebuton :boolean = false;
  update_ordersatate(order_id: number)
  {
-       
+  this.loading_statebuton=true; 
+  document.body.style.cursor = 'wait';
      this.dishService.update_orderstate(order_id,'Procesando').subscribe(
         res =>{
          
@@ -424,9 +426,16 @@ public loading_modaldetail_gif : any|boolean;
            this.Update_orderstate_alert(res);  
            this.orders_quantity();             
            this.getOrders_count(this.global_index_page,environment.pagevalue);
+
+           this.loading_statebuton=false;
+           document.body.style.cursor = 'default';
         }
         ,
-        err => console.log(err)
+        err => {
+          this.loading_statebuton=false;
+          this.error_updating_state()
+        
+        } 
        
      )
 
@@ -454,6 +463,16 @@ public loading_modaldetail_gif : any|boolean;
   } 
 
 
+  error_updating_state()
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lo sentimos...',
+      text: 'No se completo la actualizacion!',
+      footer: '<a >Notifique error</a>'
+    })            
+
+  }
 
  previuspage()
  {

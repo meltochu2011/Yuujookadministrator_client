@@ -1,6 +1,6 @@
 table.responsivegene {border: 1px solid #cfd3e9;width: 100%;margin:0;padding:0;border-collapse: collapse;border-spacing: 0; }
 /*table.responsivegene tr {border: 1px solid #ddd;padding: 5px; }*/
-table.responsivegene th, table td { }
+/*table.responsivegene th, table td { }*/
 table.responsivegene th {font-size: 12px;}
 
 @media screen and (max-width: 1200px) {

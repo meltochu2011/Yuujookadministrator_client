@@ -130,7 +130,7 @@ aria-hidden="true">
         <div class="modal-body">Seleccione "Cerrar sesión" si desea terminar la sesion actual.</div>
         <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-            <a class="btn btn-primary" data-dismiss="modal" routerLink="/dishes/categories">Cerrar sesion</a>
+            <a class="btn btn-primary" data-dismiss="modal" (click)="clean()" routerLink="users/login">Cerrar sesion</a>
         </div>
     </div>
 </div>

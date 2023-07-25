@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import {JsonwtService,Component_token} from 'src/app/services/jsonwt.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-navigation',
@@ -7,16 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private jwtservice : JsonwtService) { }
 
   ngOnInit(): void {
   }
 
+
   toogle : boolean =false;
 
-    too_menu(){
-        
-        this.toogle=false;
+  too_menu(){
+      
+      this.toogle=false;
+  }
+
+    clean(){
+
+      this.jwtservice.clean;
+      window.location.reload();
+      
     }
   
 

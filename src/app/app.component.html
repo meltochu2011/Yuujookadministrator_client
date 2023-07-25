@@ -1,15 +1,15 @@
 <!--MOSTRAR EL COMPONENTE DE NAVEGACION, LLAMA AL HTML DEL COMPONENTE DE NAVEGACION-->
 
-<div *ngIf="( logueado == 0)"> 
 
+<div *ngIf="( tokenvalue === '')">
     <app-loginuser style="background-color: rgb(173, 107, 26);"></app-loginuser>  
 </div>
 
 
-<div *ngIf="( logueado == 1)"> 
+<div *ngIf="( tokenvalue !== '')"> 
 <app-navigation></app-navigation>
 
-<div class="container p-4">
+   <div class="container p-4">
     <router-outlet></router-outlet>
     <!--LLAMAMOS AL FOOTER, QUE ESTA EN EL COMPONENTE footer-comp-->
     <app-footer-comp></app-footer-comp>
@@ -21,6 +21,6 @@
     <app-orderdetail-modal></app-orderdetail-modal>
     <!--______________________________FIN LISTADO DE MODALES_________________________________-->
     
-    
-</div>
+     
+   </div>
 </div>

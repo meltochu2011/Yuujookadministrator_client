@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { DishService } from './services/dish.service';
-import {HttpClientModule} from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import { DishFormComponent } from './components/dish-form/dish-form.component';
 import { DishListComponent } from './components/dish-list/dish-list.component';
 import { FormsModule} from '@angular/forms';
@@ -17,7 +17,7 @@ import {MatListModule,MatListOption} from '@angular/material/list';
 import { ReactiveFormsModule} from '@angular/forms';
 
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { OrdersListComponent } from './components/orders-list/orders-list.component';
+import { OrdersListComponent, } from './components/orders-list/orders-list.component';
 import { FooterCompComponent } from './components/footer-comp/footer-comp.component';
 
 import { CoreModule} from './core/core.module';
@@ -28,6 +28,17 @@ import { GallerycompComponent } from './components/gallerycomp/gallerycomp.compo
 import { OrderdetailModalComponent } from './components/orderdetail-modal/orderdetail-modal.component';
 import { WebSocketService } from './services/web-socket.service';
 import { OrdersListCompletedComponent } from './components/orders-list-completed/orders-list-completed.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SppinerInterceptor } from './components/sppiner-interceptor';
+/**INICIO */
+import {Component, Inject} from '@angular/core';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import {NgIf} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
+
 
 
 
@@ -40,12 +51,14 @@ import { OrdersListCompletedComponent } from './components/orders-list-completed
     CategoriesComponent,
     OrdersListComponent,   
     FooterCompComponent,
-    //GalleryModalComponent,
     EditdishDetailComponent,
     LoginuserComponent,
     GallerycompComponent,
     OrderdetailModalComponent,
-    OrdersListCompletedComponent
+    OrdersListCompletedComponent,
+    SpinnerComponent,
+    
+   
   ],
   imports: [
     BrowserModule,
@@ -57,9 +70,14 @@ import { OrdersListCompletedComponent } from './components/orders-list-completed
     MatListModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
-    CoreModule
+    CoreModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
-  providers: [DishService,CookieService,WebSocketService],
+  providers: [DishService,CookieService,WebSocketService, 
+  {provide : HTTP_INTERCEPTORS, useClass: SppinerInterceptor, multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 
