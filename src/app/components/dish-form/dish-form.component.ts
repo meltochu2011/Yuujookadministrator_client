@@ -19,6 +19,7 @@ import {WebSocketService} from '../../services/web-socket.service';
 
 
 
+
 @Component({
   selector: 'app-dish-form',
   templateUrl: './dish-form.component.html',
@@ -98,7 +99,6 @@ export class DishFormComponent implements OnInit {
     name: '',
     max_selected: ''
   };
-
 
     category: any =[];
     selectedOptions =[];
@@ -425,8 +425,8 @@ normal_alert(elemento : String){
 
     keyup_Global_child(formChild : number){
     
-      this.Global_position=formChild;
-      this.Global_child = this.formParent.value.group_item_options[formChild].indexid;
+      /*this.Global_position=formChild;
+      this.Global_child = this.formParent.value.group_item_options[formChild].indexid;*/
       this.verify_sons_items();
       /*this.verify_sons_of_group(this.Global_position);*/
 
@@ -657,22 +657,79 @@ normal_alert(elemento : String){
      
     groupitems_indicator : number = 0;
 
+
+    maxsele : number | undefined = 0;
+    sons_counter : number = 0;
+    Sons_count(){
+
+      this.verify_sons_items();
+     this.sons_counter=0;
+     this.maxsele = parseInt(""+this.group.max_selected);
+      
+     for(let i=0; i<this.formParent.value.dinamicos.length; i++)
+     {
+       
+       if(this.formParent.value.dinamicos[i].signal == this.formParent.value.group_item_options[this.Global_position].indexid)
+       {
+              this.sons_counter++;
+             
+       }
+     }
+
+     if(this.maxsele > this.sons_counter && this.maxsele > 1){
+      alert("La cantidad de items seleccinables no concuerda con la cantidad de items"); 
+       //this.group.max_selected= '1';
+       /*this.group.max_selected= '0';  */
+       this.formParent.value.group_item_options[this.Global_position].max_selected='1'; 
+      }
+
+    }
+
+
+    sons_counter_groups : number = 0;
+    groups_count(group_index : number){
+    this.verify_sons_items();
+    this.sons_counter_groups=0;
+     this.maxsele = parseInt(""+this.formParent.value.group_item_options[group_index].max_selected);
+      
+     for(let i=0; i<this.formParent.value.dinamicos.length; i++)
+     {
+       if(this.formParent.value.dinamicos[i].signal == this.formParent.value.group_item_options[group_index].indexid)
+       {
+              this.sons_counter_groups++;             
+       }
+     }
+
+     if(this.maxsele > this.sons_counter_groups && this.maxsele > 1){
+    
+       //this.formParent.value.group_item_options[group_index].max_selected='1';
+       this.formParent.value.group_item_options[group_index].max_selected='1';
+       alert("La cantidad de items seleccinables no concuerda con la cantidad de items"); 
+       
+       /*this.group.max_selected= '0';  
+       this.formParent.value.group_item_options[this.Global_position].max_selected='0';  */ 
+      }
+      
+
+    }
+
+
      Present_Child(formChild : number){
        
       this.Global_position=formChild;
 
-        if(this.formParent.value.group_item_options[formChild].name == "" || this.formParent.value.group_item_options[formChild].max_selected == ""
+        /*if(this.formParent.value.group_item_options[formChild].name == "" || this.formParent.value.group_item_options[formChild].max_selected == ""
         || this.formParent.value.group_item_options[formChild].name == null || this.formParent.value.group_item_options[formChild].max_selected == null)
         {
           this.groupitems_indicator = 0;
           this.error_incomplete_groupitems()
           
-        }
+        }*/
      
-        if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
-        && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)
+       /* if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
+        && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)*/
         {
-          console.log("entra");
+          
           this.groupitems_indicator = 1;
           
           this.Global_child=this.formParent.value.group_item_options[formChild].indexid;
@@ -712,12 +769,36 @@ normal_alert(elemento : String){
 
      Present_Child_reverse(){
       
+       this.verify_sons_items();
+
+      this.maxsele = parseInt(""+this.group.max_selected);
+         
       /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
       AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
       ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */
+      let cont = 0;
+      for(let i=0; i<this.formParent.value.dinamicos.length; i++)
+      {
+        
+        if(this.formParent.value.dinamicos[i].signal == this.formParent.value.group_item_options[this.Global_position].indexid)
+        {
+               cont++;
+              
+        }
+      }
+            
+        
+           if(this.maxsele > cont){
+            //this.maxselected_error()
+            this.group.max_selected= '';  
+            this.formParent.value.group_item_options[this.Global_position].max_selected='1';   
+           }
+
+           else{
+            this.formParent.value.group_item_options[this.Global_position].name=this.group.name;
+            this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
       
-      this.formParent.value.group_item_options[this.Global_position].name=this.group.name
-      this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
+            }
       
      }
 

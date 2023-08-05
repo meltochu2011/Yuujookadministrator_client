@@ -20,7 +20,7 @@
 
                 
 
-        <div class="box_general padding_bottom" *ngFor="let dish of dish_data">  
+        <div class="box_general padding_bottom" *ngFor="let dish of dish_data; let formChild = index">  
 
                
         <!--GIF PARA LA CARGA DE DATOS, SE MUESTRA MIENTRAS SE CARGAN LOS DATOS EN EL CONSTRUCTOR-->
@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label>Nombre del platillo </label>
                         <input type="text" class="form-control"  placeholder="Ingrese el nombre del platillo"
-                            [(ngModel)]="dish_register.name" name="name_product" >
+                        [(ngModel)]="dish_register.name" name="name_product" >
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                         <label>Precio Q</label>
                         <input type="number" class="form-control" placeholder="(Q) Ingrese el precio del item"
                             onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                            [(ngModel)]="dish_register.price" name="price">
+                            [(ngModel)]="dish_register.price" name="price"  pattern="^[0-9]+" min="1">
                     </div>
                 </div>
 
@@ -248,11 +248,9 @@
 
                                         <div class="form-group">
 
-                                            <input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                                id="{{formChild}}" formControlName="name" onkeyup="Specific_group_validation(id)" (keyup)="keyup_Global_child(formChild)">
-   
-                                                <!--<input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                                id="{{formChild}}" formControlName="name">-->
+                                            <input type="text" class="form-control" placeholder="Descripcion del grupo" 
+                                                id="{{formChild}}" onkeyup="description_validation(id)" formControlName="name"
+                                                (keyup)="verify_sons_items()" [(ngModel)]="formParent.value.group_item_options[formChild].name">
 
                                         </div>
 
@@ -265,11 +263,10 @@
 
                                         <div class="form-group">
 
-                                            <!--(keyup)="verify_index_items(formChild)"-->
-                                            <input type="number" class="form-control" id="max_selected{{formChild}}"
-                                            onkeyup="myFunction_maxselected(id)" (keyup)="keyup_Global_child(formChild)" placeholder="Numero seleccionable"
-                                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                formControlName="max_selected" >
+                                            <input type="number" class="form-control" id="max_selected{{formChild}}" onkeyup="maxselected_validation(id)" 
+                                             (keyup)="groups_count(formChild)" placeholder="Numero seleccionable" (click)="groups_count(formChild)"
+                                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" onclick="maxselected_validation(id)" 
+                                                formControlName="max_selected" [(ngModel)]="formParent.value.group_item_options[formChild].max_selected" min="1" pattern="^[0-9]+">
                                         </div>
 
                                     </div>
@@ -287,7 +284,7 @@
 
                                         <div class="form-group">
                                             <a class="btn_1 gray add-pricing-list-item" data-toggle="modal"
-                                                id="{{formChild}}"  (click)="Present_Child(formChild)" onclick="Global_group(id)"
+                                                id="{{formChild}}"  (click)="Present_Child(formChild)" 
                                                  data-target="#modal_edit_items"><i
                                                     class="fa fa-fw fa-plus-circle" ></i>Items del grupo</a>
                                         </div>
@@ -304,16 +301,20 @@
                                             <label>Detalle de items</label>
 
 
-                                            <div *ngFor="let list of formParent.value.dinamicos">
+                                            <div *ngFor="let list of formParent.value.dinamicos, let hijito = index">
 
-                                            <div *ngIf='list.signal ==  formParent.value.group_item_options[formChild].indexid && list.tag !== "" && list.price !== "" && list.price !== null'>
+                                            <div  *ngIf='list.signal ==  formParent.value.group_item_options[formChild].indexid && list.tag !== "" && list.tag != null && list.price !== "" && list.price != null'>
                                                     <li class="fa fa-plus-circle"> {{list.tag}} &nbsp;&nbsp;&nbsp;Q
                                                         {{list.price}}</li>
+
+                                                        <!--<input type="text" [(ngModel)]="formParent.value.dinamicos[hijito].tag" value="">-->
                                                 </div>
 
+                                                
+
                                                 <div
-                                                    *ngIf='list.signal == formParent.value.group_item_options[formChild].indexid  && (list.tag ==="" || list.price ==="") '>
-                                                    <li class="fa fa-plus-circle" style="color:red"> Incompleto </li>
+                                                    *ngIf='(list.signal == formParent.value.group_item_options[formChild].indexid  && (list.tag === "" || list.tag == null || list.price === "" || list.price < 0 || list.price == null) )'>
+                                                    <li class="fa fa-plus-circle" style="color:red"> Incompleto/Invalido</li>
                                                 </div>
 
                                             </div>
@@ -373,10 +374,6 @@
             </button>
             </p>
 
-            <br>
-
-           
-
         </div>
 
 
@@ -391,9 +388,9 @@
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="edit_bookingLabel">Detalle de grupo</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"
-                            onclick="actualizar_grupo()">
-                            <span aria-hidden="true" onclick="actualizar_grupo()">×</span>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            
+                            <span aria-hidden="true">×</span>
                         </button>
                     </div>
 
@@ -402,10 +399,8 @@
                         <label>Titulo o descripcion</label>
                         <div class="form-group">
 
-                            <!--<input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                [(ngModel)]="group.name" id="description" onkeyup="valid_description()" style="height: 27px;">-->
-
-                                <input type="text" class="form-control" placeholder="Descripcion del grupo"
+                          
+                                <input type="text" class="form-control" placeholder="Descripcion del grupo" 
                                 [(ngModel)]="group.name" id="description" style="height: 27px;">
                         </div>
                     </div>
@@ -414,11 +409,12 @@
                         <label>Items seleccionables</label>
                         <div class="form-group">
 
-                            <input type="number" class="form-control" placeholder="Numero seleccionable"
-                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                [(ngModel)]="group.max_selected" id="max_sele" onkeyup="valid_maxselected()" style="height: 27px;">
+                            <input type="number" class="form-control" placeholder="Numero seleccionable" id="max_selected_modal" onclick="maxselected_validation(id)"
+                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" min="1" (click)="Sons_count()"
+                                [(ngModel)]="group.max_selected" id="max_sele"  style="height: 27px;" onkeyup="maxselected_validation(id)" (keyup)="Sons_count()">
                                 
                         </div>
+
                         
                     </div>
                     <hr style="width: 90%; border-color: gray;"> 
@@ -431,21 +427,12 @@
                       
                         </div>
 
-                        <div class="form-group" *ngIf="(Items_indicator == 0)">
+                        <div class="form-group" *ngIf="( formParent.value.group_item_options[Global_child].has_sons == 0)">
 
                             &nbsp;&nbsp;&nbsp; <li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
-                            
-                            </div>
+                        </div>
                     </div>
 
-
-                    
-   
-                    <!--<div *ngIf="( formParent.value.group_item_options[Global_child].has_sons == 0)">
-
-                        <li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
-                    </div>-->
-                                
 
 
                     <form [formGroup]="formParent" class="form-parent" style="margin-left: 30px; margin-right: 15px;">
@@ -473,22 +460,24 @@
                                         
                                         <div class="col-md-6">
                                             <div class="form-group">
+
+                                                <!--VERIFICAMOS SI HAY TEXTO EN EL ITEM Y SI NO HAY NADA MOSTRAMOS EL INPUT CON BORDE ROJO 
+                                                    YA QUE NO PUEDE ESTAR VACIO, SI HAY VALOR EN EL TEXTO DEL ITEM ENTOCES ES VALIDO-->
                                                 <input type="text" class="form-control"
-                                                    placeholder="Nombre de la guarnicion" formControlName="tag"
+                                                    placeholder="Nombre de la guarnicion" formControlName="tag" [(ngModel)]="formParent.value.dinamicos[hijo].tag" 
                                                     style="height: 25px;">
 
+                                                    
                                             </div>
                                         </div>
-
-
 
 
                                         <div class="col-md-4">
                                             <div class="form-group">
 
-                                                <input type="number" class="form-control" placeholder="Precio"
-                                                    onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                    formControlName="price" style="height: 25px;">
+                                                <input type="number" class="form-control" placeholder="Precio" [(ngModel)]="formParent.value.dinamicos[hijo].price"
+                                                    onKeypress="if(event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
+                                                    formControlName="price" style="height: 25px;" min="0"> 
                                             </div>                                              
                                         </div>
                                     
@@ -518,7 +507,7 @@
                     <div class="modal-footer">
                         <!--LAS DOS FUNCIONES TIENEN UN OBJETIVO DIFERENTE AMBAS ACTUALIZAN EL VALOR DE LOS CAMPOS DEL ARRAY items_group EN BASE A LOS DATOS QUE ESTAN
                     EN EL FORM PRESENTES EN EL FORM  pero uno actualiza los valores en back-end y el otro en front-end -->
-                        <a class="btn btn-primary" data-dismiss="modal" (click)="Present_Child_reverse()" onclick="actualizar_grupo()"
+                        <a class="btn btn-primary" data-dismiss="modal" (click)="Present_Child_reverse()"
                             >Aceptar</a>
                     </div>
 
@@ -602,7 +591,7 @@ ________________________________________________________________________________
 
 
                         <div class="modal-footer">
-                            <a class="btn btn-primary" href="#0" data-dismiss="modal">Aceptar</a>
+                            <a class="btn btn-primary"  href="#0"  data-dismiss="modal">Aceptar</a>
                         </div>
                     </form>
 

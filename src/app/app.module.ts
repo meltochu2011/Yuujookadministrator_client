@@ -28,6 +28,7 @@ import { GallerycompComponent } from './components/gallerycomp/gallerycomp.compo
 import { OrderdetailModalComponent } from './components/orderdetail-modal/orderdetail-modal.component';
 import { WebSocketService } from './services/web-socket.service';
 import { OrdersListCompletedComponent } from './components/orders-list-completed/orders-list-completed.component';
+//import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SppinerInterceptor } from './components/sppiner-interceptor';
 /**INICIO */

@@ -16,6 +16,6 @@ export interface Dish_register{
  group_list_var ?: boolean,
  sons_list_var ?: boolean,
  selected_list_var?: boolean,
- has_image?: number
-
+ has_image?: number,
+ listado_ensayo?: any;
 }

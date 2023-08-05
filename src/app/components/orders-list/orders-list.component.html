@@ -93,6 +93,16 @@
                                  </div>
                                </div>
 
+                               <div class="col-md-3">
+                                <div class="form-group">
+                          <a class="btn_1 gray"  (click)="refresh()"
+                          ><i class="fa fa-fw fa-refresh"></i> Refrescar</a>
+                               </div>
+                             </div>
+
+
+                            
+
                             </div>
 
                   
@@ -245,7 +255,7 @@ ________________________________________________________________________________
                                          <i><a href="https:////wa.me/+502{{order.user_phone}}/?text=hola hemos recibido tu pedido" target="_blank" style="display: inline; font-family: sans-serif; text-decoration: none; color: #fff; font-size: 0.8em; padding: 0.5em 1em 0.4em 3.5em; border-radius: 2em; font-weight: bold; background: #25d366 url('https://tochat.be/click-to-chat-directory/css/whatsapp.svg') no-repeat 1.5em center; background-size: 1.6em;">{{order.user_phone}}</a></i>
                                          -->
                                          
-                                         <i><a  (click)="choose_option_call()" style=" display: inline; font-family: sans-serif; text-decoration: none; color: #fff; font-size: 0.8em; padding: 0.5em 1em 0.4em 3.5em; border-radius: 2em; font-weight: bold; background: #25d366 url('https://tochat.be/click-to-chat-directory/css/whatsapp.svg') no-repeat 1.5em center; background-size: 1.6em;" >{{order.user_phone}}</a></i>
+                                         <i><a  (click)="choose_option_call(order.user_phone)" style=" cursor: pointer; display: inline; font-family: sans-serif; text-decoration: none; color: #fff; font-size: 0.8em; padding: 0.5em 1em 0.4em 3.5em; border-radius: 2em; font-weight: bold; background: #25d366 url('https://tochat.be/click-to-chat-directory/css/whatsapp.svg') no-repeat 1.5em center; background-size: 1.6em;" >{{order.user_phone}}</a></i>
                                        
                                          <p>Nota: {{order.tag}}</p>
 

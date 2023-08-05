@@ -6,11 +6,11 @@ export const environment = {
   production: false,
   //My RAILWAY 
    
-  API_URI: 'https://back-v9n1.onrender.com/',
-  SOCKET_API_URI:'https://back-v9n1.onrender.com',
+  /*API_URI: 'https://back-v9n1.onrender.com/',
+  SOCKET_API_URI:'https://back-v9n1.onrender.com',*/
 
-    /*API_URI: 'http://localhost:4000/',
-    SOCKET_API_URI:'http://localhost:4000',*/
+    API_URI: 'http://localhost:4000/',
+    SOCKET_API_URI:'http://localhost:4000',
      
     
   /**VARIABLES PARA LA GALERÍA */

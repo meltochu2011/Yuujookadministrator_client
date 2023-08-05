@@ -1,38 +1,13 @@
 
-//$(document).ready(function() {
-     /*FUNCION QUE CONTROLA EL TOGGLER, SE TUVO QUE HACER MEDIANTE JAVASCRIPT YA QUE EL ORIGINAL ESTABA DANDO PROBLEMAS
-       POR LO TANTO SE LE DICE QUE CUANDO SE OPRIMA EL BOTON DEL TOGGLER O CUANDO SE OPRIMA EL navbarResponsive O ALGUNO DE SUS ELEMENTOS
-       EL TOGGLER VA A RESPONDER SEGUN SUS PROPIEDADES, ES DECIR SE VA A OCULTAR O DESAPARECER*/
-
-       /**PARA PODER HACER ESTO NECESITAMOS EN NUESTRO PROYECTO jquery.mins.js
-        * src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
-        */
-
-  /*      $('#boton').click(function(){
-          $('#navbarResponsive').toggle();
-        });
-    
-       $('#dish').click(function(){
-        $('#navbarResponsive').toggle();
-      });
-  
-
-      $('#category').click(function(){
-        $('#navbarResponsive').toggle();
-      });
-
-  });*/
-
- 
-  
-
-     function Specific_group_validation(formChild) {
-
-
+     function description_validation(formChild) {
+      /**VALIDA QUE LA DESCRIPCION DE LOS GRUPOS NO ESTE VACÍO
+       * SI ESTA VACIO  PINTA EL INPUT DE COLOR ROJO
+       * DE LO CONTRARIO LO DEJA CON EL MISMO COLOR
+      */
       
       var campo = document.getElementById(formChild);
 
-      if (campo.value == '') {
+      if (campo.value == '' || campo.value == null) {
               
         campo.style.borderColor="red";        
 
@@ -41,34 +16,37 @@
      if(campo.value != '')
          {
           campo.style.borderColor="lightgray";
-         }
-      
+         }      
        
   }
 
 
      
-  function myFunction_maxselected(formChild) {
-  
+  function maxselected_validation(formChild) {
+      /**VALIDA QUE EL VALOR MAXIMO SELECCIONADO DE LOS GRUPOS NO ESTE VACÍO Y TAMPOCO CON VALOR 0 
+       * SI ESTA VACIO O CON VALOR 0 PINTA EL INPUT DE COLOR ROJO
+       * DE LO CONTRARIO LO DEJA CON EL MISMO COLOR
+      */
+      
     var max_selected = document.getElementById(formChild);
     
 
-    if (max_selected.value == '' ) {
-     
+    if (max_selected.value == '' || max_selected.value == null || max_selected.value == 0) {
+
     max_selected.style.borderColor="red";
    }
         
-    if(max_selected.value != '' )
+    if(max_selected.value != '' && max_selected.value > 0)
        {
         max_selected.style.borderColor="lightgray";
        }
 
-       //alert(max_selected.value);        
+        
      
 }
 
 
-let global = 0;
+/*let global = 0;
 
 function Global_group(position) {
   
@@ -86,7 +64,7 @@ function Global_group(position) {
   }
 */
   
-}
+/*}
 
 
 function actualizar_grupo() {
@@ -99,7 +77,7 @@ document.getElementById("max_selected"+global).value=document.getElementById("ma
   /*document.getElementById("description").value="";
   document.getElementById("max_sele").value="" */
 
-  myFunction_modal_reverse(global);
+  /*myFunction_modal_reverse(global);
   
 }
 
@@ -109,13 +87,13 @@ document.getElementById("max_selected"+global).value=document.getElementById("ma
 /*DETECTAR CAMPOS VACÍOS EN EL MODAL DEL DETALLE UNICAMENTE LOS DOS CAMPOS DEL GRUPO name y max_sele que son la
 descripcion del grupo y el numero maximo seleccionable*/ 
 
-function myFunction_modal(formChild) {
+/*function myFunction_modal(formChild) {
 
 
       /**VALIDAR PRIMER CAMPO */
 
    
-  var campo = document.getElementById(formChild);
+  /*var campo = document.getElementById(formChild);
   var descri = document.getElementById('description');
    
   
@@ -131,7 +109,7 @@ function myFunction_modal(formChild) {
 
      /**VALIDAR SEGUNDO CAMPO */
 
-     var campo2 = document.getElementById('max_selected'+formChild);
+    /* var campo2 = document.getElementById('max_selected'+formChild);
      var max_selected = document.getElementById('max_sele');
 
      if (campo2.value == '' ) {
@@ -151,7 +129,7 @@ function myFunction_modal_reverse(formChild) {
 
 
   /**VALIDAR PRIMER CAMPO */
-var campo = document.getElementById(formChild);
+/*var campo = document.getElementById(formChild);
 var descri = document.getElementById('description');
 
 
@@ -167,7 +145,7 @@ if(descri.value != '')
 
  /**VALIDAR SEGUNDO CAMPO */
 
- var campo2 = document.getElementById('max_selected'+formChild);
+/* var campo2 = document.getElementById('max_selected'+formChild);
  var max_selected = document.getElementById('max_sele');
 
  
@@ -226,4 +204,4 @@ function valid_maxselected() {
 
      //alert(max_selected.value);        
    
-}
+}*/

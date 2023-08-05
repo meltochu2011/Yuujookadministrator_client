@@ -8,10 +8,10 @@ import { SppinerService } from 'src/app/services/spinner.service';
   styleUrls: ['./spinner.component.css']
 })
 export class SpinnerComponent {
-  
-     isLoading$ = this.sppinerSvc.isLoading$;
      constructor(private readonly sppinerSvc : SppinerService){
          this.sppinerSvc.hide();
      }
 
+     isLoading$ = this.sppinerSvc.isLoading$;
+    
 }

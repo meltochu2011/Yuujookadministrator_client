@@ -8,17 +8,18 @@ import {
 } from '@angular/common/http';
 import { Observable, finalize } from 'rxjs';
 
+
 @Injectable()
 export class SppinerInterceptor implements HttpInterceptor {
 
-  constructor(private readonly sppinerSvc : SppinerService) {}
+  constructor(private readonly sppinerSvc: SppinerService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     this.sppinerSvc.show();
     return next.handle(request).pipe(
 
       finalize(() => this.sppinerSvc.hide())
-      
-    )
+
+    );
   }
 }

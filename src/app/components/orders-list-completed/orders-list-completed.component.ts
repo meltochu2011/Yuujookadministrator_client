@@ -551,4 +551,43 @@ public loading_modaldetail_gif : any|boolean;
  
  }
 
+ userphone : string | any = '';
+
+
+ async choose_option_call(userphone : string){
+    
+   this.userphone= userphone;
+   
+   Swal.fire({
+     title: '<strong>Notificar al cliente</strong>',
+     //icon: 'info',
+     html:
+      
+       '<a href="https:////wa.me/+502'+this.userphone+', hemos recibido su pedido, le mantendremos al pendiente por su orden" target="_blank">' +
+       '<button name="button" class="btn btn-primary btn-block" style="background: #25d366; border-color: transparent" ><i class="fa fa-whatsapp"></i> Mensaje via whatsapp</button>'+
+       '</a> '+
+       '<br> '+
+
+       '<a href="tel:+502'+this.userphone+'" target="_blank">' +
+        '<button name="button" class="btn btn-primary btn-block"> Llamada normal </button>'+
+        '</a> '+
+        '<br> ',
+       
+     showCloseButton: true,
+     showCancelButton: false,
+     showConfirmButton: true,
+     /*focusConfirm: false,
+     confirmButtonText:
+       'Aceptar',
+     confirmButtonColor: '#3085d6',
+     confirmButtonAriaLabel: 'recibida',*/
+     cancelButtonText:
+       'Salir',
+     cancelButtonAriaLabel: 'Thumbs down'
+   })
+   
+}
+
+
+
 }

@@ -551,12 +551,21 @@ export class OrdersListComponent {
 
   }
 
-   userphone : string | any = '58014730';
+  refresh(){
+    
+    window.location.reload();
+  }
 
-  async choose_option_call(){
+
+   userphone : string | any = '';
+
+
+  async choose_option_call(userphone : string){
+     
+    this.userphone= userphone;
     
     Swal.fire({
-      title: '<strong>Elija el tipo de mensaje a enviar</strong>',
+      title: '<strong>Notificar al cliente</strong>',
       //icon: 'info',
       html:
        
@@ -578,17 +587,24 @@ export class OrdersListComponent {
         '<a href="https:////wa.me/+502'+this.userphone+'/?text=hola, su pedido llegará en 30 minutos" target="_blank">' +
         '<button name="button" class="btn btn-primary btn-block" style="background: #25d366; border-color: transparent" ><i class="fa fa-whatsapp"></i> Notificar llegada en 30 min</button>'+
         '</a> '+
-        '<br> ',
+        '<br> '+
+        
+        '<a href="tel:+502'+this.userphone+'" target="_blank">' +
+        '<button name="button" class="btn btn-primary btn-block"> Llamada normal </button>'+
+        '</a> '+
+        '<br> '
+        //<a href="tel: + Signo más + número de prefijo del país + número de teléfono">Anchor text</a>
+        ,
         
       showCloseButton: true,
-      showCancelButton: true,
-      /*focusConfirm: false,
+      //showCancelButton: true,
+      showConfirmButton: true,
       confirmButtonText:
-        'Aceptar',
-      confirmButtonColor: '#3085d6',
+        'Salir',
+      /*confirmButtonColor: '#3085d6',
       confirmButtonAriaLabel: 'recibida',*/
-      cancelButtonText:
-        'Cancelar',
+      /*cancelButtonText:
+        'Cancelar',*/
       cancelButtonAriaLabel: 'Thumbs down'
     })
     

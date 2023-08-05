@@ -215,8 +215,8 @@
                                         <div class="form-group">
 
                                             <input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                                id="{{formChild}}" formControlName="name" onkeyup="Specific_group_validation(id)" 
-                                                (keyup)="keyup_Global_child(formChild)" style="border-block-color: red; border-left-color: red; border-right-color: red; ">
+                                                id="{{formChild}}" formControlName="name"  onkeyup="description_validation(id)" (keyup)="verify_sons_items()" [(ngModel)]="formParent.value.group_item_options[formChild].name"
+                                                (keyup)="verify_sons_items()" style="border-block-color: red; border-left-color: red; border-right-color: red; ">
                                         </div>
 
                                         
@@ -234,9 +234,9 @@
 
                                             <!--(keyup)="verify_index_items(formChild)"-->
                                             <input type="number" class="form-control" id="max_selected{{formChild}}"
-                                            onkeyup="Specific_group_validation(id)" (keyup)="keyup_Global_child(formChild)" placeholder="Numero seleccionable"
+                                            onkeyup="maxselected_validation(id)"(click)="groups_count(formChild)" min="1" placeholder="Numero seleccionable"
                                                 onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                formControlName="max_selected" >
+                                                formControlName="max_selected" [(ngModel)]="formParent.value.group_item_options[formChild].max_selected" (keyup)="groups_count(formChild)">
 
                                         </div>
 
@@ -255,7 +255,7 @@
 
                                         <div class="form-group" >
                                             <a class="btn_1 gray add-pricing-list-item" data-toggle="modal"
-                                                id="{{formChild}}"  (click)="Present_Child(formChild)" onclick="Global_group(id)"
+                                                id="{{formChild}}"  (click)="Present_Child(formChild)" 
                                                  data-target="#modal_edit_items"><i
                                                     class="fa fa-fw fa-plus-circle" ></i>Items del grupo</a>
                                         </div>
@@ -358,9 +358,8 @@
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="edit_bookingLabel">Detalle de grupo</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"
-                            onclick="actualizar_grupo()">
-                            <span aria-hidden="true" onclick="actualizar_grupo()">×</span>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
                         </button>
                     </div>
 
@@ -370,7 +369,7 @@
                         <div class="form-group">
 
                             <input type="text" class="form-control" placeholder="Descripcion del grupo"
-                                [(ngModel)]="group.name" id="description" onkeyup="valid_description()" style="height: 27px;">
+                                [(ngModel)]="group.name" id="description" onkeyup="description_validation(id)" style="height: 27px;">
                         </div>
                     </div>
 
@@ -378,9 +377,9 @@
                         <label>Items seleccionables</label>
                         <div class="form-group">
 
-                            <input type="number" class="form-control" placeholder="Numero seleccionable"
-                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                [(ngModel)]="group.max_selected" id="max_sele" onkeyup="valid_maxselected()" style="height: 27px;">
+                            <input type="number" class="form-control" placeholder="Numero seleccionable" onclick="maxselected_validation(id)"
+                                onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" (click)="Sons_count()"
+                                [(ngModel)]="group.max_selected" id="max_sele" onkeyup="maxselected_validation(id)" min="1" (keyup)="Sons_count()" style="height: 27px;">
                                 
                                 
                         </div>
@@ -431,7 +430,7 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control"
                                                     placeholder="Nombre de la guarnicion" formControlName="tag"
-                                                    style="height: 25px;">
+                                                    [(ngModel)]="formParent.value.dinamicos[hijo].tag" style="height: 25px;">
 
                                             </div>
                                         </div>
@@ -442,9 +441,9 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
 
-                                                <input type="number" class="form-control" placeholder="Precio"
+                                                <input type="number" class="form-control" placeholder="Precio" min="0"
                                                     onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                                    formControlName="price" style="height: 25px;">
+                                                    formControlName="price" style="height: 25px;" [(ngModel)]="formParent.value.dinamicos[hijo].price">
                                             </div>
                                                
                                             
@@ -476,8 +475,7 @@
                     <div class="modal-footer">
                         <!--LAS DOS FUNCIONES TIENEN UN OBJETIVO DIFERENTE AMBAS ACTUALIZAN EL VALOR DE LOS CAMPOS DEL ARRAY items_group EN BASE A LOS DATOS QUE ESTAN
                     EN EL FORM PRESENTES EN EL FORM  pero uno actualiza los valores en back-end y el otro en front-end -->
-                        <a class="btn btn-primary" data-dismiss="modal" (click)="Present_Child_reverse()"
-                            onclick="actualizar_grupo()">Aceptar</a>
+                        <a class="btn btn-primary" data-dismiss="modal" (click)="Present_Child_reverse()">Aceptar</a>
                     </div>
 
 
