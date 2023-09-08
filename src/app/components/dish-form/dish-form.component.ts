@@ -243,7 +243,7 @@ matlistvalues : any;
   reset_data_fields() 
 {
   /***EN REALIDAD ESTO LO QUE HACE ES RECARGAR EL COMPONENTE, ME TOMO MUCHO TIEMPO ENCONTRAR ESTE CODIGO
-   * POR FAVOR VALORARLO MUCHO, ESTO ME AHORRO RESETEAR TODOS ARRAYS Y DEMAS VARIABLES LO QUE HACE ES
+   * POR FAVOR VALORARLO MUCHO, ESTO ME AHORRO RESETEAR TODOS ARRAYS Y DEMAS VARIABLES, LO QUE HACE ES
    * REDIRIGIR DESDE LA CARPETA RAIZ HASTA EL ACTUAL COMPONENTE, LISTO PUES */ 
   this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> this.router.navigate(["/dishes/add"]));
    
@@ -736,16 +736,16 @@ normal_alert(elemento : String){
             //this.maxselected_error()
             this.group.max_selected= '';  
             this.formParent.value.group_item_options[this.Global_position].max_selected='1';   
-            alert("entra");
+           
            }
 
            else{
             this.formParent.value.group_item_options[this.Global_position].name=this.group.name;
             this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
-            alert("alert 2");
+           
             }
 
-             alert(this.formParent.value.group_item_options[this.Global_position].has_sons);
+           
      }
 
 

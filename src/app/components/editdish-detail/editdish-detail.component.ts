@@ -970,16 +970,16 @@ normal_alert(elemento : String){
             //this.maxselected_error()
             this.group.max_selected= '';  
             this.formParent.value.group_item_options[this.Global_position].max_selected='1';   
-           alert("entra");
+           
           }
 
            else if(this.maxsele <= cont && cont > 0){
             this.formParent.value.group_item_options[this.Global_position].name=this.group.name;
             this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
-            alert("entra 2");
+          
             }
 
-               alert(this.formParent.value.group_item_options[this.Global_position].has_sons);
+             
 
      }
 
