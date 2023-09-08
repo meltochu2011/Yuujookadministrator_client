@@ -20,9 +20,10 @@ export class GallerycompComponent implements OnInit {
   data$: Observable <Component_dat>;
 
   constructor(private dishService: DishService, private sharingservice : SharingService) { 
+    environment.pagevalue = 1
     this.data$= sharingservice.SharingObservable;
     this.getimages_quantity();
-    this.getGallery(this.global_image_index_page);
+    this.getGallery(this.global_image_index_page,environment.pagevalue);
     
   }
 
@@ -78,7 +79,7 @@ export class GallerycompComponent implements OnInit {
        res =>{
         
          this.getimages_quantity();
-         this.getGallery(0);
+         this.getGallery(0,environment.pagevalue);
          this.reset_fileinput(); 
          
          
@@ -125,8 +126,15 @@ reset_fileinput()
 
 gallery: any =[];
 
-getGallery(index_begining: number)
+getGallery(index_begining: number,element_position : number)
   {
+    /**
+     * PARA VERIFICAR LA POSICION DE PAGINA
+     */
+    environment.pagevalue=element_position;
+     
+    this.verify_previusandnextpage(environment.pagevalue); 
+
     /**CAMBIAMOS LA FORMA DEL CURSOR A ESPERA*/
     document.body.style.cursor = 'wait';
     /*OBTENEMOS LAS DIRECCIONES DE LAS IMAGENES QUE SE HAN ALMACENADO EN LA TABLA GALLERY
@@ -222,7 +230,7 @@ this.dishService.getimagesquantity().subscribe(
 
 
           
-          this.getGallery(this.global_image_index_page);
+          this.getGallery(this.global_image_index_page,environment.pagevalue);
 
       }
      /**____________________________________________ */
@@ -232,6 +240,76 @@ this.dishService.getimagesquantity().subscribe(
   },
   err=> console.error(err)
 );
+
+}
+
+
+nextpage()
+{
+
+   /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+  //alert(this.global_index_page); 
+
+  //if(environment.pagevalue < this.paging_array.length)
+  {
+    environment.pagevalue = environment.pagevalue+1; 
+    this.global_image_index_page = this.global_image_index_page+20;      
+    this.getGallery(this.global_image_index_page,environment.pagevalue); 
+    //if(environment.pagevalue  > 0) 
+    {
+        //alert(environment.pagevalue);
+        //this.previus_state = true;
+        this.verify_previusandnextpage(environment.pagevalue);  
+    }
+  }
+  
+}
+
+previuspage()
+{
+
+   /**FUNCION PARA EL MANEJO DE FUNCION DE BOTONES "ANTERIOR" Y "SIGUIENTE" */
+  //alert(this.global_index_page); 
+
+   environment.pagevalue = environment.pagevalue-1; 
+    this.global_image_index_page = this.global_image_index_page-20;      
+    this.getGallery(this.global_image_index_page,environment.pagevalue); 
+    this.verify_previusandnextpage(environment.pagevalue);
+    
+}
+
+
+nextpage_state : boolean = true;
+previus_state : boolean = true;
+verify_previusandnextpage(element_position : number){
+
+  if(this.imagespaging_array .length == 1 ){
+    this.nextpage_state = false;
+    this.previus_state = false;
+}
+
+if(this.imagespaging_array.length > element_position ){
+  
+  this.nextpage_state = true;
+ 
+}
+
+if(this.imagespaging_array.length == element_position ){
+  
+  this.nextpage_state = false;
+
+}
+
+if( element_position > 1){
+  
+  this.previus_state = true;            
+}
+
+if( element_position == 1){
+  
+  this.previus_state = false;  
+        
+}
 
 }
 
@@ -325,7 +403,7 @@ document.body.style.cursor = 'wait';
     /*ACA ANTEPONEMOS EL EFECTO DEL CURSOR PORQUE getGallery TAMBIEN TIENE
     EFECTO DE CURSOR*/
     this.getimages_quantity();
-    this.getGallery(this.global_image_index_page);    
+    this.getGallery(this.global_image_index_page,environment.pagevalue);    
     
     Swal.fire(        
       'Elemento Eliminado!',

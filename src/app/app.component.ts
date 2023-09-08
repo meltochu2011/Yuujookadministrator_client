@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {CookieService} from 'ngx-cookie-service';
 import {  Observable, Subscription } from 'rxjs';
-import { JsonwtService, Component_token} from './services/jsonwt.service';
+import { Component_token, JsonwtService} from './services/jsonwt.service';
 
 
 @Component({
@@ -15,31 +15,44 @@ export class AppComponent {
 
     logueado : number = 0;
 
-    Token$: Observable<Component_token> | undefined;
-    value: Subscription;
-    tokenvalue : string | any; 
-  constructor(private cookieuser : CookieService, private tokenSvc : JsonwtService) {
-
-       //this.logueado = this.cookieuser.set('userkey',''+this.access_result.token);
-       //console.log(this.cookieuser.get)
-       //console.log("esta cargando");
-       //this.cookieuser.set('UserAutenticado','si',0.3);
-       //console.log (this.cookieSvc.get('UserAutenticado'));
-       this.tokenSvc.TokenObservable
+    //Token$: Observable<Component_token>;
+    value: Subscription | undefined;
+    tokenvalue : string  = "";
     
-       //this.tokenSvc.TokenObservableData =  {Token : "/assets/img/no_image.png"}  
+    verificar : boolean = false;
+  constructor(private tokenSvc : JsonwtService) {
 
-       this.value = this.tokenSvc.TokenObservable.subscribe(value => {
+        this.verificar = this.tokenSvc.TokenObservablecheck;
+
+        if (this.verificar == true )
+        {
+          this.tokenvalue = ""+this.tokenSvc.TokenObservable;   
+                 
+        }
+
+        else if (this.verificar == false )
+        {
+          this.tokenvalue = ""; 
+        }
+       //this.tokenvalue=this.tokenSvc.TokenObservable;
+        
+       /**OBTENEMOS EL VALOR DEL TOKEN MEDIANTE TokenObservable Esto es a la hora de la carga inicial*/
+      /* this.value = this.tokenSvc.TokenObservable.subscribe(value => {
+        
         this.tokenvalue = value.Token;
         
-      });
+       /* 
        
-     
+        else if(this.tokenvalue !== "" )
+        {
+          alert(this.tokenvalue);
+          //this.tokenSvc.clean;        
+        }*/
+        
+
+      //});
 
     }
-
-
-
 
 }
 

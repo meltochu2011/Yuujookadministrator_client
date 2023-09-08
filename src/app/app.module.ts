@@ -38,6 +38,7 @@ import {NgIf} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { JsonwtService } from './services/jsonwt.service';
 
 
 
@@ -57,8 +58,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     GallerycompComponent,
     OrderdetailModalComponent,
     OrdersListCompletedComponent,
-    SpinnerComponent,
-    
+    SpinnerComponent
    
   ],
   imports: [
@@ -76,7 +76,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatInputModule,
     MatFormFieldModule
   ],
-  providers: [DishService,CookieService,WebSocketService, 
+  providers: [DishService,CookieService,WebSocketService,JsonwtService, 
   {provide : HTTP_INTERCEPTORS, useClass: SppinerInterceptor, multi:true}
   ],
   bootstrap: [AppComponent]

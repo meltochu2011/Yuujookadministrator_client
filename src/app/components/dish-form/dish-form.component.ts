@@ -11,11 +11,12 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { Gallery_element} from 'src/app/models/Gallery_element';
 import { Adds} from 'src/app/models/Adds';
 import Swal from 'sweetalert2';
-import {FormGroup,FormControl,FormArray,Validators, FormBuilder} from '@angular/forms';
+import {FormGroup,FormControl,FormArray,Validators, FormBuilder, MaxValidator} from '@angular/forms';
 import { Dish_register } from 'src/app/models/Dish_register';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {WebSocketService} from '../../services/web-socket.service';
+import { MatList, MatListOption, MatSelectionList } from '@angular/material/list';
 
 
 
@@ -45,7 +46,7 @@ export class DishFormComponent implements OnInit {
      * imagenes porque la locacion de las imagenes puede cambiar
     */
     environment.Dish_image="uploads/no_image.png"
-  
+    
    }
    
    
@@ -83,14 +84,14 @@ export class DishFormComponent implements OnInit {
     }
 
     /*agregado temporalment*/
-    category_ins: Category_ins =
+  /*  category_ins: Category_ins =
   {
     id_category:0,
     name:'',
     description:'',
     image:'',
     has_image:0
-  };
+  };*/
     
   
 
@@ -223,11 +224,11 @@ export class DishFormComponent implements OnInit {
   }
 
 
-  get result() {
+//  get result() {
     /**retornamos los valores que hay en el arreglo dishes_list que son los valoes de las categorías */
-    return this.category.filter((item: { checked: boolean; }) => item.checked === true);
+  //  return this.category.filter((item: { checked: boolean; }) => item.checked === true);
 
-  }
+  //}
 
 
 /** VARIABLE PARA CUANDO SE SELECCIONA LA IMAGEN DESDE LA VENTANA PRINCIPAL */
@@ -236,29 +237,16 @@ Dish_image :string ="";
 IMAGE_DIRECTORY_EDIT: string = "";
 
 Image_temporal_edit :string="";
-   
+
+
+matlistvalues : any;
   reset_data_fields() 
 {
-    /**LIMPIAMOS TODOS LOS CAMPOS DE NUEVO PARA DEJARLO LISTO Y ASÍ VOLVER A GUARDAR OTRO PLATILLO */
-    this.formParent= new FormGroup({
-      group_item_options: new FormArray([]),
-      dinamicos: new FormArray([])              
-    })           
-
-    this.selectedOptions = [];                   
-    this.dish_register.name='';
-    this.dish_register.description='';
-    this.dish_register.price='';
-    this.selected_list=[];
-    this.dish_register.selected_list=[];
-    this.dish_register.group_list=[];
-    this.dish_register.sons_list=[];          
-    /**EN EL CASO DE Dish_image solo le dejamos la imagen por defecto para indicar que no hay imagen */
-    this.Dish_image='/assets/img/no_image.png'; 
-
-    this.file=null;
-    this.sharingservice.SharingObservableData =  {location : "/assets/img/no_image.png"}; 
- 
+  /***EN REALIDAD ESTO LO QUE HACE ES RECARGAR EL COMPONENTE, ME TOMO MUCHO TIEMPO ENCONTRAR ESTE CODIGO
+   * POR FAVOR VALORARLO MUCHO, ESTO ME AHORRO RESETEAR TODOS ARRAYS Y DEMAS VARIABLES LO QUE HACE ES
+   * REDIRIGIR DESDE LA CARPETA RAIZ HASTA EL ACTUAL COMPONENTE, LISTO PUES */ 
+  this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> this.router.navigate(["/dishes/add"]));
+   
 }
 
 
@@ -362,19 +350,6 @@ normal_alert(elemento : String){
 
     init_form_dish_return(): FormGroup{
     
-       /* let maxim_value=0;
-        for (let i = 0; i <this.formParent.value.group_item_options.length; i++)
-        {
-                 if(this.formParent.value.group_item_options[i].order_value > maxim_value)
-                 {       
-                      maxim_value=this.formParent.value.group_item_options[i].order_value;                 
-                 }
- 
-        }*/
-
-
-        /*console.log(this.formParent.value.group_item_options);*/
-
       return new FormGroup(
           {            
             name: new FormControl('',[Validators.required]),
@@ -382,7 +357,12 @@ normal_alert(elemento : String){
             /*VARIABLE PARA INDICAR SI HAY ELEMENTOS HIJOS PARE EL ELEMNTO PADRE, TANTO EL ELEMNTO PADRE COMO EL ELEMENTO HIJO SON SIMBOLICOS
              PUES LOS DOS FORMS SON HIJOS SOLO QUE POR LA ESTRUCTURA, UN ARRAY REPRESENTA A LOS GRUPOS Y EL OTRO A LOS ITEMS DE LOS GRUPOS 
             */
-            has_sons: new FormControl(0),
+
+            /**has_sons esta anclado al view por medio de un model, se el da un numero minimo
+             * que en este caso es 1
+             * 
+            */
+            has_sons: new FormControl(0,[Validators.min(1)]),
             indexid: new FormControl(this.Global_indexid)   
                 
           }
@@ -419,21 +399,15 @@ normal_alert(elemento : String){
        * modal por eso se envía como referencia
       */  
 
-      this.verify_sons_of_group(this.Global_position);
-     
     }
 
     keyup_Global_child(formChild : number){
     
-      /*this.Global_position=formChild;
-      this.Global_child = this.formParent.value.group_item_options[formChild].indexid;*/
       this.verify_sons_items();
-      /*this.verify_sons_of_group(this.Global_position);*/
-
+    
     }
 
     verify_sons_items(){
-
       
       /**
        * FUNCION QUE VERIFICA SI UN PADRE TIENE O NO TIENE HIJOS, SI NO TIENE MARCA EL CAMPO has_sons CON UN UNO PARA INDICAR QUE YA TIENE HIJOS.
@@ -469,7 +443,7 @@ normal_alert(elemento : String){
        }
  
        
-     // alert( this.formParent.value.group_item_options[this.Global_child].has_sons );
+     //alert( this.formParent.value.group_item_options[this.Global_child].has_sons );
     }
 
     
@@ -490,8 +464,6 @@ normal_alert(elemento : String){
 
   Save_newdish(){    
 
-  
- 
     /**ASIGNAMOS LA IMAGEN ACTUAL EN LA VARIABLE DE ENTORNO DE IMAGEN */
     this.dish_register.image = environment.Dish_image;
   
@@ -505,7 +477,8 @@ normal_alert(elemento : String){
     }
 
 
-    if(this.dish_register.name === '' || this.dish_register.price === '' || this.dish_register.price === null || this.selected_list.length == 0)
+    if(this.dish_register.name === '' || this.dish_register.price === '' || this.dish_register.price === null || this.selected_list.length == 0 || parseInt(""+this.dish_register.price) <= 0)
+    //if(this.dish_register.name)
     {
       
       this.error_validation_message_information();      
@@ -525,6 +498,7 @@ normal_alert(elemento : String){
                {
                         if(this.formParent.value.group_item_options[i].has_sons == 0)
                         {       
+
                          this.cont_group_elements++;
                          
                         }
@@ -538,7 +512,7 @@ normal_alert(elemento : String){
                }   
 
     /**EN ESTE CASO EL PLATILLO TIENE EXTRAS Y POR ESO SE DEBE VALIDAR, PUES SI TIENE EXTRAS DEBE ESTAR COMPLETA LA VALIDACION CON EXTRAS */
-    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null 
+    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null && parseInt(""+this.dish_register.price) > 0
     && this.formParent.valid == true && this.cont_group_elements == 0 && this.formParent.value.group_item_options.length > 0 && this.formParent.value.dinamicos.length > 0 && this.selected_list.length > 0 )  {
        
       /*IGUALAMOS EL CAMPO selected_list DEL MODELO dish_register AL CAMPO selected_list */ 
@@ -546,13 +520,13 @@ normal_alert(elemento : String){
       this.dish_register.group_list=this.formParent.value.group_item_options;
       this.dish_register.sons_list = this.formParent.value.dinamicos;
       
-      //console.log(this.dish_register.sons_list.signal);
+      console.log(this.formParent.value.dinamicos);
       this.saving_dish(this.dish_register);
 
     }
     
     /**SI EL PLATILLO NO TIENE EXTRAS ENTONCES NO SE VALIDAN LOS CAMPOS DE LOS EXTRAS, EN ESTE CASO LOS HIJOS group_item_options y dinamicos NO TIENEN NINGUN VALOR POR LO TANTO NO HAY EXTRAS*/
-    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null 
+    if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null && parseInt(""+this.dish_register.price) > 0
     && this.formParent.value.group_item_options.length == 0 && this.formParent.value.dinamicos.length == 0 && this.selected_list.length > 0) {
        
       /*IGUALAMOS EL CAMPO selected_list DEL MODELO dish_register AL CAMPO selectedOptions */ 
@@ -605,24 +579,7 @@ normal_alert(elemento : String){
      remove_group(index : number){
       
       const control = <FormArray>this.formParent.controls['group_item_options'];
-      control.removeAt(index);
-      /**PARA ELIMINAR UN GRUPO, RECIBIMOS EL INDEX DEL GRUPO Y ESE ES EL QUE SE ELIMINA MEDIANTE LA FUNCION removeAt */
-      
-         /*const control = <FormArray>this.formParent.controls['group_item_options'];
-         control.removeAt(index);*/
-
-         //const control2 = <FormArray>this.formParent.controls['dinamicos'];
-        
-
- 
-
-                /*console.log('pintando '+i);
-                control2.removeAt(i);*/
-                
-                  //control2.removeAt(i);
-                                         
-         
-        
+      control.removeAt(index);        
      }
 
 
@@ -638,10 +595,6 @@ normal_alert(elemento : String){
       const control = <FormArray>this.formParent.controls['dinamicos'];
       control.removeAt(index);
       this.verify_sons_items();
-      this.verify_sons_of_group(this.Global_position);
-      //this.verify_sons_items();
-      //this.verify_sons_of_group(this.Global_position);
-      //this.verify_index_items();
   }
 
 
@@ -653,7 +606,7 @@ normal_alert(elemento : String){
     group_value_name : string='';
     group_value_maxselected : string='';
 
-    Items_indicator : number = 0;
+    //Items_indicator : number = 0;
      
     groupitems_indicator : number = 0;
 
@@ -718,17 +671,7 @@ normal_alert(elemento : String){
        
       this.Global_position=formChild;
 
-        /*if(this.formParent.value.group_item_options[formChild].name == "" || this.formParent.value.group_item_options[formChild].max_selected == ""
-        || this.formParent.value.group_item_options[formChild].name == null || this.formParent.value.group_item_options[formChild].max_selected == null)
-        {
-          this.groupitems_indicator = 0;
-          this.error_incomplete_groupitems()
-          
-        }*/
-     
-       /* if(this.formParent.value.group_item_options[formChild].name != "" && this.formParent.value.group_item_options[formChild].max_selected != ""
-        && this.formParent.value.group_item_options[formChild].name != null && this.formParent.value.group_item_options[formChild].max_selected != null)*/
-        {
+        
           
           this.groupitems_indicator = 1;
           
@@ -740,22 +683,22 @@ normal_alert(elemento : String){
             this.group.name=this.formParent.value.group_item_options[formChild].name;
             this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;   
             this.verify_sons_items();
-            this.verify_sons_of_group(this.Global_position);
+            //this.verify_sons_of_group(this.Global_position);
             
            
             
-        }
+        
    
 
      }
 
 
-     verify_sons_of_group(formChild : number){
+     /*verify_sons_of_group(formChild : number){
       /**FUNCION QUE VERIFICA SI UN GRUPO TIENE ELEMENTOS O ITEMS, SIRVE EN EL MODAL PARA EDITAR 
        * UNICAMENTE PARA INDICAR SI UN GRUO TIENE ITEMS O NO POR ESO SE TIENE QUE VERIFICAR AL ABRIRSE
        * EL MODAL DE EDICION Y AL CREAR UN NUEVO ELEMENTO
        */
-       if(this.formParent.value.group_item_options[formChild].has_sons == 1)
+       /*if(this.formParent.value.group_item_options[formChild].has_sons == 1)
        {
            this.Items_indicator = 1;    
        }
@@ -765,11 +708,12 @@ normal_alert(elemento : String){
            this.Items_indicator = 0;    
        }
      
-   }
+   }*/
 
      Present_Child_reverse(){
       
        this.verify_sons_items();
+       //this.verify_sons_of_group(this.Global_position);
 
       this.maxsele = parseInt(""+this.group.max_selected);
          
@@ -792,14 +736,16 @@ normal_alert(elemento : String){
             //this.maxselected_error()
             this.group.max_selected= '';  
             this.formParent.value.group_item_options[this.Global_position].max_selected='1';   
+            alert("entra");
            }
 
            else{
             this.formParent.value.group_item_options[this.Global_position].name=this.group.name;
             this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
-      
+            alert("alert 2");
             }
-      
+
+             alert(this.formParent.value.group_item_options[this.Global_position].has_sons);
      }
 
 

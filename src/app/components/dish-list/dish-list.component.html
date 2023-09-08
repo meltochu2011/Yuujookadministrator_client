@@ -181,8 +181,8 @@ ________________________________________________________________________________
                                                 id="imagen_formulario2" style="max-width: 150px;">
                                             
                                                 &nbsp;  
-                                                <a class="btn_1 gray delete" (click)="assign_no_image();" style="font-size:x-small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
-                                                    class="fa fa-fw fa-remove"></i></a> 
+                                                <a class="btn_1 gray delete" (click)="assign_no_image();" style="font-size:small; color:rgb(157, 187, 194); position:absolute; text-align: right;"><i
+                                                    class="fa fa-trash-o"></i></a> 
                                             </figure>
 
                                                 
@@ -250,7 +250,7 @@ ________________________________________________________________________________
                                 
                                 <i  class="cancel">No disponible</i> 
                             </div>
-                            <small>  Pizza - Italian</small> 
+                            <!--<small>  Pizza - Italian</small> -->
                             <h4>{{dish.name}}  <small>Q.{{dish.price}}</small> </h4> 
                             
                             <ul class="booking_list">
@@ -279,13 +279,13 @@ ________________________________________________________________________________
 
                                 
                                     <li style="margin-bottom:0.6rem;"><a class="btn_1 gray" (click)="Product_to_edit(dish.id_product)"  routerLink="/dishes/edit_dish"
-                                        ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> Editar en detalle</a>
+                                        ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-search"></i> Editar en detalle</a>
                                 </li>    
                                 
 
                                                               
                                 <li style="margin-bottom:0.6rem;" ><a class="btn_1 gray delete" (click)="map_product(dish)" data-toggle="modal"
-                                        data-target="#modal_confi_delete"><i class="fa fa-fw fa-times-circle-o"></i>Eliminar</a></li>
+                                        data-target="#modal_confi_delete"><i class="fa fa-trash"></i> Eliminar</a></li>
                                       
                              </ul>
 

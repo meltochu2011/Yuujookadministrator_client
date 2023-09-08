@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {CookieService} from 'ngx-cookie-service';
+import { RouterModule } from '@angular/router';
+//import Ruta from '@angular/router';
 
-
-export interface Component_token{  
+export interface Component_token{
+ 
   /**INDICA LA DIRECCION EXACTA, UNICAMENTE SE USO PARA MOSTRAR */
   Token : string;
   /**directory es el directorio en el que se encuentra */
-
+ 
 }
 
 
@@ -24,20 +26,34 @@ export class JsonwtService {
   new BehaviorSubject <Component_token>({ Token : ''});
    
     get clean(){
-    
-      return this.cookieuser.delete('userkey');
+      
+    //return this.cookieuser.deleteAll();
+     //return  this.cookieuser.deleteAll()
+            this.cookieuser.delete('userkey','/dishes');      
+    return this.cookieuser.delete('userkey','/');   
+     
     }
+
      
     get TokenObservable(){            
-       
-      this.TokenObservableData =  {Token : this.cookieuser.get('userkey')}  
-        return this.TokenObservablePrivate.asObservable();      
+      
+      /*this.TokenObservableData =  {Token : this.cookieuser.get('userkey')}  
+      return this.TokenObservablePrivate.asObservable();*/     
+         
+       return {Token : this.cookieuser.get('userkey')}
     }
 
     set TokenObservableData(data: Component_token){
-      this.cookieuser.set('userkey',''+data.Token);
-        this.TokenObservablePrivate.next(data);
+     
+       
+       this.cookieuser.set('userkey',data.Token,2,'/dishes'  );
+       this.cookieuser.set('userkey',data.Token,2,'/'  );        
+        //this.TokenObservablePrivate.next(data);
     }
+    get TokenObservablecheck(){
 
-  //constructor() { }
+     return this.cookieuser.check('userkey');     
+     
+    }
+    
 }

@@ -1,26 +1,25 @@
 <!--MOSTRAR EL COMPONENTE DE NAVEGACION, LLAMA AL HTML DEL COMPONENTE DE NAVEGACION-->
-
-
 <div *ngIf="( tokenvalue === '')">
-    <app-loginuser style="background-color: rgb(173, 107, 26);"></app-loginuser>  
+    <app-loginuser style="background-color: rgb(173, 107, 26);"></app-loginuser>      
 </div>
-
 
 <div *ngIf="( tokenvalue !== '')"> 
-<app-navigation></app-navigation>
-
-   <div class="container p-4">
-    <router-outlet></router-outlet>
-    <!--LLAMAMOS AL FOOTER, QUE ESTA EN EL COMPONENTE footer-comp-->
-    <app-footer-comp></app-footer-comp>
-
-    <!--_______________________________LISTADO DE MODALES__________________________________-->
-    <!--modal para gallería, se llama desde cualquier botón que quiera observar la galería-->    
-    <app-gallerycomp></app-gallerycomp> 
-    <!--modal para detalle de orden, se llama desde el listado de ordenes-->   
-    <app-orderdetail-modal></app-orderdetail-modal>
-    <!--______________________________FIN LISTADO DE MODALES_________________________________-->
+    <app-navigation></app-navigation>
     
-     
-   </div>
-</div>
+       <div class="container p-4">
+        <router-outlet></router-outlet>
+        <!--LLAMAMOS AL FOOTER, QUE ESTA EN EL COMPONENTE footer-comp-->
+        <app-footer-comp></app-footer-comp>
+    
+        <!--_______________________________LISTADO DE MODALES__________________________________-->
+        <!--modal para gallería, se llama desde cualquier botón que quiera observar la galería-->    
+        <app-gallerycomp></app-gallerycomp> 
+        <!--modal para detalle de orden, se llama desde el listado de ordenes-->   
+        <app-orderdetail-modal></app-orderdetail-modal>
+        <!--______________________________FIN LISTADO DE MODALES_________________________________-->
+        
+       </div>
+       
+    </div>
+    
+    

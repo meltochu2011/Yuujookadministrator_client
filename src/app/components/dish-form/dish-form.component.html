@@ -34,7 +34,7 @@
                         <label>Precio Q</label>
                         <input type="number" class="form-control" placeholder="(Q) Ingrese el precio"
                             onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                            [(ngModel)]="dish_register.price" name="price">
+                            [(ngModel)]="dish_register.price" name="price" >
                     </div>
                 </div>
 
@@ -206,9 +206,11 @@
                                         </div>   
                                     </div>
 
+                                    <div style="display:none;">
+                                        <input type="text" [(ngModel)]="formParent.value.group_item_options[formChild].has_sons" formControlName="has_sons" >
+                                     </div>
+
                                     <div class="col-md-5">
-
-
                                         <label>Titulo o descripcion</label>
 
 
@@ -395,7 +397,7 @@
                       
                         </div>
 
-                        <div class="form-group" *ngIf="(Items_indicator == 0)">
+                        <div class="form-group" *ngIf="(formParent.value.group_item_options[Global_position].has_sons == 0)">
 
                             &nbsp;&nbsp;&nbsp;<li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
                             
@@ -426,6 +428,8 @@
                                             </div>
                                         </div>
                                         
+                                        
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <input type="text" class="form-control"
@@ -518,7 +522,7 @@ ________________________________________________________________________________
 
                                <mat-selection-list #categories [(ngModel)]="selectedOptions" name="selectedOptions"
                                (ngModelChange)="onNgModelChange($event)">
-                                   <mat-list-option *ngFor="let categ of category" [value]="categ">
+                                   <mat-list-option [(ngModel)]="matlistvalues" *ngFor="let categ of category" [value]="categ">
                                    <p>
                                        <img [src]="API_URI+categ.image" id="imagen_formulario"
                                            style="max-width: 30px;">&nbsp;&nbsp;

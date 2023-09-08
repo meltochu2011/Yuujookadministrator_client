@@ -10,10 +10,13 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor(private jwtservice : JsonwtService) { }
+  constructor(private jwtservice : JsonwtService) {
+        this.too_menu();    
+   }
 
   ngOnInit(): void {
   }
+
 
 
   toogle : boolean =false;
@@ -25,9 +28,10 @@ export class NavigationComponent implements OnInit {
 
     clean(){
 
+      //this.jwtservice.TokenObservableData = {Token : ''}
       this.jwtservice.clean;
+            
       window.location.reload();
-      
     }
   
 

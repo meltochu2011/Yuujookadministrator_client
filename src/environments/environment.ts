@@ -31,7 +31,8 @@ export const environment = {
   number_beginer : 0,
 
   /**VARIABLES PARA ORDENES */
-   orderdetail_id : 0
+   orderdetail_id : 0,
+   TOKEN : ''
 };
 
 /*

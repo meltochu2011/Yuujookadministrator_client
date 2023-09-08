@@ -119,7 +119,7 @@ export class EditdishDetailComponent implements OnInit {
          /*VARIABLE PARA INDICAR SI HAY ELEMENTOS HIJOS PARE EL ELEMNTO PADRE, TANTO EL ELEMNTO PADRE COMO EL ELEMENTO HIJO SON SIMBOLICOS
           PUES LOS DOS FORMS SON HIJOS SOLO QUE POR LA ESTRUCTURA, UN ARRAY REPRESENTA A LOS GRUPOS Y EL OTRO A LOS ITEMS DE LOS GRUPOS 
          */
-         has_sons: new FormControl(1),
+         has_sons: new FormControl(1,Validators.min(1)),
          indexid: new FormControl(Global_indexid)         
              
        }
@@ -274,10 +274,7 @@ export class EditdishDetailComponent implements OnInit {
 
           this.dish_register_temporal.group_list=this.formParent.value.group_item_options;
           this.dish_register_temporal.sons_list=this.formParent.value.dinamicos;
-          
-          console.log(this.formParent.value.group_item_options);
-          console.log(this.formParent.value.dinamicos);
-
+        
                   
         },
         err=> console.error(err)
@@ -619,7 +616,7 @@ normal_alert(elemento : String){
             max_selected: new FormControl('1',[Validators.required]),*/
             name: new FormControl('',[Validators.required]),
             max_selected: new FormControl('1',[Validators.required]),
-            has_sons: new FormControl(0),
+            has_sons: new FormControl(0,Validators.min(1)),
             indexid: new FormControl(this.Global_indexid)            
           }
           
@@ -697,14 +694,30 @@ normal_alert(elemento : String){
        }
  
        if(this.cont_group_elements > 0)
-       {        
-       
+       {               
          this.formParent.value.group_item_options[this.Global_position].has_sons = 1;
        }
  
     }
 
-   
+
+    
+    verify_sons_of_group(formChild : number){
+      /**FUNCION QUE VERIFICA SI UN GRUPO TIENE ELEMENTOS O ITEMS, SIRVE EN EL MODAL PARA EDITAR 
+       * UNICAMENTE PARA INDICAR SI UN GRUO TIENE ITEMS O NO POR ESO SE TIENE QUE VERIFICAR AL ABRIRSE
+       * EL MODAL DE EDICION Y AL CREAR UN NUEVO ELEMENTO
+       */
+       if(this.formParent.value.group_item_options[formChild].has_sons == 1)
+       {
+           this.Items_indicator = 1;    
+       }
+
+       else if(this.formParent.value.group_item_options[formChild].has_sons == 0)
+       {
+           this.Items_indicator = 0;    
+       }
+     
+   }
     
   getCtrl(key: string, form: FormGroup) : any
   {
@@ -731,7 +744,7 @@ normal_alert(elemento : String){
     }
 
 
-    if(this.dish_register.name === '' || this.dish_register.price === '' || this.dish_register.price === null || this.selected_list.length == 0)
+    if(this.dish_register.name === '' || this.dish_register.price === '' || this.dish_register.price === null || this.selected_list.length == 0 || parseInt(""+this.dish_register.price) <= 0)
     {
       
       this.error_validation_message_information();           
@@ -739,7 +752,7 @@ normal_alert(elemento : String){
 
       
     /**EN ESTE CASO EL PLATILLO TIENE EXTRAS Y POR ESO SE DEBE VALIDAR, PUES SI TIENE EXTRAS DEBE ESTAR COMPLETA LA VALIDACION CON EXTRAS */
-    if(this.dish_register.name?.length != 0 && this.dish_register.price?.length!=0 
+    if(this.dish_register.name?.length != 0 && this.dish_register.price?.length!=0 && parseInt(""+this.dish_register.price) > 0
     && this.formParent.valid == true /*&& this.cont_group_elements == 0*/ && this.selected_list.length > 0)  {
        
       /*IGUALAMOS EL CAMPO selected_list DEL MODELO dish_register AL CAMPO selected_list
@@ -757,11 +770,11 @@ normal_alert(elemento : String){
     
     /**SI EL PLATILLO NO TIENE EXTRAS ENTONCES NO SE VALIDAN LOS CAMPOS DE LOS EXTRAS, EN ESTE CASO LOS HIJOS group_item_options y dinamicos NO TIENEN NINGUN VALOR POR LO TANTO NO HAY EXTRAS*/
     if(this.dish_register.name !== '' && this.dish_register.price !== '' && this.dish_register.name !== null && this.dish_register.price !== null 
-    && this.formParent.value.group_item_options.length == 0 && this.formParent.value.dinamicos.length == 0 && this.selected_list.length > 0) {
+    && this.formParent.value.group_item_options.length == 0 && this.formParent.value.dinamicos.length == 0 && this.selected_list.length > 0 && parseInt(""+this.dish_register.price) > 0) {
        
       /*IGUALAMOS EL CAMPO selected_list DEL MODELO dish_register AL CAMPO selectedOptions */ 
       this.dish_register.selected_list=this.selectedOptions;
-        
+      this.edit_dish(this.dish_register);  
     }
     
   }
@@ -838,11 +851,10 @@ normal_alert(elemento : String){
       const control = <FormArray>this.formParent.controls['dinamicos'];
       control.removeAt(index);
       this.verify_sons_items();
+      this.verify_sons_of_group(this.Global_position);
       
   }
 
-
-  
     Global_child : number = 0;
     Global_position : number = 0;
 
@@ -871,6 +883,8 @@ normal_alert(elemento : String){
   
           this.group.name=this.formParent.value.group_item_options[formChild].name;
           this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;   
+           this.verify_sons_items();
+           this.verify_sons_of_group(this.Global_position);
       
      }
 
@@ -928,10 +942,13 @@ normal_alert(elemento : String){
      }
 
 
-        maxsele : number | undefined = 0;
+        maxsele : number = 0;
 
      Present_Child_reverse(){
         
+      this.verify_sons_items();
+       this.verify_sons_of_group(this.Global_position);
+
          this.maxsele = parseInt(""+this.group.max_selected);
          
       /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
@@ -949,26 +966,29 @@ normal_alert(elemento : String){
       }
             
         
-           if(this.maxsele > cont){
+           if(this.maxsele > cont && cont > 0){
             //this.maxselected_error()
             this.group.max_selected= '';  
             this.formParent.value.group_item_options[this.Global_position].max_selected='1';   
-           }
+           alert("entra");
+          }
 
-           else{
+           else if(this.maxsele <= cont && cont > 0){
             this.formParent.value.group_item_options[this.Global_position].name=this.group.name;
             this.formParent.value.group_item_options[this.Global_position].max_selected=this.group.max_selected;
-      
+            alert("entra 2");
             }
 
+               alert(this.formParent.value.group_item_options[this.Global_position].has_sons);
 
      }
 
   
     edit_dish(dish_register : Dish_register){
-          
+     
+     console.log(dish_register);
       this.loading_button_edit = true;
-      this.dishService.edit_dish(this.dish_register).subscribe(
+      this.dishService.edit_dish(dish_register).subscribe(
         res =>{
            //console.log("Respuesta de transaccion "+res);
           this.loading_button_edit = false;

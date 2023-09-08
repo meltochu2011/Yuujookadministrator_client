@@ -66,7 +66,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
  /*datos : string | any;]*/
   //value: Subscription;
  constructor(private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private http: HttpClient, 
-    private websocketservice : WebSocketService , private sharingservice : SharingService, private cookiesvc : CookieService, private tokenSvc : JsonwtService)
+    private websocketservice : WebSocketService , private sharingservice : SharingService, private cookiesvc : CookieService)
      { 
 
         /**los datos del obserbable son para mostrar en la aplicacion y los datos de dish_register.image son 
@@ -79,7 +79,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
          * imagenes porque la locacion de las imagenes puede cambiar
         */
         environment.Dish_image="uploads/no_image.png";
-        this.Token$= tokenSvc.TokenObservable;
+        //this.Token$= tokenSvc.TokenObservable;
         //this.Token$= tokenSvc.TokenObservable;
         /*this.value = this.tokenSvc.TokenObservable.subscribe(value => {
           this.datos = value.Token;
@@ -525,7 +525,8 @@ filterby_category(idto_filter: number)
   Product_to_edit(id_product : number){
     
       //environment.id_product_toedit=id_product;
-      this.cookiesvc.set('productid',''+id_product);
+      this.cookiesvc.set('productid',''+id_product,2,'/dishes');
+      this.cookiesvc.set('productid',''+id_product,2,'/'  ); 
   }
 
 

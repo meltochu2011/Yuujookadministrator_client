@@ -46,8 +46,7 @@
               "src/assets/vendor/dropzone.min.js",
               "src/assets/vendor/bootstrap-datepicker.js",
               "src/assets/vendor/dropzone.js",
-              "src/assets/js/agregado.js",
-              "src/assets/js/jalarimagen.js" 
+              "src/assets/js/agregado.js"
 
             ]
           },
@@ -134,7 +133,7 @@
               "src/assets/vendor/bootstrap-datepicker.js",
               "src/assets/vendor/dropzone.js",
               "src/assets/js/agregado.js",
-              "src/assets/js/jalarimagen.js" 
+              "src/assets/js/toogle-response.js" 
 
             ]
           }

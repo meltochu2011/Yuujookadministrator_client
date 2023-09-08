@@ -40,6 +40,7 @@ export class OrdersListComponent {
   constructor(/*private readonly sppinerSvc : SppinerService,*/private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private http: HttpClient,private websocketservice : WebSocketService) { 
     
     this.Socket_config();
+    
     //this.getOrders_count(0); 
 
   }
@@ -186,7 +187,7 @@ export class OrdersListComponent {
         this.order_info=res;     
         this.loading_gif=false;  
         document.body.style.cursor = 'default';   
-        //this.verify_previusandnextpage(element_position);   
+        this.verify_previusandnextpage(element_position);   
       },
       err=> {
         
