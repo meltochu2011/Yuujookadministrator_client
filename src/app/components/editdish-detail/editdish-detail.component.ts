@@ -1053,7 +1053,7 @@ normal_alert(elemento : String){
       
     if(environment.Socket_state == 0)
     {
-
+       /**COMENT */
       
         this.websocketservice.callback.subscribe(res =>{
   

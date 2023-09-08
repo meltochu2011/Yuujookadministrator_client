@@ -793,7 +793,7 @@ normal_alert(elemento : String){
        'success'
                 )
      }
-    
+    /**COMENT */
 
      Socket_config(){
       
