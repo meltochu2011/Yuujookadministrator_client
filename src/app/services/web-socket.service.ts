@@ -15,9 +15,7 @@ export class WebSocketService extends Socket{
   orderresponse : EventEmitter <any> = new EventEmitter();
   
 
-  constructor() {
-
-    
+  constructor() {   
     super({
 
       

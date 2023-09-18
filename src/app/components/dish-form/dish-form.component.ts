@@ -239,7 +239,7 @@ IMAGE_DIRECTORY_EDIT: string = "";
 Image_temporal_edit :string="";
 
 
-matlistvalues : any;
+
   reset_data_fields() 
 {
   /***EN REALIDAD ESTO LO QUE HACE ES RECARGAR EL COMPONENTE, ME TOMO MUCHO TIEMPO ENCONTRAR ESTE CODIGO
@@ -394,6 +394,7 @@ normal_alert(elemento : String){
             
       refitems.push(this.init_form_dish_return_child())   
       this.verify_sons_items();      
+      this.verify_sons_of_group(this.Global_position);
       /**se llama al verificador de hijos del grupo para ver si hay hijos y mostrar o no 
        * la etiqueta "No hay ningun item en el grupo" OJO Global_child indica el index del grupo presente en el
        * modal por eso se envía como referencia
@@ -595,6 +596,7 @@ normal_alert(elemento : String){
       const control = <FormArray>this.formParent.controls['dinamicos'];
       control.removeAt(index);
       this.verify_sons_items();
+      this.verify_sons_of_group(this.Global_position);
   }
 
 
@@ -683,7 +685,7 @@ normal_alert(elemento : String){
             this.group.name=this.formParent.value.group_item_options[formChild].name;
             this.group.max_selected=this.formParent.value.group_item_options[formChild].max_selected;   
             this.verify_sons_items();
-            //this.verify_sons_of_group(this.Global_position);
+            this.verify_sons_of_group(this.Global_position);
             
            
             
@@ -692,13 +694,13 @@ normal_alert(elemento : String){
 
      }
 
-
-     /*verify_sons_of_group(formChild : number){
+     Items_indicator : number = 0;
+     verify_sons_of_group(formChild : number){
       /**FUNCION QUE VERIFICA SI UN GRUPO TIENE ELEMENTOS O ITEMS, SIRVE EN EL MODAL PARA EDITAR 
        * UNICAMENTE PARA INDICAR SI UN GRUO TIENE ITEMS O NO POR ESO SE TIENE QUE VERIFICAR AL ABRIRSE
        * EL MODAL DE EDICION Y AL CREAR UN NUEVO ELEMENTO
        */
-       /*if(this.formParent.value.group_item_options[formChild].has_sons == 1)
+       if(this.formParent.value.group_item_options[formChild].has_sons == 1)
        {
            this.Items_indicator = 1;    
        }
@@ -708,12 +710,12 @@ normal_alert(elemento : String){
            this.Items_indicator = 0;    
        }
      
-   }*/
+   }
 
      Present_Child_reverse(){
       
        this.verify_sons_items();
-       //this.verify_sons_of_group(this.Global_position);
+       this.verify_sons_of_group(this.Global_position);
 
       this.maxsele = parseInt(""+this.group.max_selected);
          

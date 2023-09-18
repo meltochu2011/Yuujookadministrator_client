@@ -645,7 +645,7 @@ normal_alert(elemento : String){
             
       refitems.push(this.init_form_dish_return2())   
       this.verify_sons_items();  
-      
+      this.verify_sons_of_group(this.Global_position);
 
     }
 
@@ -723,7 +723,6 @@ normal_alert(elemento : String){
   {
     return form.get(key);    
   }
-
  
   getCtrl2(key: string, form: FormGroup) : any
   {
@@ -832,7 +831,6 @@ normal_alert(elemento : String){
          const control = <FormArray>this.formParent.controls['group_item_options'];
          control.removeAt(index);
 
-      
      }
 
 
@@ -869,14 +867,14 @@ normal_alert(elemento : String){
      Present_Child(formChild : number){
 
       this.Global_position=formChild;
-      
+       
       
          this.groupitems_indicator = 1;
         
         
         this.Global_child = this.formParent.value.group_item_options[formChild].indexid;
         
-        //alert("global "+formChild);
+        //alert(this.Global);
         /*ESTA FUNCION UNICAMENTE ASIGNA EL INDEX DEL GRUPO DEL QUE SE QUIERE VER EL DETALLE, SI SE SELECCIONA VER EL DETALLE DEL GRUPO 2 POR EJEMPLO,
         AL LLAMAR A ESTA FUNCION EL INDEX PERMANECERÁ EN VALOR 2 TODO EL TIEMPO QUE EL USUARIO ESTE EN EL DETALLE, ESO INCLUYE VER DETALLE (LEER), AGREGAR 
         ELEMENTO AL DETALLE, INCLUSO MODIFICAR Y ELIMINAR */

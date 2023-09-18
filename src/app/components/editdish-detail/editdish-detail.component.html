@@ -305,7 +305,6 @@
                                             <div  *ngIf='list.signal ==  formParent.value.group_item_options[formChild].indexid && list.tag !== "" && list.tag != null && list.price !== "" && list.price != null'>
                                                     <li class="fa fa-plus-circle"> {{list.tag}} &nbsp;&nbsp;&nbsp;Q
                                                         {{list.price}}</li>
-
                                                         <!--<input type="text" [(ngModel)]="formParent.value.dinamicos[hijito].tag" value="">-->
                                                 </div>
 
@@ -423,7 +422,7 @@
                       
                         </div>
 
-                        <div class="form-group" *ngIf="( formParent.value.group_item_options[Global_child].has_sons == 0)">
+                        <div class="form-group" *ngIf="( Items_indicator == 0)">
 
                             &nbsp;&nbsp;&nbsp; <li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
                         </div>

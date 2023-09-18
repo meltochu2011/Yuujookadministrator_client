@@ -39,10 +39,8 @@ export class OrdersListComponent {
   
   constructor(/*private readonly sppinerSvc : SppinerService,*/private dishService: DishService,private router: Router,private activedRoute: ActivatedRoute, private http: HttpClient,private websocketservice : WebSocketService) { 
     
+    //this.websocketservice.connect();    
     this.Socket_config();
-    
-    //this.getOrders_count(0); 
-
   }
 
 
@@ -50,7 +48,7 @@ export class OrdersListComponent {
     
    
       this.initial_function();
-    
+      
   }
 
    initial_function(){
@@ -58,9 +56,8 @@ export class OrdersListComponent {
     environment.pagevalue = 1;
     this.global_index_page = 0;
     this.orders_quantity();
-    /**RECIBE INICIO DE FILTRO Y NUMERO DE PAGINA */    
     this.getOrders_count(this.global_index_page,environment.pagevalue);
-      
+   
     
    }
   
@@ -162,7 +159,6 @@ export class OrdersListComponent {
   getOrders_count(index_begining: number,element_position : number)
   {
     
-
     /**
      * PARA VERIFICAR LA POSICION DE PAGINA
      */
@@ -210,7 +206,13 @@ export class OrdersListComponent {
   orders_quantity(){
 
        /**LIMPIAMOS EL ARRAY QUE SE TIENE DESDE UN INICIO PARA PAGINACION*/
-    this.paging_array=[];
+       this.global_index_page=0;
+       this.global_quantity=0;
+       this.global_sumatory=0;
+       this.paging_array =[];
+       this.array_orders_count =[];
+       this.initial_index=0;
+       this.final_index=0;
 
     /**PAGINACION QUE SE LLEVA A CABO PARA VER CUANTOS PRODUCTOS EXISTEN,
      * COMIENZA CON UN CONTEO, LUEGO SE EJECUTA EL ALGORITMO DE PAGINACION
@@ -275,19 +277,20 @@ export class OrdersListComponent {
  
 
     Socket_config(){
-      
+
       if(environment.Socket_state == 0)
       {
-
-        
+          //alert("accede");     
+           //this.websocketservice.connect();
+          
           this.websocketservice.callback.subscribe(res =>{
     
            if(res == 'delivery')
           {
-           //this.delivery_order_alert(); 
-           this.getOrders_count(0,environment.pagevalue);
-           this.websocketservice.delivery_order_alert();
-           
+            this.orders_quantity();
+             this.getOrders_count(this.global_index_page,environment.pagevalue); 
+        
+           this.websocketservice.delivery_order_alert();    
           }
   
           if(res == "intern")
@@ -312,6 +315,43 @@ export class OrdersListComponent {
             });          
            environment.Socket_state = 1;
 
+      }
+
+
+      else if(environment.Socket_state > 0){
+        /*console.log("aqui entra");
+        alert("es mayor que 0 socket state");*/
+        //this.websocketservice.delivery_order_alert(); 
+
+   
+        this.websocketservice.callback.subscribe(res =>{
+    
+          if(res == 'delivery')
+         {
+           this.orders_quantity();
+            this.getOrders_count(this.global_index_page,environment.pagevalue); 
+       
+          //this.websocketservice.delivery_order_alert();    
+         }
+        // this.websocketservice.orderresponse.subscribe(res =>{
+    
+           
+        /*  if(res == true)
+          {
+             alert("hola");
+          }
+
+          if(res == false)
+          {
+             alert("error");
+          }*/
+         // });          
+
+});
+        /*this.orders_quantity();
+        this.getOrders_count(this.global_index_page,environment.pagevalue);
+        this.websocketservice.delivery_order_alert();*/ 
+        //this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> this.router.navigate(["/dishes/orders_list"]));            
       }
 
     }

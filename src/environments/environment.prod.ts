@@ -22,7 +22,10 @@ export const environment = {
   
   /** INDICA EL NUMERO DE LA PAGINA EN LA QUE NOS ENCONTRAMOS ACTUALMENTE */
   pagevalue : 1,
+  number_beginer : 0,
 
   /**VARIABLES PARA ORDENES */
-   orderdetail_id : 0
+   orderdetail_id : 0,
+   TOKEN : ''
+   
 };

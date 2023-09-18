@@ -397,7 +397,7 @@
                       
                         </div>
 
-                        <div class="form-group" *ngIf="(formParent.value.group_item_options[Global_position].has_sons == 0)">
+                        <div class="form-group" *ngIf="(Items_indicator == 0)">
 
                             &nbsp;&nbsp;&nbsp;<li class="fa fa-plus-circle" style="color:red"> No hay ningun item en el grupo </li>
                             
@@ -511,9 +511,9 @@ ________________________________________________________________________________
                                     style="max-width: 75px; position:relative;" >                           
                             </div>
                             
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <!--<button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
-                            </button>
+                            </button>-->
                         </div>
 
 
@@ -522,7 +522,7 @@ ________________________________________________________________________________
 
                                <mat-selection-list #categories [(ngModel)]="selectedOptions" name="selectedOptions"
                                (ngModelChange)="onNgModelChange($event)">
-                                   <mat-list-option [(ngModel)]="matlistvalues" *ngFor="let categ of category" [value]="categ">
+                                   <mat-list-option  *ngFor="let categ of category" [value]="categ">
                                    <p>
                                        <img [src]="API_URI+categ.image" id="imagen_formulario"
                                            style="max-width: 30px;">&nbsp;&nbsp;
