@@ -25,7 +25,7 @@ export class JsonwtService {
   new BehaviorSubject <Component_token>({ Token : ''});
    
     get clean(){
-      console.log(document.location.hostname+'/dishes');
+      alert(document.location.hostname+'/dishes');
     this.cookieuser.delete('userkey','/dishes',document.location.hostname+'/dishes');      
     return this.cookieuser.delete('userkey','/',document.location.hostname+'/');   
      
