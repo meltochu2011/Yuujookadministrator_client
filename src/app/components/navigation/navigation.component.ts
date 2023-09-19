@@ -26,7 +26,7 @@ export class NavigationComponent implements OnInit {
       this.toogle=false;
   }
 
-    clean(){
+    public clean(){
 
       //this.jwtservice.TokenObservableData = {Token : ''}
       this.jwtservice.clean;
