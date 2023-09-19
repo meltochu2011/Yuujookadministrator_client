@@ -27,11 +27,11 @@ export class NavigationComponent implements OnInit {
       this.toogle=false;
   }
 
-  value : any;
+  
     clean(){
       alert("entra a la funcion");
-       this.value=this.jwtservice.Clean;
-       alert("valor de value "+this.value);
+       const value=this.jwtservice.Clean;
+       alert("valor de value "+value);
        alert("despues de limpiar");     
       window.location.reload();
     }
