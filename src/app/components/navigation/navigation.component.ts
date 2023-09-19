@@ -33,7 +33,7 @@ export class NavigationComponent implements OnInit {
        this.value=this.jwtservice.Clean;
        alert("valor de value "+this.value);
        alert("despues de limpiar");     
-      //window.location.reload();
+      window.location.reload();
     }
   
 
