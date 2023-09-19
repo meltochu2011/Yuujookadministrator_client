@@ -26,8 +26,8 @@ export class JsonwtService {
    
     get clean(){
       
-    this.cookieuser.delete('userkey','/dishes',document.location.hostname);      
-    return this.cookieuser.delete('userkey','/',document.location.hostname);   
+    this.cookieuser.delete('userkey','/dishes',document.location.hostname+'/dishes');      
+    return this.cookieuser.delete('userkey','/',document.location.hostname+'/');   
      
     }
 
