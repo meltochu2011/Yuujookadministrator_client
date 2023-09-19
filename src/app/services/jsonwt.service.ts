@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {CookieService} from 'ngx-cookie-service';
-import { RouterModule } from '@angular/router';
 //import Ruta from '@angular/router';
 
 export interface Component_token{
@@ -27,10 +26,8 @@ export class JsonwtService {
    
     get clean(){
       
-    //return this.cookieuser.deleteAll();
-     //return  this.cookieuser.deleteAll()
-            this.cookieuser.delete('userkey','/dishes');      
-    return this.cookieuser.delete('userkey','/');   
+    this.cookieuser.delete('userkey','/dishes',document.location.hostname);      
+    return this.cookieuser.delete('userkey','/',document.location.hostname);   
      
     }
 
