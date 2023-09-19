@@ -26,9 +26,16 @@ export class JsonwtService {
    
   
     get Clean(){
-      alert(document.location.hostname+'/dishes');
-    this.cookieuser.delete('userkey','/dishes');      
-    return {value : this.cookieuser.delete('userkey','/')} 
+    
+  try {
+    this.cookieuser.delete('userkey','/dishes');     
+    this.cookieuser.delete('userkey','/') 
+    return {value : true} 
+  } catch (error) {
+    console.log(error);
+    return {value : false} 
+  }
+    
      
     }
 

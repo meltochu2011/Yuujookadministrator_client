@@ -29,11 +29,14 @@ export class NavigationComponent implements OnInit {
 
   
     clean(){
-      alert("entra a la funcion");
-       const value=this.jwtservice.Clean;
+      const value=this.jwtservice.Clean;
        alert("valor de value "+value.value);
-       alert("despues de limpiar");     
-      window.location.reload();
+       
+       if(value.value == true)
+       {
+        window.location.reload();
+       }     
+      
     }
   
 
