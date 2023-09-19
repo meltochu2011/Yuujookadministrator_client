@@ -29,6 +29,8 @@ export class NavigationComponent implements OnInit {
     public clean(){
 
       //this.jwtservice.TokenObservableData = {Token : ''}
+
+      alert("entra a la funcion")
       this.jwtservice.clean;
             
       window.location.reload();
