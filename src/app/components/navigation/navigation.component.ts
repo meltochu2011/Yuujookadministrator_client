@@ -28,9 +28,9 @@ export class NavigationComponent implements OnInit {
   }
 
     clean(){
-      alert("entra a la funcion")
-      const res = this.jwtservice.Clean;
-       alert(res)     
+      alert("entra a la funcion");
+       this.jwtservice.Clean;
+       alert("despues de limpiar");     
       //window.location.reload();
     }
   
