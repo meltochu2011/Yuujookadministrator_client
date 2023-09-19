@@ -24,10 +24,11 @@ export class JsonwtService {
   private TokenObservablePrivate : BehaviorSubject<Component_token> = 
   new BehaviorSubject <Component_token>({ Token : ''});
    
+  
     get Clean(){
       alert(document.location.hostname+'/dishes');
     this.cookieuser.delete('userkey','/dishes');      
-    return this.cookieuser.delete('userkey','/');   
+    return {value : this.cookieuser.delete('userkey','/')} 
      
     }
 
