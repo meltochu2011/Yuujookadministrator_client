@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import {JsonwtService,Component_token} from 'src/app/services/jsonwt.service';
+import {JsonwtService} from 'src/app/services/jsonwt.service';
 import { AppComponent } from 'src/app/app.component';
 
 @Component({
@@ -27,9 +27,11 @@ export class NavigationComponent implements OnInit {
       this.toogle=false;
   }
 
+  value : any;
     clean(){
       alert("entra a la funcion");
-       this.jwtservice.Clean;
+       this.value=this.jwtservice.Clean;
+       alert("valor de value "+this.value);
        alert("despues de limpiar");     
       //window.location.reload();
     }
