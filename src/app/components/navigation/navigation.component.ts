@@ -27,13 +27,10 @@ export class NavigationComponent implements OnInit {
   }
 
     clean(){
-
-      //this.jwtservice.TokenObservableData = {Token : ''}
-
       alert("entra a la funcion")
       this.jwtservice.Clean;
             
-      window.location.reload();
+      //window.location.reload();
     }
   
 
