@@ -26,12 +26,12 @@ export class NavigationComponent implements OnInit {
       this.toogle=false;
   }
 
-    public clean(){
+    clean(){
 
       //this.jwtservice.TokenObservableData = {Token : ''}
 
       alert("entra a la funcion")
-      this.jwtservice.clean;
+      this.jwtservice.Clean;
             
       window.location.reload();
     }
