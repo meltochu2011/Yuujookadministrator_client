@@ -11,6 +11,7 @@ import { AppComponent } from 'src/app/app.component';
 export class NavigationComponent implements OnInit {
 
   constructor(private jwtservice : JsonwtService) {
+    
         this.too_menu();    
    }
 
@@ -28,8 +29,8 @@ export class NavigationComponent implements OnInit {
 
     clean(){
       alert("entra a la funcion")
-      this.jwtservice.Clean;
-            
+      const res = this.jwtservice.Clean;
+       alert(res)     
       //window.location.reload();
     }
   
