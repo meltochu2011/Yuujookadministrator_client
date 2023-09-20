@@ -116,19 +116,17 @@ ________________________________________________________________________________
                                 <div class="form-group">
         
                                     <input type="text" class="form-control" placeholder="Descripcion del platillo"
-                                         id="description" onkeyup="valid_description()" [(ngModel)]="dish_ins.name" name="product_name">
+                                         id="description" [(ngModel)]="dish_ins.name" name="product_name">
                                 </div>
                             </div>
-
-                            
-                           
+                
 
                             <div class="col-md-8">
                                 <label>Descripcion</label>
                                 <div class="form-group">
         
                                     <input type="text" [(ngModel)]="dish_ins.description" name="product_description" class="form-control" placeholder="Descripcion del grupo"
-                                         id="description" onkeyup="valid_description()" >
+                                         id="description">
                                 </div>
                             </div>
                         
@@ -138,7 +136,7 @@ ________________________________________________________________________________
         
                                     <input type="number" class="form-control" placeholder="Precio del platillo (Q)"
                                         onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                         id="max_sele" onkeyup="valid_maxselected()" [(ngModel)]="dish_ins.price" name="product_price">
+                                         id="max_sele" [(ngModel)]="dish_ins.price" name="product_price">
                                       
                                 </div>
                             </div>

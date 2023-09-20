@@ -591,7 +591,6 @@ filterby_category(idto_filter: number)
    
   editProduct_quickly()
   {      
-        this.loading_gif=true;
 
        /** le damos la ruta que se asigno a la variable environment.Dish_image PUES EN ELLA
         * ESTA LA DIRECCION DE LA IMAGEN
@@ -611,37 +610,56 @@ filterby_category(idto_filter: number)
         //alert(this.dish_ins.image);
         this.dish_ins.has_image=0;                 
        }
-       
-     this.dishService.editProduct_quickly(this.dish_ins).subscribe(
-        res =>{
-         
 
-          this.limpiar_campos();
-          
-          if(environment.filter_var >= 1){
-            environment.pagevalue = 1;
-            /**Recibe el id */
-            this.filterby_category(environment.filter_var);
-         }
-      
-         
-        if(environment.filter_var == -1){         
-          this.getProducts_pagecount(this.global_index_page);   
-        }
+       if(this.dish_ins.name != null && this.dish_ins.name != "" 
+        && this.dish_ins.price != null && this.dish_ins.price != "")
+       {
+        
+        this.edit_quickly(this.dish_ins);    
+       }
 
-
-          //this.getProducts_pagecount(this.global_index_page);
-          this.Save_product_changes_alert(res);
-          this.loading_gif=false;
-        },
-        err => console.log(err)
-       
-     )
-
+       else if(this.dish_ins.name != null || this.dish_ins.name != "" || 
+        this.dish_ins.price != null || this.dish_ins.price != "")
+       {
+        
+            this.error_incomplete_items();
+       }
     
   }
 
   
+  edit_quickly(sish : Dish_edit){
+
+    this.loading_gif=true;
+
+    this.dishService.editProduct_quickly(this.dish_ins).subscribe(
+      res =>{
+       
+
+        this.limpiar_campos();
+        
+        if(environment.filter_var >= 1){
+          environment.pagevalue = 1;
+          /**Recibe el id */
+          this.filterby_category(environment.filter_var);
+       }
+    
+       
+      if(environment.filter_var == -1){         
+        this.getProducts_pagecount(this.global_index_page);   
+      }
+
+
+        //this.getProducts_pagecount(this.global_index_page);
+        this.Save_product_changes_alert(res);
+        this.loading_gif=false;
+      },
+      err => console.log(err)
+     
+   )
+
+
+  }
 
   deleteDish(){
 
@@ -752,6 +770,17 @@ alerta_elemento_eliminado(elemento : String){
       })
     }
 
+
+    error_incomplete_items()
+    {
+      Swal.fire({
+        icon: 'error',
+        title: 'Por favor...',
+        text: 'Los campos de nombre y precio son obligatorios!',
+        footer: '<a >Complete los campos que se le piden</a>'
+      })            
+  
+    }
 
     Socket_config(){
       
