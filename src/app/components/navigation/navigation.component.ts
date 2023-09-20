@@ -30,7 +30,6 @@ export class NavigationComponent implements OnInit {
   
     clean(){
       const value=this.jwtservice.Clean;
-       alert("valor de value "+value.value);
        
        if(value.value == true)
        {

@@ -249,7 +249,7 @@
 
                                             <input type="text" class="form-control" placeholder="Descripcion del grupo" 
                                                 id="{{formChild}}" onkeyup="description_validation(id)" formControlName="name"
-                                                (keyup)="verify_sons_items()" [(ngModel)]="formParent.value.group_item_options[formChild].name">
+                                                 [(ngModel)]="formParent.value.group_item_options[formChild].name">
 
                                         </div>
 
@@ -263,7 +263,7 @@
                                         <div class="form-group">
 
                                             <input type="number" class="form-control" id="max_selected{{formChild}}" onkeyup="maxselected_validation(id)" 
-                                             (keyup)="groups_count(formChild)" placeholder="Numero seleccionable" (click)="groups_count(formChild)"
+                                             placeholder="Numero seleccionable" (click)="groups_count(formChild)"
                                                 onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" onclick="maxselected_validation(id)" 
                                                 formControlName="max_selected" [(ngModel)]="formParent.value.group_item_options[formChild].max_selected" min="1" pattern="^[0-9]+">
                                         </div>
@@ -385,7 +385,7 @@
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="edit_bookingLabel">Detalle de grupo</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             
                             <span aria-hidden="true">×</span>
                         </button>
@@ -531,9 +531,9 @@ ________________________________________________________________________________
                     <form action="" style="margin-left: 15px; margin-right: 15px;">
                         <div class="modal-header">
                             <h5 class="modal-title" id="edit_bookingLabel">Elegir categoría</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <!--<button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
-                            </button>
+                            </button>-->
                         </div>
 
 
@@ -602,25 +602,4 @@ ________________________________________________________________________________
 
 
 
-    </div>
-
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="#0">Logout</a>
-                </div>
-            </div>
-        </div>
     </div>
