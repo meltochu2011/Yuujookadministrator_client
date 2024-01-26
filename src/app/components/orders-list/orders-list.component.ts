@@ -91,14 +91,14 @@ export class OrdersListComponent {
    {
       "customer_name": "David",
       "customer_last_name": "Web",
-      "phone": "52969999",
+      "phone": "40196841",
       "address": "Zona 24",
       "has_whatsapp": true,
       "total": 75,
       "note": "Hola mundo, este es el comentario",
       "products": [
           {
-              "id_product": 10,
+              "id_product": 2,
               "amount": 4,
               "sub_total": 80,
               "add_ons": [
@@ -109,7 +109,7 @@ export class OrdersListComponent {
               ]
           },
           {
-              "id_product": 10,
+              "id_product": 2,
               "amount": 5,
               "sub_total": 50,
               "add_ons": [
@@ -117,7 +117,7 @@ export class OrdersListComponent {
               ]
           },
           {
-              "id_product": 10,
+              "id_product": 2,
               "amount": 5,
               "sub_total": 100,
               "add_ons": [

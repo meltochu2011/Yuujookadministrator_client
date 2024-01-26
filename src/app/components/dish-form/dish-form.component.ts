@@ -661,8 +661,6 @@ normal_alert(elemento : String){
        this.formParent.value.group_item_options[group_index].max_selected='1';
        alert("La cantidad de items seleccinables no concuerda con la cantidad de items"); 
        
-       /*this.group.max_selected= '0';  
-       this.formParent.value.group_item_options[this.Global_position].max_selected='0';  */ 
       }
       
 

@@ -73,8 +73,13 @@ export class LoginuserComponent implements OnInit {
            }
           this.loading= false;
         },
-        err => console.log(err)
         
+        err =>
+        {
+         console.log(err);
+         this.loading = false;
+         alert("Ha ocurrido un error, revise su conexion de internet");         
+        }
        )
   }
 
