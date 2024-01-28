@@ -147,44 +147,43 @@
 
             </div>
 
-                     
-            <!-- pagination-->
-            <nav aria-label="...">
-                <ul class="pagination pagination-sm add_bottom_30" >
-                    
-                    <li class="page-item" (click)="previuspage()" *ngIf="( previus_state == true)">
-                        <a class="page-link" >Anterior</a>
-                    </li>
-
-                    <li class="page-item disabled"  *ngIf="( previus_state == false)">
-                        <a class="page-link"  tabindex="-1">Anterior</a>
-                    </li>
-
-                    <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
-                        <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
-            Y SE PRESENTA-->
-                        <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
-                            class="page-link" (click)="getOrders_count(paging.init,cont+1)">{{cont+1}}</a>
-                        <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
-            DEFECTO Y SE PRESENTA-->
-                        <a *ngIf="( paging.init != global_index_page)" class="page-link"
-                            (click)="getOrders_count(paging.init,cont+1)">{{cont+1}}</a>
-                    </li>
-
-                    <li class="page-item"  (click)="nextpage()" *ngIf="( nextpage_state == true)">
-                        <a class="page-link" >Siguiente</a>
-                    </li>
-
-                    <li class="page-item disabled" *ngIf="(nextpage_state == false)">
-                        <a class="page-link"  tabindex="-1">Siguiente</a>
-                    </li>
-                    
-                </ul>
-            </nav>
-            <!-- /pagination-->   
-
         </div>
-            
+
+         <!-- pagination-->
+         <nav aria-label="...">
+            <ul class="pagination pagination-sm add_bottom_30" >
+                
+                <li class="page-item" (click)="previuspage()" *ngIf="( previus_state == true)">
+                    <a class="page-link" >Anterior</a>
+                </li>
+
+                <li class="page-item disabled"  *ngIf="( previus_state == false)">
+                    <a class="page-link"  tabindex="-1">Anterior</a>
+                </li>
+
+                <li *ngFor="let paging of paging_array, let cont = index " class="page-item">
+                    <!--SI LA PAGINA DE INICIO DEL ARRAY ES IGUAL A EL INDEX GLOBAL DE LA PAGINA ENTONCES SE ENMARCA A NIVEL DE FRONTEND
+        Y SE PRESENTA-->
+                    <a *ngIf="( paging.init == global_index_page)" style="background-color: rgb(196, 230, 228);"
+                        class="page-link" (click)="getOrders_count(paging.init,cont+1)">{{cont+1}}</a>
+                    <!--SI LA PAGINA DE INICIO DEL ARRAY NO ES IGUAL AL INDEX GLOBAL DE LA PAGINA ENTONCES SE DEJA CON LA PRESENTACION POR
+        DEFECTO Y SE PRESENTA-->
+                    <a *ngIf="( paging.init != global_index_page)" class="page-link"
+                        (click)="getOrders_count(paging.init,cont+1)">{{cont+1}}</a>
+                </li>
+
+                <li class="page-item"  (click)="nextpage()" *ngIf="( nextpage_state == true)">
+                    <a class="page-link" >Siguiente</a>
+                </li>
+
+                <li class="page-item disabled" *ngIf="(nextpage_state == false)">
+                    <a class="page-link"  tabindex="-1">Siguiente</a>
+                </li>
+                
+            </ul>
+        </nav>
+        <!-- /pagination-->   
+
     </div>
 
     
