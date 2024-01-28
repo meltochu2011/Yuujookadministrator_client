@@ -67,16 +67,6 @@
                     NO FUE POSIBLE OBTENER RESULTADOS, INTENTE MAS TARDE!
                 </p>
                                 
-               
-                           <!-- <a class="btn_1 gray" (click)="conectarsocketintern()"  
-                            ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden interna</a>
-                            &nbsp;&nbsp;-->
-
-                            <!--
-                            <a class="btn_1 gray" (click)="conectarsocket()"  
-                            ><i class="fa fa-fw fa-pencil"></i> <i class="fa fa-fw fa-list"></i> orden externa</a>
-                            &nbsp;&nbsp;-->
-
                             <div class="row">                            
                             
                                 <div class="col-md-3">
@@ -106,7 +96,7 @@
                                             &nbsp;&nbsp;<label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;  color: rgb(109, 114, 139);" > # orden: {{order.code}} </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                              
                                              &nbsp;&nbsp;{{order.date_spanishformat}} &nbsp;&nbsp;&nbsp;&nbsp;  {{order.order_time}} 
-                                              <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
+                                             <i class="read" *ngIf="(order.order_state == 'Procesando')" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; width: 50px  ">{{order.order_state}}</i> 
                                              
                                             </span>
                                         <figure><img src="assets/statics_img/orders_list_delivery.png" alt="" style="cursor: pointer" data-toggle="modal" (click)="getOrder_detail_modal(order.id_order)" data-target="#modal_order_detail"></figure>
