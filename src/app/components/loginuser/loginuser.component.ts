@@ -4,15 +4,23 @@ import { DishService } from 'src/app/services/dish.service';
 import {CookieService} from 'ngx-cookie-service';
 import {Component_token, JsonwtService} from 'src/app/services/jsonwt.service'
 import {  Observable, Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { OrdersListComponent } from '../orders-list/orders-list.component';
+
 
 @Component({
   selector: 'app-loginuser',
   templateUrl: './loginuser.component.html',
-  styleUrls: ['./loginuser.component.css']
+  styleUrls: ['./loginuser.component.css'],
+  //standalone: true,
+  
 })
+
+
+
 export class LoginuserComponent implements OnInit {
+ 
+  
+  
+  hide = true;
 
      value : boolean = false;
   constructor(private dishService: DishService, private tokenSvc : JsonwtService) { 

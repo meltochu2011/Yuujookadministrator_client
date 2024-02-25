@@ -39,6 +39,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { JsonwtService } from './services/jsonwt.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -66,7 +67,6 @@ import { JsonwtService } from './services/jsonwt.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-  
     BrowserAnimationsModule,
     MatListModule,
     ReactiveFormsModule,
@@ -74,7 +74,9 @@ import { JsonwtService } from './services/jsonwt.service';
     CoreModule,
     MatButtonModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatIconModule,
+   
   ],
   providers: [DishService,CookieService,WebSocketService,JsonwtService, 
   {provide : HTTP_INTERCEPTORS, useClass: SppinerInterceptor, multi:true}
