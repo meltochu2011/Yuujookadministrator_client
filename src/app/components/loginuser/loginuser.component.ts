@@ -4,6 +4,8 @@ import { DishService } from 'src/app/services/dish.service';
 import {CookieService} from 'ngx-cookie-service';
 import {Component_token, JsonwtService} from 'src/app/services/jsonwt.service'
 import {  Observable, Subscription } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -51,6 +53,9 @@ export class LoginuserComponent implements OnInit {
     user_pass:''
   };
 
+  
+  
+  
     access_result : any;
     public loading : any|boolean;
     
@@ -61,8 +66,7 @@ export class LoginuserComponent implements OnInit {
     tokenvalue : string | any; 
   login_account()
   {
-       
-       /*alert(this.Userdata.user_name);*/
+              /*alert(this.Userdata.user_name);*/
        this.loading = true;
        this.dishService.autentication(this.Userdata)
        .subscribe(
@@ -70,7 +74,12 @@ export class LoginuserComponent implements OnInit {
           this.access_result = res;
          
           if(this.access_result.token == "notloggedin"){
-            alert("no se encontro al usuario");            
+            Swal.fire({
+              icon: "error",
+              title: "No se encontro al usuario",
+              text: "Usuario o contraseña invalidos!"
+            });
+
           }  
 
            else{
@@ -91,4 +100,30 @@ export class LoginuserComponent implements OnInit {
        )
   }
 
+  login_validate_access()
+  {
+      
+       if(this.Userdata.user_name == "" ||  this.Userdata.user_pass == "" || this.Userdata.user_name == null ||  this.Userdata.user_pass == null)  
+       {
+        Swal.fire({
+          icon: "error",
+          title: "Hay campos vacíos",
+          text: "Por favor complete el usuario y la contraseña!",
+          footer: '<a href="#">Campos incompletos</a>'
+        });
+        
+       }   
+  
+       else
+       {
+        this.login_account();
+       }
+  }
+
+
+   
+  
+
 }
+
+
