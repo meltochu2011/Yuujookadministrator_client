@@ -52,31 +52,17 @@
 		            			<i class="icon_pencil"></i>
 		            		</div>-->
 		            		
-							<mat-form-field class="example-full-width" [style.width.px]=248 >
+							<mat-form-field class="example-full-width" [style.width.px]=240 >
 								<mat-label>Ingrese su usuario</mat-label>
 
 								<input matInput   (keyup.enter)="login_validate_access()" routerLink="/dishes/orders_list" [(ngModel)]="Userdata.user_name" required >
 								 
-								<!--<span *ngIf="Userdata.user_name ?.errors?.['required']">
-									(El nombre no puede quedar vacío)
-								  </span>-->
-								   
-								  <!--<strong *ngIf="(Userdata.user_name.hasError['required'])">required</strong>-->
-								  
+							
 							</mat-form-field>
 							  
-							  
-							<!--
-		            		<div class="form-group add_bottom_15">
-								<label>Contraseña</label>
-		            			<input class="form-control" type="password" (keyup.enter)="login_account()" routerLink="/dishes/orders_list" placeholder="Ingrese su contraseña" id="password_sign" [(ngModel)]="Userdata.user_pass"> <i class="fa fa-eye" aria-hidden="true"></i>
-								
-		            		</div>
-                            -->
-							
 							<div class="example-container">
 
-								<mat-form-field>
+								<mat-form-field [style.width.px]=240>
 
 								  <mat-label>Ingrese su contraseña</mat-label>
 								  <input matInput [type]="hide ? 'password' : 'text'" (keyup.enter)="login_validate_access()" routerLink="/dishes/orders_list" [(ngModel)]="Userdata.user_pass" required>
