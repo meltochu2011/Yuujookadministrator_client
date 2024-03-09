@@ -141,9 +141,6 @@ export class LoginuserComponent implements OnInit {
           icon: "error",
           title: "Ingrese usuario y contraseña"
         });
-            
-            this.Userdata.user_name= "";
-            this.Userdata.user_pass= "";
         
        }   
   
