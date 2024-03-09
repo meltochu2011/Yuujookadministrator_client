@@ -74,11 +74,25 @@ export class LoginuserComponent implements OnInit {
           this.access_result = res;
          
           if(this.access_result.token == "notloggedin"){
-            Swal.fire({
-              icon: "error",
-              title: "No se encontro al usuario",
-              text: "Usuario o contraseña invalidos!"
+           
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
             });
+            Toast.fire({
+              icon: "error",
+              title: "Usuario o contraseña invalidas"
+            });
+
+             this.Userdata.user_name = "";
+             this.Userdata.user_pass = "";
 
           }  
 
@@ -105,12 +119,31 @@ export class LoginuserComponent implements OnInit {
       
        if(this.Userdata.user_name == "" ||  this.Userdata.user_pass == "" || this.Userdata.user_name == null ||  this.Userdata.user_pass == null)  
        {
-        Swal.fire({
+        /*Swal.fire({
           icon: "error",
           title: "Hay campos vacíos",
           text: "Por favor complete el usuario y la contraseña!",
           footer: '<a href="#">Campos incompletos</a>'
+        });*/
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
         });
+        Toast.fire({
+          icon: "error",
+          title: "Ingrese usuario y contraseña"
+        });
+            
+            this.Userdata.user_name= "";
+            this.Userdata.user_pass= "";
         
        }   
   
