@@ -231,7 +231,7 @@
 
                                     <div class="col-md-4">
 
-                                        <label>Items seleccionables</label>
+                                        <label>Cantidad de items seleccionables</label>
 
 
                                         <div class="form-group">
@@ -373,14 +373,11 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label>Items seleccionables</label>
+                        <label>Cantidad de items seleccionables</label>
                         <div class="form-group">
-
                             <input type="number" class="form-control" placeholder="Numero seleccionable" onclick="maxselected_validation(id)"
                                 onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" (click)="Sons_count()"
                                 [(ngModel)]="group.max_selected" id="max_sele" onkeyup="maxselected_validation(id)" min="1" (keyup)="Sons_count()" style="height: 27px;">
-                                
-                                
                         </div>
                         
                     </div>
