@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Userload } from 'src/app/models/Userload';
 import { DishService } from 'src/app/services/dish.service';
-import {CookieService} from 'ngx-cookie-service';
 import {Component_token, JsonwtService} from 'src/app/services/jsonwt.service'
 import {  Observable, Subscription } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 
@@ -109,7 +107,7 @@ export class LoginuserComponent implements OnInit {
         {
          console.log(err);
          this.loading = false;
-         alert("Ha ocurrido un error, revise su conexion de internet");         
+         alert("Ha ocurrido un error de conexion");         
         }
        )
   }

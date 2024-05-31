@@ -225,13 +225,44 @@ IMAGE_DIRECTORY_EDIT: string = "";
     this.sharingservice.SharingObservableData =  {location : "/assets/img/no_image.png"}     
   }
 
+
+
+  Completed : boolean = false;
    /**Variables para imagen de nueva ategoría */
  
-  
+  verify_category(){
+    if(this.category_ins.name?.length == 0)
+    {
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "error",
+        title: "Ingrese un nombre en la categorìa"
+      });
+           this.Completed = false;
+    }
+
+    else {
+         this.Completed = true;
+        this.saveCategory();
+    }
+
+  }
+
   saveCategory()
   {
         
-        
+        console.log(this.category_ins.name?.length)
      
         this.category_ins.selected='0';
         //environment.Dish_image= this.sharingservice.SharingObservableData.location;

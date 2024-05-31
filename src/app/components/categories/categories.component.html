@@ -98,6 +98,14 @@ ________________________________________________________________________________
                                         placeholder="Ingrese el nombre de la categoría" [(ngModel)]="category_ins.name"
                                         name="name" autofocus>
                                 </div>
+
+                                <!--<mat-form-field class="example-full-width" [style.width.px]=230 >
+                                    <mat-label>Ingrese su usuario</mat-label>
+    
+                                    <input matInput  name="category_name" routerLink="" [(ngModel)]="category_ins.name" required >								 
+                                
+                                </mat-form-field>-->
+
                                 <div class="form-group">
                                     <label>Descripcion</label>
                                     <input type="text" class="form-control" placeholder="Ingrese la descripción"
@@ -141,11 +149,17 @@ ________________________________________________________________________________
 
 
                             </div>
+
+
                             <div class="modal-footer">
                                 <!--<a class="btn btn-primary" href="#0" (click)="saveCategory()" data-dismiss="modal" >Guardar Categoría</a>-->
-                                <button class="btn btn-primary" aria-hidden="true" (click)="saveCategory()"
-                                    data-dismiss="modal">Guardar Categoría</button>
+                                <button class="btn btn-primary"  aria-hidden="true" (click)="verify_category()"
+                                *ngIf= "(category_ins.name != '' && category_ins.name != null )"  data-dismiss="modal">Guardar Categoría</button>
+
+                                <button class="btn btn-primary"  aria-hidden="false" (click)="verify_category()"
+                                *ngIf= "(category_ins.name == '' || category_ins.name == null)" >Guardar Categoría</button>
                             </div>
+
 
                         </form>
                     </div>
